@@ -1,0 +1,6 @@
+message = ["Hello, ", "this", "is", "a", "test"]
+
+for word in message[:-1]:
+    print(word)
+
+
