@@ -1,6 +1,7 @@
 git 
 vim
 python3-pip
+ssh
 xdg-utils
 lilypond
 
