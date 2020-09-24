@@ -22,3 +22,18 @@
 [submodule ".vim/bundle/vim-easy-align"]
 	path = .vim/bundle/vim-easy-align
 	url = https://github.com/junegunn/vim-easy-align.git
+[submodule ".vim/bundle/vim-highlightedyank"]
+	path = .vim/bundle/vim-highlightedyank
+	url = https://github.com/machakann/vim-highlightedyank.git
+[submodule ".vim/bundle/vim-latex"]
+	path = .vim/bundle/vim-latex
+	url = https://github.com/vim-latex/vim-latex.git
+[submodule ".vim/bundle/vim-lilypond-integrator"]
+	path = .vim/bundle/vim-lilypond-integrator
+	url = https://github.com/gisraptor/vim-lilypond-integrator.git
+[submodule ".vim/bundle/powerline"]
+	path = .vim/bundle/powerline
+	url = https://github.com/powerline/powerline.git
+[submodule ".vim/bundle/vim-virtualenv"]
+	path = .vim/bundle/vim-virtualenv
+	url = https://github.com/jmcantrell/vim-virtualenv.git
