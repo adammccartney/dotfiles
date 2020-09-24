@@ -3,3 +3,4 @@
 	email = adam@mur.at
 [core]
 	editor = vim
+	excludesfile = /home/adam/.gitignore_global
