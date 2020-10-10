@@ -1,3 +1,7 @@
+# backup system
+alias backup="sudo rsync -av --delete --exclude .cache/ /etc /home /Documents /Music /Pictures /usr/local /media/adam/adb"
+
+
 # virtualenv alias
 alias sv="source env/bin/activate"
 
@@ -9,7 +13,6 @@ alias frogsv="source ~/Scores/frog/env/bin/activate"
 
 # webscrape virtual env alias
 alias scrve="source ~/.virtualenvs/scrve/bin/activate"
-
 
 # plot virtual env (for learning & iChing)
 alias plot="source ~/.virtualenvs/plot/bin/activate"
