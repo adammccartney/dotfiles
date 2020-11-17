@@ -1,0 +1,18 @@
+;;; -*- coding: utf-8 -*-
+(("/home/adam/Scores/rill/rill/tools/"
+  (dired-filename . "/home/adam/Scores/rill/rill/tools/AttachmentMaker.py"))
+ ("/home/adam/dotfilesExAB/configs/emacs.d/init.el" . 16562)
+ ("/home/adam/.emacs.d/init.el" . 10003)
+ ("/home/adam/.emacs.d/elpa/yasnippet-snippets-20201025.1809/"
+  (dired-filename . "/home/adam/.emacs.d/elpa/yasnippet-snippets-20201025.1809/yasnippet-snippets.el"))
+ ("/home/adam/.emacs.d/elpa/"
+  (dired-filename . "/home/adam/.emacs.d/elpa/yasnippet-snippets-20201025.1809"))
+ ("/home/adam/.emacs.d/"
+  (dired-filename . "/home/adam/.emacs.d/elpa"))
+ ("/home/adam/Scores/rill/rill/"
+  (dired-filename . "/home/adam/Scores/rill/rill/tools"))
+ ("/home/adam/Scores/rill/"
+  (dired-filename . "/home/adam/Scores/rill/rill"))
+ ("/usr/share/emacs/26.3/lisp/international/mule.el.gz" . 10443)
+ ("/home/adam/.emacs.d/lisp/init-org.el" . 26831)
+ ("/home/adam/.emacs.d/lisp/init-evil.el" . 4799))
