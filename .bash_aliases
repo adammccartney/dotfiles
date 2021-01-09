@@ -1,7 +1,6 @@
 # backup system
 alias backup="sudo rsync -av --delete --exclude .cache/ /etc /home /Documents /Music /Pictures /usr/local /media/adam/adb"
 
-
 # virtualenv alias
 alias sv="source env/bin/activate"
 
@@ -25,3 +24,4 @@ alias mu="source ~/.virtualenvs/mu/bin/activate"
 
 # call an iChing reading
 alias iching="python3 ~/Code/iChing/iChing/build/iching.py"
+

@@ -1,0 +1,15 @@
+vim
+emacs
+golang
+hugo
+build-essential
+mutt
+abook
+notmuch-mutt
+procmail
+gethmail
+mail-utils
+w3m
+npm
+nodejs
+

@@ -89,10 +89,11 @@ set nobackup
 set nowritebackup
 set noswapfile
 
-"=======================================================
-" Virtual Environments
-"======================================================
-let g:virtualenv_directory = $VIRTUAL_ENV
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 "=======================================================
 "Syntax formatting
@@ -103,6 +104,30 @@ filetype off
 set runtimepath+=/usr/bin/lilypond
 filetype on
 syntax on
+
+
+" Javascript & Typescript
+" JSDocs
+let g:javascript_plugin_jsdoc=1
+"NGDocs
+let g:javascript_plugin_ngdoc=1
+" Flow
+let g:javascript_plugin_flow=1
+
+augroup javascript_folding
+    au!
+    au FileType javascript setlocal foldmethod=syntax
+augroup END
+
+" Typescript
+"
+let g:typescript_indent_disable=1
+
+" Compiler
+let g:typescript_compiler_binars = 'tsc'
+let g:typescript_compiler_options = ''
+
+
 
 "========================================================
 " Packages 
@@ -118,33 +143,6 @@ call pathogen#infect()
 syntax on 
 filetype plugin indent on
 
-" Setup Vim-LaTex
-" cd ~/.vim/bundle && git clone https://github.com/vim-latex/vim-latex.git
-" REQUIRED. This makes vim invoke Latex-Suite when you open a tex file.
-filetype plugin on
-
-" IMPORTANT: win32 users will need to have 'shellslash' set so that latex
-" can be called correctly.
-set shellslash
-
-" OPTIONAL: This enables automatic indentation as you type.
-filetype indent on
-
-" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
-" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
-" The following changes the default filetype back to 'tex':
-let g:tex_flavor='latex'
-
-
-
-"
-" t pope's fugitive ( Git wrapper for vim )
-" mkdir -p ~/.vim/bundle/tpope/start
-" cd ~/.vim/pack/tpope/start
-" git clone https://tpope.io/vim/fugitive.git
-" vim -u NONE -c "helptags fugitive/doc" -c q
-"
-"
 
 " =====================================================
 " Python IDE-setup
@@ -173,39 +171,10 @@ let g:jedi#popup_on_dot = 0
 let g:jedi#popup_select_first = 0
 map <Leader>b Oimport ipdb; ipdb.set_trace() #BREAKPOINT<C-c>
 
-
 " Python folding
 " mkdir -p ~/.vim/ftplugin
 " wget -O ~/.vim/ftplugin/python_editing.vim
 " http://www.vim.org/scripts/download_script.php?src_id=5494
 set nofoldenable
 
-
-"==============================================================================
-"You Complete Me 
-"==============================================================================
-
-let g:ycm_clangd_binary_path = "/bin/clangd-10"
-
-
-" Jupyter Notebook integration
-" cd ~/.vim/bundle
-" git clone https://github.com/broesler/jupyter-vim.git
-"
-"Always use the same virtual env for vim, regardless of what Python 
-" environment is loaded in the shell from which vim is launched
-"let g:vim_virtualenv_path = '~/Scores/frog/env/'
-"if exists('g:vim_virtualenv_path')
-"    pythonx import os; import vim
-"    pythonx activate_this = os.path.join(vim.eval('g:vim_virtualenv_path'), 'bin/activate')
-"    pythonx with open(activate_this) as f: exec(f.read(), {'__file__': activate_this})
-"endif
-"
-
-
-"=================
-" highlightedyank
-"================
-
-let g:highlightedyank_highlight_duration = 250
 
