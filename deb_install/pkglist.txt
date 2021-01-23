@@ -1,4 +1,4 @@
-vim
+vim-nox
 emacs
 golang
 hugo
@@ -12,4 +12,10 @@ mail-utils
 w3m
 npm
 nodejs
+texlive-full
+alsa-utils
+libasound2-dev
+sox
+jack-tools
+qtcreator
 
