@@ -8,6 +8,10 @@ case $- in
       *) return;;
 esac
 
+# point to a populated terminfo database and explicitly set term
+export TERMINFO=/usr/share/terminfo
+export TERM=xterm-256color
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -36,15 +40,15 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
-#case "$TERM" in
-#    xterm-color|*-256color) color_prompt=yes;;
-#esac
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
 
 # Custom prompt that displays the time in upper left corner
 # along with a shortened path name on the left hand side, 
 # i.e. it only displays the name of the topmost path dir
 
-PS1="\[\033[s\033[0;0H\033[0;42m\033[K\033[1;33m\t\033[u\]<\u@\h \W>\$"
+PS1="\[\033[s\033[0;0H\033[0;49m\033[K\033[1;33m\t\033[u\]<\u@\h \W>\$"
 
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
@@ -109,6 +113,16 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+
+# Function definitions.
+if [ -f ~/.bash_functions ]; then
+  . ~/.bash_functions
+fi
+
+if [ -d "$HOME/bin" ] ; then
+    PATH="HOME/bin:$PATH"
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -122,22 +136,25 @@ fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# PATH config
-export PATH="/home/adam/Code/scripts/:$PATH"
 
-# PYTHONPATH config
-export PYTHONPATH=/home/adam/Code:/home/adam/Scores
+# set up environment variables for compiling from source in $HOME/.local
+export PATH=$HOME/.local/bin:$PATH
+export C_INCLUDE_PATH=$HOME/.local/include
+export CPLUS_INCLUDE_PATH=$HOME/.local/include
+export LIBRARY_PATH=$HOME/.local/lib
+export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig
+
+# This tells the run time linker where to find
+# files installed in the home directory.
+# WARNING: may cause issues if an officially installed package is looking for
+# a library that is also installed on the system in a more holy manner.
+export LD_LIBRARY_PATH=$HOME/.local/lib
+
+# Set mail environment variable
+MAIL=/var/mail/adam && export MAIL
 
 
-# Functions
+# set realtime
+#export SOUND_CARD_IRQ=145
 
-ds () {
-    echo "Disk Space Utilization For $HOSTNAME"
-    df -h
-}
-
-hs () {
-    echo "Home Space Utilzation For $USER"
-    du -sh /home/*
-}
-
+export PG_OF_PATH=$HOME/openFrameworks
