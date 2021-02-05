@@ -1,5 +1,5 @@
 # backup system
-alias backup="rsync -a --exclude=.cache --progress /home/adam /media/adam/adb/backup/home/adam"
+alias backup="rsync -a --exclude=.cache --exclude=.virtualenvs --progress /home/adam /media/adam/adb/backup/home/adam"
 
 ## virtualenv alias
 #alias sv="source env/bin/activate"
