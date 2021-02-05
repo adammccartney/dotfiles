@@ -155,6 +155,6 @@ MAIL=/var/mail/adam && export MAIL
 
 
 # set realtime
-#export SOUND_CARD_IRQ=145
+export SOUND_CARD_IRQ=169
 
 export PG_OF_PATH=$HOME/openFrameworks

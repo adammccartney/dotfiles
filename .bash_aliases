@@ -1,5 +1,5 @@
 # backup system
-alias backup="sudo rsync -av --delete --exclude .cache/ /etc /home /Documents /Music /Pictures /usr/local /media/adam/adb"
+alias backup="rsync -a --exclude=.cache --progress /home/adam /media/adam/adb/backup/home/adam"
 
 ## virtualenv alias
 #alias sv="source env/bin/activate"

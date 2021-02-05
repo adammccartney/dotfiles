@@ -16,6 +16,4 @@ texlive-full
 alsa-utils
 libasound2-dev
 sox
-jack-tools
-qtcreator
 
