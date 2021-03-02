@@ -5,5 +5,5 @@
 apt update
 apt upgrade -y
 
-apt install -y $(cat ../pkglist.txt)
+apt-get install -y $(cat ../pkglist.txt)
 

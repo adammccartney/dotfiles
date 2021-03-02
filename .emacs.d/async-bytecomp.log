@@ -1,0 +1,8 @@
+
+In end of data:
+snippets/bibtex-mode/.yas-setup.el:4:1:Warning: the function
+    ‘yasnippet-snippets--no-indent’ is not known to be defined.
+
+In end of data:
+snippets/python-mode/.yas-setup.el:39:1:Warning: the function
+    ‘yasnippet-snippets--fixed-indent’ is not known to be defined.
