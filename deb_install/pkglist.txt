@@ -25,3 +25,4 @@ libasound2-dev
 awesfx
 pandoc
 valgrind
+kcachegrind
