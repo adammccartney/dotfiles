@@ -26,3 +26,9 @@ awesfx
 pandoc
 valgrind
 kcachegrind
+clang-tidy
+mit-scheme
+qemu-system
+libvirt-clients
+libvirt-daemon-system
+
