@@ -10,7 +10,7 @@ esac
 
 # point to a populated terminfo database and explicitly set term
 export TERMINFO=/usr/share/terminfo
-export TERM=xterm-256color
+export TERM=tmux-256color
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -123,6 +123,11 @@ if [ -d "$HOME/bin" ] ; then
     PATH="HOME/bin:$PATH"
 fi
 
+# tmp var
+if [ -f ~/.bashvar ] ; then
+    . ~/.bashvar
+fi
+
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -153,8 +158,35 @@ export LD_LIBRARY_PATH=$HOME/.local/lib
 # Set mail environment variable
 MAIL=/var/mail/adam && export MAIL
 
-
 # set realtime
 export SOUND_CARD_IRQ=169
 
 export PG_OF_PATH=$HOME/openFrameworks
+
+# GOPATH
+export GOPATH=$HOME/gobook
+
+export PATH=$PATH:/sbin:$HOME/.local/src/vim/bin:/opt/ghc/bin:/opt/riscv/bin
+
+# temp variable for rehashing blog
+export OLDPOSTS=/media/websites/content/music
+export CONTENT=$HOME/Websites/admccartney/content
+export STATIC=$HOME/Websites/admccartney/static
+export NEWSHORTCODES=$HOME/Websites/admccartney/layouts/shortcodes
+export NEWSOUNDS=$HOME/Websites/admccartney/static/sounds
+
+source "$HOME/.cargo/env"
+
+# Remote server variable
+export REMOTE1=206.189.52.96
+. "$HOME/.cargo/env"
+
+#add flutter to path
+export PATH="$HOME/.local/src/flutter/bin:$PATH"
+export CHROME_EXECUTABLE=/usr/bin/chromium
+#add android studio to path
+export PATH="$HOME/.local/tools/android-studio/bin:$PATH"
+
+# use vim keybindings
+set -o vi
+[ -f "/home/adam/.ghcup/env" ] && source "/home/adam/.ghcup/env" # ghcup-env
