@@ -1,11 +1,26 @@
 " .vimrc
 
+" indent recognized filetypes
+if has("autocmd")
+    filetype indent plugin on
+endif
+
+syntax on
+
+" Rebind <Leader> key
+let mapleader="," 
+
+" writch buffers in normal mode 
+map <Leader>n :bn<cr>
+map <Leader>p :bp<cr>
+map <Leader>d :bp<cr>
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
+" vim-slime
+let g:slime_target = "tmux"
+let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 
 " Atuomatic reloading of .vimrc
 autocmd! bufwritepost .vimrc source %
@@ -18,16 +33,12 @@ set clipboard=unnamed
 set mouse=a " on DEbian press ALT and click
 set bs=2    " make backspace behave like normal againf
 
-" mouse 
-set ttymouse=xterm2
-set mouse=a
+" mouse for traditional vim 
+if !has('nvim')
+    set ttymouse=xterm2
+    set mouse=a
+endif
 
-" Rebind <Leader> key
-let mapleader="," 
-
-" Easier moving between tabs
-map <Leader>n <esc>:tabprevious<CR>
-map <Leader>m <esc>:tabnext<CR>
 
 " bind Ctrl+<movement> keys to move around the windows
 map <c-j> <c-w>j
@@ -53,19 +64,13 @@ au InsertLeave * match ExtraWhitespace /\s+$/
 set t_Co=256
 color wombat256mod
 
-" Enable snytax highlighting 
-" You need to reload this file after installing this
-filetype off
-filetype plugin indent on
-syntax on
-
 " Showing line numbers and length
 set number " show line numbers
 set tw=79  " width of documents (used by gd)
-set nowrap " don't automatically wrap on load
-set fo-=t  " don't automatically wrap text when typing
-set colorcolumn=80
-highlight ColorColumn ctermbg=233
+"set nowrap " don't automatically wrap on load
+"set fo-=t  " don't automatically wrap text when typing
+"set colorcolumn=80
+"highlight ColorColumn ctermbg=233
 
 
 " Easier formatting of paragraphs
@@ -114,13 +119,12 @@ let g:javascript_plugin_ngdoc=1
 " Flow
 let g:javascript_plugin_flow=1
 
-augroup javascript_folding
-    au!
-    au FileType javascript setlocal foldmethod=syntax
-augroup END
+"augroup javascript_folding
+"    au!
+"    au FileType javascript setlocal foldmethod=syntax
+"augroup END
 
 " Typescript
-"
 let g:typescript_indent_disable=1
 
 " Compiler
@@ -143,38 +147,38 @@ call pathogen#infect()
 syntax on 
 filetype plugin indent on
 
+" =============================================================================
+"
 
-" =====================================================
-" Python IDE-setup
-" =====================================================
+" Supercollider
+" =============
+au BufEnter,BufWinEnter,BufNewFile,BufRead *.sc,*.scd set filetype=supercollider
+au Filetype supercollider packadd scvim
+let g:scFlash = 1
 
-set pyxversion=3
+" Haskell
+" ========
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords 
 
-" Settings for vim-powerline
-" cd ~/.vim/bundle
-" git clone git://github.com/Lokaltog/vim-powerline.git
-set laststatus=2
-
-" Settings for ctrlp
-" cd ~/.vim/bundle
-" git clone https://github.com/kien/ctrlp.vim.git
-let g:ctrlp_max_height = 30
-set wildignore+=*.pyc
-set wildignore+=*_build/*
-set wildignore+=*/coverage/*
-
-" Settings for jedi-vim
-" cd ~/.vim/bundle
-" git clone git://github.com/davidhalter/jedi-vim.git
-let g:jedi#usages_command = "<leader>z"
-let g:jedi#popup_on_dot = 0
-let g:jedi#popup_select_first = 0
-map <Leader>b Oimport ipdb; ipdb.set_trace() #BREAKPOINT<C-c>
-
-" Python folding
-" mkdir -p ~/.vim/ftplugin
-" wget -O ~/.vim/ftplugin/python_editing.vim
-" http://www.vim.org/scripts/download_script.php?src_id=5494
-set nofoldenable
+" hindent
+let g:hindent_on_save = 1
+let g:hindent_indent_size = 2
+let g:hindent_line_length = 100
+let g:hindent_command = "stack exec -- hindent"
 
 
+" Java
+" ====
+let g:syntastic_java_checkers = []
+let g:EclimFileTypeValidate = 0
+
+" Python 
+" ======
+let g:python_host_prog = '/usr/bin/python'
+let g:python3_host_prog = '/usr/bin/python3'
