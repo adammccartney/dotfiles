@@ -190,3 +190,10 @@ export PATH="$HOME/.local/tools/android-studio/bin:$PATH"
 # use vim keybindings
 set -o vi
 [ -f "/home/adam/.ghcup/env" ] && source "/home/adam/.ghcup/env" # ghcup-env
+
+# git tools
+. ~/git-completion.bash
+. ~/git-prompt.sh
+export GIT_PS1_SHOWDIRTYSTATE=1
+export PS1='\w$(__git_ps1 " (%s)")\$ '
+
