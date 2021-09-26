@@ -6,9 +6,6 @@ hugo
 build-essential
 mutt
 abook
-notmuch-mutt
-procmail
-getmail
 mail-utils
 w3m
 npm
@@ -31,4 +28,5 @@ mit-scheme
 qemu-system
 libvirt-clients
 libvirt-daemon-system
+ripgrep
 

@@ -166,7 +166,7 @@ export PG_OF_PATH=$HOME/openFrameworks
 # GOPATH
 export GOPATH=$HOME/gobook
 
-export PATH=$PATH:/sbin:$HOME/.local/src/vim/bin:/opt/ghc/bin:/opt/riscv/bin
+export PATH=$PATH:/sbin:/opt/ghc/bin:/opt/riscv/bin
 
 # temp variable for rehashing blog
 export OLDPOSTS=/media/websites/content/music
@@ -196,4 +196,11 @@ set -o vi
 . ~/git-prompt.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
 export PS1='\w$(__git_ps1 " (%s)")\$ '
+
+# virtualenv wrapper
+export WORKON_HOME=$HOME/.virtualenvs
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export VIRTUALENVWRAPPER_VIRTUALENV_ARGS=' -p /usr/bin/python3 '
+export PROJECT_HOME=$HOME/.local/venvs
+source /usr/local/bin/virtualenvwrapper.sh
 

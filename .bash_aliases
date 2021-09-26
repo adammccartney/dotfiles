@@ -25,11 +25,20 @@ alias tt="source ~/.virtualenvs/tt/bin/activate"
 # call an iChing reading
 alias iching="python3 ~/Code/iChing/iChing/build/iching.py"
 
-# ondewo venv
-alias ondewo="source ~/.virtualenvs/ondewo/bin/activate"
-
 # fl venv
 alias fl="source ~/.virtualenvs/fl/bin/activate"
 
 # jlox
 alias jlox="~/.local/src/jlox/build/distributions/jlox/bin/jlox"
+
+# python3.8
+alias py3.8="/usr/local/bin/python3.8"
+
+# wagtail python 3.8
+alias wtpy38="source ~/.virtualenvs/wtpy38/bin/activate"
+
+# django: postgres python38
+alias pstgrsql="source ~/.virtualenvs/postgresql/bin/activate"
+
+# neovim
+alias vim="/usr/local/bin/nvim"

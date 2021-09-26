@@ -44,3 +44,13 @@ function hello () {
     NAME="$1"
     echo "hello ${NAME}, how are you this evening?"
 }
+
+function containerip () {
+   sudo docker inspect −−format '{{ .NetworkSettings.IPAddress }}' "$@"
+}
+
+function make_py3.8venv () {
+    NAME="$1"
+    #python3.8 -m venv "~/.virtualenvs/${NAME}"
+    echo "~/.virtualenvs/${NAME}"
+}
