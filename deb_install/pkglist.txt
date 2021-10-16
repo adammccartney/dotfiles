@@ -10,7 +10,6 @@ alsa-utils
 libasound2-dev
 sox
 libsndfile1-dev
-libqt4-dev 
 libpulse-dev 
 libjack-jackd2-dev 
 libasound2-dev
