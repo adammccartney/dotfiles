@@ -204,3 +204,8 @@ export VIRTUALENVWRAPPER_VIRTUALENV_ARGS=' -p /usr/bin/python3 '
 export PROJECT_HOME=$HOME/.local/venvs
 source /usr/local/bin/virtualenvwrapper.sh
 
+
+# Postgres to path
+export PATH="/usr/local/pgsql/bin:$PATH"
+# Manpath
+#export PATH=/usr/local/pgsql/share/man:$MANPATH

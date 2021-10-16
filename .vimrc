@@ -136,6 +136,7 @@ let g:typescript_compiler_options = ''
 " Use vimplug to manage plugins 
 
 call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-fugitive'
 Plug 'wilsaj/chuck.vim'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'preservim/nerdtree'
@@ -149,20 +150,30 @@ Plug 'pangloss/vim-javascript'
 Plug 'digitaltoad/vim-pug'
 Plug 'jpalardy/vim-slime'
 Plug 'dhruvasagar/vim-table-mode'
+Plug 'editorconfig/editorconfig-vim'
 
 if has("nvim")
     Plug 'neovim/nvim-lspconfig'
-    Plug 'glepnir/lspsaga.nvim'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-telescope/telescope.nvim'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+    Plug 'mfussenegger/nvim-lint'
 endif
 
 call plug#end()
 
 " =============================================================================
-"
+" special config for any vim plugins that got installed
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
+
+
+" =============================================================================
+" extra config for vim plugins that have some neovim goodies
 
 " Supercollider
 " =============

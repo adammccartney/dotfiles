@@ -42,3 +42,8 @@ alias pstgrsql="source ~/.virtualenvs/postgresql/bin/activate"
 
 # neovim
 alias vim="/usr/local/bin/nvim"
+
+# psql alias (hand compiled version on unix has the side effect of trying to
+# connect with another port. To get around this, we have to connect using the
+# -h flag and the socket that is specified by the debian system
+alias psql="psql -h /var/run/postgresql"

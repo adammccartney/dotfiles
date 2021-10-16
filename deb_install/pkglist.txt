@@ -1,15 +1,10 @@
-vim-nox
 tmux
-emacs
 golang
 hugo
 build-essential
 mutt
 abook
-mail-utils
 w3m
-npm
-nodejs
 texlive-full
 alsa-utils
 libasound2-dev
@@ -29,4 +24,5 @@ qemu-system
 libvirt-clients
 libvirt-daemon-system
 ripgrep
+postgresql-13
 
