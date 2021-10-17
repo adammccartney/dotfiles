@@ -195,17 +195,12 @@ set -o vi
 . ~/git-completion.bash
 . ~/git-prompt.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
-export PS1='\w$(__git_ps1 " (%s)")\$ '
+export PS1='\u@\H\w$(__git_ps1 " (%s)")\$ '
 
 # virtualenv wrapper
 export WORKON_HOME=$HOME/.virtualenvs
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS=' -p /usr/bin/python3 '
-export PROJECT_HOME=$HOME/.local/venvs
+export PROJECT_HOME=$HOME/.virtualenvs/venvs
 source /usr/local/bin/virtualenvwrapper.sh
 
-
-# Postgres to path
-export PATH="/usr/local/pgsql/bin:$PATH"
-# Manpath
-#export PATH=/usr/local/pgsql/share/man:$MANPATH
