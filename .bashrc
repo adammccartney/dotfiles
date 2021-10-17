@@ -201,7 +201,9 @@ set -o vi
 . ~/git-completion.bash
 . ~/git-prompt.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
-export PS1='\u@\H\w$(__git_ps1 " (%s)")\$ '
+
+PS1="\[\033[s\033[0;0H\033[0;49m\033[K\033[1;33m\t\033[u\]<\u@\h \W>\$"
+export PS1='<\u@\h \W>$(__git_ps1 " (%s)")\$'
 
 # virtualenv wrapper
 export WORKON_HOME=$HOME/.virtualenvs
