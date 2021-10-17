@@ -119,6 +119,12 @@ if [ -f ~/.bash_functions ]; then
   . ~/.bash_functions
 fi
 
+# Pvars.
+if [ -f ~/.bash_pvars ]; then
+  . ~/.bash_pvars
+fi
+
+
 if [ -d "$HOME/bin" ] ; then
     PATH="HOME/bin:$PATH"
 fi
