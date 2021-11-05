@@ -6,6 +6,26 @@ if has("autocmd")
 endif
 
 syntax on
+if has('gui_running')
+    set guicurser+=a:blinkon0
+    colorscheme darkblue
+elseif has('win32')
+    colorscheme slate
+else 
+    colorscheme ron
+end 
+if &term =~ "256color" || &term =~"xterm"
+    let &t_SI = "\<Esc>[6 q"
+    let &t_EU = "\<Esc>[2 q"
+    if exists("&t_SR")
+        let &t_SR = "\<Esc>[4 q"
+    end
+end
+if has("x11")
+    let &guifont="Noto Mono 11"
+elseif has("gui_win32")
+    let &guifont="Lucida Console:h11"
+end
 
 " Rebind <Leader> key
 let mapleader="," 
@@ -49,17 +69,6 @@ map <c-h> <c-w>h
 " easier moving of code blocks
 vnoremap < <gv " better indentation
 vnoremap > >gv " better indentation
-
-"Show whitespace
-" MUST be inserted BEFORE the colorscheme command
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-au InsertLeave * match ExtraWhitespace /\s+$/
-
-" Color scheme
-" mkdir -p ~/.vim/colors && cd ~/.vim/colors
-" wget -= wombat256mod.vim http://www.vim.org/scripts/download_script.php?src_id=13400
-set t_Co=256
-color wombat256mod
 
 " Showing line numbers and length
 set number " show line numbers
