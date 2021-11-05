@@ -25,3 +25,5 @@ libvirt-daemon-system
 ripgrep
 postgresql-13
 
+fd-find
+xclip
