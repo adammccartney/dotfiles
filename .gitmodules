@@ -39,7 +39,7 @@
 	url = https://github.com/jmcantrell/vim-virtualenv.git
 [submodule "nvim"]
 	path = nvim
-	url = git@github.com:adammccartney/nvim.git
+	url = git@github.com:adammccartney/nvim
 [submodule ".vim"]
 	path = .vim
 	url = git@github.com:adammccartney/.vim
