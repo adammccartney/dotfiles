@@ -54,3 +54,20 @@ function make_py3.8venv () {
     #python3.8 -m venv "~/.virtualenvs/${NAME}"
     echo "~/.virtualenvs/${NAME}"
 }
+
+# list all ports currently listening
+get_listening_ports () {
+    sudo lsof -i -P -n | grep LISTEN 
+}
+
+function installed {
+    cmd=$(command -v "${1}")
+
+    [[ -n "${cmd}" ]] && [[ -f "${cmd}" ]]
+    return ${?}
+}
+
+function die {
+    >&2 echo "Fatal: ${@}"
+    exit 1
+}
