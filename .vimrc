@@ -172,6 +172,7 @@ if has("nvim")
     Plug 'hrsh7th/nvim-cmp'
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
     Plug 'mfussenegger/nvim-lint'
+    Plug 'folke/zen-mode.nvim'
 endif
 
 call plug#end()
