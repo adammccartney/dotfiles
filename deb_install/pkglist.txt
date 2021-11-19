@@ -28,3 +28,4 @@ postgresql-13
 fd-find
 xclip
 shellcheck
+rlwrap

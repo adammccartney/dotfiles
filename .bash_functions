@@ -71,3 +71,21 @@ function die {
     >&2 echo "Fatal: ${@}"
     exit 1
 }
+
+
+function wi { 
+    test -n "$1" && stat --printf "%F\n" $1
+    }
+
+
+function size {
+    t=0
+    test -d "$1" && for n in $(find $1 \
+    -type f -name '*.py' -print | \
+    xargs stat --printf "%s "); do ((t+=n)); done; echo $t; 
+}
+
+
+function weather { 
+    curl -s --connect-timeout 3 -m 5 http://wttr.in/$1 
+}
