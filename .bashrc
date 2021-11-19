@@ -169,8 +169,6 @@ export SOUND_CARD_IRQ=169
 
 export PG_OF_PATH=$HOME/openFrameworks
 
-# GOPATH
-export GOPATH=$HOME/gobook
 
 export PATH=$PATH:/sbin:/opt/ghc/bin:/opt/riscv/bin
 
@@ -212,3 +210,13 @@ export VIRTUALENVWRAPPER_VIRTUALENV_ARGS=' -p /usr/bin/python3 '
 export PROJECT_HOME=$HOME/.virtualenvs/venvs
 source /usr/local/bin/virtualenvwrapper.sh
 
+# source the cht.sh bashcompletion file
+if [ -f ~/.bash.d/cht.sh ] ; then
+    . ~/.bash.d/cht.sh
+fi
+
+
+# GOPATH
+export GOPATH=$HOME/gobook
+export GOROOT=/usr/local/go/bin
+export PATH=$PATH:$GOPATH/bin:$GOROOT

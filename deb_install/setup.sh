@@ -13,7 +13,7 @@ function installed {
 }
 
 function die {
-  >&2 echo "Fatal: ${@}"
+  >&2 echo "Fatal: $*"
   exit 1
 }
 
@@ -26,10 +26,6 @@ for dep in "${deps[@]}"; do
 done
 
 
-do
-    apt update
-    apt upgrade -y
-
-    apt-get install -y $(cat ./pkglist.txt)
-done
-
+apt update 
+apt upgrade -y 
+apt-get install -y "$(cat ./pkglist.txt)"
