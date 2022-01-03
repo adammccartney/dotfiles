@@ -179,7 +179,7 @@ elseif has('win32')
 elseif has('nvim')
     colorscheme nightfox 
 else
-    colorscheme tom 
+    colorscheme ron 
 end 
 if &term =~ "256color" || &term =~"xterm"
     let &t_SI = "\<Esc>[6 q"
