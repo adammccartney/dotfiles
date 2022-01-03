@@ -169,7 +169,6 @@ export SOUND_CARD_IRQ=169
 
 export PG_OF_PATH=$HOME/openFrameworks
 
-
 export PATH=$PATH:/sbin:/opt/ghc/bin:/opt/riscv/bin
 
 # temp variable for rehashing blog

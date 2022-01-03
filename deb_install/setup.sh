@@ -20,7 +20,7 @@ function die {
 
 [[ "${BASH_VERSINFO[0]}" -lt 4 ]] && die "Bash >=4 required"
 
-deps=(curl nc dig)
+deps=()
 for dep in "${deps[@]}"; do
   installed "${dep}" || die "Missing '${dep}'"
 done

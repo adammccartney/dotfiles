@@ -47,3 +47,5 @@ alias vim="/usr/local/bin/nvim"
 # connect with another port. To get around this, we have to connect using the
 # -h flag and the socket that is specified by the debian system
 alias psql="psql -h /var/run/postgresql"
+
+alias python="python3"

@@ -5,30 +5,9 @@ if has("autocmd")
     filetype indent plugin on
 endif
 
-syntax on
-if has('gui_running')
-    set guicurser+=a:blinkon0
-    colorscheme darkblue
-elseif has('win32')
-    colorscheme slate
-else 
-    colorscheme ron
-end 
-if &term =~ "256color" || &term =~"xterm"
-    let &t_SI = "\<Esc>[6 q"
-    let &t_EU = "\<Esc>[2 q"
-    if exists("&t_SR")
-        let &t_SR = "\<Esc>[4 q"
-    end
-end
-if has("x11")
-    let &guifont="Noto Mono 11"
-elseif has("gui_win32")
-    let &guifont="Lucida Console:h11"
-end
-
 " Rebind <Leader> key
-let mapleader="," 
+let mapleader=" " 
+let maplocalleader=","
 
 " writch buffers in normal mode 
 map <Leader>n :bn<cr>
@@ -161,6 +140,7 @@ Plug 'jpalardy/vim-slime'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'dbeniamine/cheat.sh-vim'
+Plug 'rust-lang/rust.vim'
 
 if has("nvim")
     Plug 'neovim/nvim-lspconfig'
@@ -174,6 +154,8 @@ if has("nvim")
     Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
     Plug 'mfussenegger/nvim-lint'
     Plug 'folke/zen-mode.nvim'
+    Plug 'EdenEast/nightfox.nvim'
+    Plug 'Olical/conjure'
 endif
 
 call plug#end()
@@ -185,6 +167,34 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
 " =============================================================================
 " extra config for vim plugins that have some neovim goodies
+
+" =============================================================================
+" color 
+syntax on
+if has('gui_running')
+    set guicurser+=a:blinkon0
+    colorscheme darkblue
+elseif has('win32')
+    colorscheme slate
+elseif has('nvim')
+    colorscheme nightfox 
+else
+    colorscheme tom 
+end 
+if &term =~ "256color" || &term =~"xterm"
+    let &t_SI = "\<Esc>[6 q"
+    let &t_EU = "\<Esc>[2 q"
+    if exists("&t_SR")
+        let &t_SR = "\<Esc>[4 q"
+    end
+end
+if has("x11")
+    let &guifont="Noto Mono 11"
+elseif has("gui_win32")
+    let &guifont="Lucida Console:h11"
+end
+
+
 
 " Supercollider
 " =============
@@ -273,3 +283,4 @@ let g:CheatSheetIdPath=expand('~/.cht.sh/id')
 
 " Make plugin silent by  setting bellow variable to 1
 let g:CheatSheetSilent=0
+
