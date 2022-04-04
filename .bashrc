@@ -214,8 +214,9 @@ if [ -f ~/.bash.d/cht.sh ] ; then
     . ~/.bash.d/cht.sh
 fi
 
-
 # GOPATH
-export GOPATH=$HOME/gobook
-export GOROOT=/usr/local/go/bin
-export PATH=$PATH:$GOPATH/bin:$GOROOT
+export GOPATH=$HOME/.local/go
+export GOBIN=/usr/local/go/bin
+export GOROOT=/usr/local/go
+export PATH=$PATH:$GOPATH:$GOBIN
+
