@@ -152,7 +152,7 @@ fi
 export PATH=$HOME/.local/bin:$PATH
 export C_INCLUDE_PATH=$HOME/.local/include
 export CPLUS_INCLUDE_PATH=$HOME/.local/include
-export LIBRARY_PATH=$HOME/.local/lib
+export LD_LIBRARY_PATH=$HOME/.local/lib
 export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig
 
 # This tells the run time linker where to find
@@ -219,4 +219,10 @@ export GOPATH=$HOME/.local/go
 export GOBIN=/usr/local/go/bin
 export GOROOT=/usr/local/go
 export PATH=$PATH:$GOPATH:$GOBIN
+export PATH=$PATH:/usr/local/bin/docker-credential-pass
+. "$HOME/.cargo/env"
+#Java home
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/bin/java-11-openjdk-amd64
 
+# set visual editor
+export VISUAL=nvim
