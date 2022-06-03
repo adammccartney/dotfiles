@@ -141,6 +141,8 @@ Plug 'dhruvasagar/vim-table-mode'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'dbeniamine/cheat.sh-vim'
 Plug 'rust-lang/rust.vim'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 
 if has("nvim")
     Plug 'neovim/nvim-lspconfig'
@@ -167,6 +169,8 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
 " =============================================================================
 " extra config for vim plugins that have some neovim goodies
+set completeopt=menu,menuone,noselect
+
 
 " =============================================================================
 " color 
@@ -177,7 +181,7 @@ if has('gui_running')
 elseif has('win32')
     colorscheme slate
 elseif has('nvim')
-    colorscheme dayfox 
+    colorscheme nightfox
 else
     colorscheme ron 
 end 

@@ -49,3 +49,7 @@ alias vim="/usr/local/bin/nvim"
 alias psql="psql -h /var/run/postgresql"
 
 alias python="python3"
+
+alias actenv="source ./venv/bin/activate"
+
+alias gh="~/.local/bin/gh/bin/gh"
