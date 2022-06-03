@@ -1,0 +1,23 @@
+defaults
+auth on
+tls on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile ~/.cache/msmtp.log
+
+# murat
+account murat
+host    smtp.mur.at
+port    587
+from    adam@mur.at
+user    adam
+passwordeval "gpg -q --for-your-eyes-only --no-tty -d ~/.murat.gpg"
+
+# mdw
+account work-mdw
+host    mail.mdw.ac.at
+port    587
+from    mccartney@mdw.ac.at
+user    adam
+passwordeval "gpg -q --for-your-eyes-only --no-tty -d ~/.mdw.gpg"
+
+account default : murat

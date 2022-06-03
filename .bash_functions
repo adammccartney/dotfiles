@@ -99,3 +99,7 @@ fi
 function makeonchange () {
     while inotifywait -q . ; do echo -e '\n\n'; make; done
 }
+
+getmail () {
+    mbsync -a
+}

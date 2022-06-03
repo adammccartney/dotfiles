@@ -76,3 +76,82 @@ Channel murat-drafts
 Channel murat-trash
 Channel murat-sent
 Channel murat-archive
+
+
+IMAPAccount mdw
+Host mail.mdw.ac.at
+User mccartney
+AuthMechs LOGIN
+PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/.mdw.gpg"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore mdw-remote
+Account mdw
+
+MaildirStore mdw-local
+SubFolders Verbatim
+Path ~/.mail/mdw/
+Inbox ~/.mail/mdw/Mailbox
+
+Channel mdw-inbox
+Master :mdw-remote:
+Slave :mdw-local:
+Patterns *
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
+Channel mdw-calender
+Master :mdw-remote:
+Slave :mdw-local:
+Patterns "Calender"
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
+Channel mdw-sent
+Master :mdw-remote:
+Slave :mdw-local:
+Patterns "Sent Items"
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
+Channel mdw-drafts
+Master :mdw-remote:
+Slave :mdw-local:
+Patterns "Work In Progress"
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
+Channel mdw-archive
+Master :mdw-remote:
+Slave :mdw-local:
+Patterns "Cabinet"
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
+Channel mdw-trash
+Master :mdw-remote:
+Slave :mdw-local:
+Patterns "Trash"
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
+Group mdw
+Channel mdw-inbox
+Channel mdw-sent
+Channel mdw-drafts
+Channel mdw-archive
+Channel mdw-trash
+
