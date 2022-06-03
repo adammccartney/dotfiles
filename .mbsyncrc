@@ -1,0 +1,78 @@
+IMAPAccount murat 
+# Address to connect to
+Host imap.mur.at
+User adam 
+AuthMechs LOGIN
+PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/.murat.gpg"
+SSLType IMAPS
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore murat-remote
+Account murat
+
+MaildirStore murat-local
+SubFolders Verbatim
+# The trailing "/" is important
+Path ~/.mail/murat/
+Inbox ~/.mail/murat/Inbox
+
+Channel murat-inbox
+Master :murat-remote:
+Slave :murat-local:
+Patterns *
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
+Channel murat-sent
+Master :murat-remote:
+Slave :murat-local:
+Patterns "Sent"
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
+Channel murat-spam
+Master :murat-remote:
+Slave :murat-local:
+Patterns "Spam"
+Sync All
+Expunge Both
+SyncState *
+
+Channel murat-drafts
+Master :murat-remote:
+Slave :murat-local:
+Patterns "Drafts"
+Create slave
+Sync All
+Expunge Both
+SyncState *
+
+Channel murat-trash
+Master :murat-remote:
+Slave :murat-local:
+Patterns "Trash"
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
+Channel murat-archive
+Master :murat-remote:
+Slave :murat-local:
+Patterns "Arc*"
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
+Group mur
+Channel murat-inbox
+Channel murat-spam
+Channel murat-drafts
+Channel murat-trash
+Channel murat-sent
+Channel murat-archive
