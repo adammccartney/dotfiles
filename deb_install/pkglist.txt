@@ -2982,3 +2982,4 @@ zlib1g
 zlib1g-dev
 zoom
 zstd
+moreutils

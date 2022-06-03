@@ -89,3 +89,13 @@ function size {
 function weather { 
     curl -s --connect-timeout 3 -m 5 http://wttr.in/$1 
 }
+
+
+# Elastic search functions
+if [ -f ~/.elastic_fun ]; then
+    . ~/.elastic_fun
+fi
+
+function makeonchange () {
+    while inotifywait -q . ; do echo -e '\n\n'; make; done
+}

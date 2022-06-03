@@ -53,3 +53,4 @@ alias python="python3"
 alias actenv="source ./venv/bin/activate"
 
 alias gh="~/.local/bin/gh/bin/gh"
+alias man="MANWIDTH=72 man"
