@@ -177,7 +177,7 @@ if has('gui_running')
 elseif has('win32')
     colorscheme slate
 elseif has('nvim')
-    colorscheme nightfox 
+    colorscheme dayfox 
 else
     colorscheme ron 
 end 
@@ -283,4 +283,14 @@ let g:CheatSheetIdPath=expand('~/.cht.sh/id')
 
 " Make plugin silent by  setting bellow variable to 1
 let g:CheatSheetSilent=0
+
+
+filetype off
+set runtimepath+=/usr/share/lilypond/2.22.0/vim
+filetype on
+syntax on
+
+" go setup 
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.go lua goimports(1000)
 
