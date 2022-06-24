@@ -33,6 +33,7 @@ alias jlox="~/.local/src/jlox/build/distributions/jlox/bin/jlox"
 
 # python3.8
 alias py3.8="/usr/local/bin/python3.8"
+alias py310="/usr/local/bin/python3.10"
 
 # wagtail python 3.8
 alias wtpy38="source ~/.virtualenvs/wtpy38/bin/activate"
@@ -54,3 +55,4 @@ alias actenv="source ./venv/bin/activate"
 
 alias gh="~/.local/bin/gh/bin/gh"
 alias man="MANWIDTH=72 man"
+
