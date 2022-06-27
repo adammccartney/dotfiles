@@ -11,7 +11,7 @@ from system crafters. It is centered around literate programming and
 functional package management.
 
 * Startup Performance
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 
 ;; init.el --- -*- lexical-binding: t; -*-
 
@@ -71,7 +71,7 @@ NOTE: tangle is disabled, chunk here for reference purposes
 ** Straight.el
 Replacement for package.el. Functional package manager for emacs 
 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 ;; bootstrap straight.el
    (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -98,16 +98,15 @@ Replacement for package.el. Functional package manager for emacs
 ;; Clean up unused repos with `straight-remove-unused-repos'
 #+end_src
 * Update Load Path 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
-(push "~/dotfiles/.emacs.d/lisp" load-path)  
-
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(push "~/.emacs.d/lisp" load-path)  
 (require 'unannoy)
 (require 'ad-mail)
 
 #+end_src
 * Global settings
 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 
 ;; Some global keybindings
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
@@ -128,7 +127,7 @@ Replacement for package.el. Functional package manager for emacs
 
 * Fonts and Themes 
 ** Some custom emacs config 
-#+begin_src emacs-lisp :tangle .emacs.d/lisp/unannoy.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/lisp/unannoy.el
 ;;; unannoy.el --- disable Emacs' annoying bits
 ;;; originally written by nullprogram (Chris Wellons)
 
@@ -203,7 +202,7 @@ Replacement for package.el. Functional package manager for emacs
 
 
 ** Fonts
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 ;; Frames and fonts
 
 (defvar my-preferred-fonts
@@ -232,7 +231,7 @@ Replacement for package.el. Functional package manager for emacs
 
 ** Themes 
 sanityinc
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package color-theme-sanityinc-tomorrow
   :config
   (setf custom-safe-themes t)
@@ -247,7 +246,7 @@ sanityinc
     
 Use dired for searching directories 
 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (straight-use-package '(dired :type built-in))
 (use-package dired
   :config
@@ -264,7 +263,7 @@ Use dired for searching directories
 ** Evil
     
 Evil mode get setup some vim style keybindings 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -322,7 +321,7 @@ Evil mode get setup some vim style keybindings
 #+end_src
 
 * Org
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 
 (straight-use-package '(org :type built-in))
 ;; Org mode
@@ -364,7 +363,7 @@ Evil mode get setup some vim style keybindings
 
 * Documentation 
 *** markdown 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package markdown-mode
   :defer t
   :mode ("\\.md$" "\\.markdown$" "vimperator-.+\\.tmp$")
@@ -383,7 +382,7 @@ Evil mode get setup some vim style keybindings
 * Completion & searching 
 ** ivy 
 Includes a number of minimalist completion tools that make life a bit easier.
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -406,7 +405,7 @@ Includes a number of minimalist completion tools that make life a bit easier.
 ** counsel
 ~M-x~ on steroids
 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
          ("C-x b" . counsel-ibuffer)
@@ -429,7 +428,7 @@ Includes a number of minimalist completion tools that make life a bit easier.
 ** lsp
 Haven't really got this running so smoothly yet, find nvim's lsp stuff
 works a bit better out of the box. 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package lsp-mode
   :commands lsp
   :bind (:map lsp-mode-map
@@ -453,7 +452,7 @@ works a bit better out of the box.
 *** Language Servers
 **** pyright
 
-     #+begin_src emacs-lisp :tangle .emacs.d/init.el
+     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
      (use-package lsp-pyright
        :ensure t
        :hook (python-mode . (lambda ()
@@ -466,7 +465,7 @@ works a bit better out of the box.
 
 Project organization 
 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
  (use-package projectile
   :diminish projectile-mode
   :config (projectile-mode)
@@ -488,7 +487,7 @@ Project organization
 ** Magit
 Very nice interface for Git.    
 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package magit
   :straight t
   :custom
@@ -514,14 +513,14 @@ languages a bit easier.
 *** lisp
  
 Add slime that uses the sbcl 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package slime
   :init 
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 #+end_src
 
 *** python
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package python-mode
   :mode "\\.py\\'"
   :hook (python-mode . lsp-deferred)
@@ -530,7 +529,7 @@ Add slime that uses the sbcl
 #+end_src
 
 *** typescript
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package typescript-mode
   :mode "\\.ts\\'"
   :hook (typescript-mode . lsp-deferred)
@@ -557,7 +556,7 @@ Add slime that uses the sbcl
 #+end_src
 
 *** scheme 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 
 (use-package geiser
   :straight t
@@ -579,7 +578,7 @@ mit-scheme
 #+end_src
 
 
-#+begin_src emacs-lisp :tangle .emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 
 (provide 'init) ; make (require 'init) happy
 #+end_src
@@ -625,20 +624,20 @@ mit-scheme
 
 *** yaml
 Everyone's favorite...
-    #+begin_src emacs-lisp :tangle .emacs.d/init.el
+    #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
     (use-package yaml-mode
        :mode "\\.ya?ml\\'")
     #+end_src
     
 ** Productivity
 *** Flycheck
-    #+begin_src emacs-lisp :tangle .emacs.d/init.el
+    #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
     (use-package flycheck
       :defer t
       :hook (lsp-mode . flycheck-mode))
     #+end_src
 *** Smart Parens 
-    #+begin_src emacs-lisp :tangle .emacs.d/init.el
+    #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
     (use-package smartparens
       :hook (prog-mode . smartparens-mode))
     #+end_src
