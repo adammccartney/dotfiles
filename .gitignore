@@ -1,1 +1,8 @@
+# temp files etc.
+emacs/.emacs.d/straight
+emacs/.emacs.d/projectile-bookmarks.eld
+emacs/.emacs.d/transient/
+
+
+# vim plugins
 vim/.vim/plugged/*

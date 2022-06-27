@@ -37,7 +37,7 @@
 
 ;; Clean up unused repos with `straight-remove-unused-repos'
 
-(push "~/dotfiles/.emacs.d/lisp" load-path)  
+(push "~/.emacs.d/lisp" load-path)  
 
 (require 'unannoy)
 (require 'ad-mail)
