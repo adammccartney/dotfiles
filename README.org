@@ -2,5 +2,38 @@
 
 Mostly editor config stuff and a few other manifests for setting up a
 system. Very much a work in progress. Starting to use literate
-programming style to generate the configuration 
+programming style to generate the configuration. The idea is to use GNU
+Stow to manage the dotfiles. [[https://www.gnu.org/software/stow/][Stow]] is a symlink farm manager and works
+surprisingly well and is an improvement over the pattern of git
+submodules and multiple git repos to manage the various configs. 
+[[http://brandon.invergo.net/news/2012-05-26-using-gnu-stow-to-manage-your-dotfiles.html][Here is a good introduction to stow]]
 
+
+* Editors
+As Eric Raymond suggests, we're going with the anti-religious choice
+here. 
+
+** vim / nvim  
+#+begin_src shell
+cd ~/dotfiles
+stow vim
+stow nvim
+#+end_src
+   
+Vim and Nvim are fantastic for many things and can be really
+nicely integrated into a terminal centered workflow. They are also
+really handy for working on remote servers. The vimrc file is still
+written in vimscript and simply loaded from nvim/init.vim. Haven't gone
+too far into the world of writing lua yet.
+
+
+** emacs
+The big wins here are org-mode and magit. Also, somehow like emacs for
+editing the various dialects of lisp. There is also a smart dishwasher
+in the flat we just moved in to, so future work might see me writing a
+part in elisp for this machine in my appliance opera.
+
+#+begin_src shell
+cd ~/dotfiles
+stow emacs
+#+end_src
