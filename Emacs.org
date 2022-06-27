@@ -435,7 +435,6 @@ works a bit better out of the box.
   :bind (:map lsp-mode-map
      ("TAB" . completion-at-point)))
 
-
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :config
@@ -450,6 +449,17 @@ works a bit better out of the box.
   :config
  (setq which-key-idle-delay 1))
 #+end_src
+
+*** Language Servers
+**** pyright
+
+     #+begin_src emacs-lisp :tangle .emacs.d/init.el
+     (use-package lsp-pyright
+       :ensure t
+       :hook (python-mode . (lambda ()
+                              (require 'lsp-pyright)
+                              (lsp))))
+     #+end_src
 
 * Development
 ** projectile
@@ -501,7 +511,7 @@ Very nice interface for Git.
 Various packages and dependencies that make working with certain
 languages a bit easier.
    
-** lisp
+*** lisp
  
 Add slime that uses the sbcl 
 #+begin_src emacs-lisp :tangle .emacs.d/init.el
@@ -510,7 +520,7 @@ Add slime that uses the sbcl
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 #+end_src
 
-** python
+*** python
 #+begin_src emacs-lisp :tangle .emacs.d/init.el
 (use-package python-mode
   :mode "\\.py\\'"
@@ -519,7 +529,7 @@ Add slime that uses the sbcl
   (setq python-indent-level 4))
 #+end_src
 
-** typescript
+*** typescript
 #+begin_src emacs-lisp :tangle .emacs.d/init.el
 (use-package typescript-mode
   :mode "\\.ts\\'"
@@ -546,7 +556,7 @@ Add slime that uses the sbcl
   (add-hook 'json-mode-hook #'dw/set-js-indentation))
 #+end_src
 
-** scheme 
+*** scheme 
 #+begin_src emacs-lisp :tangle .emacs.d/init.el
 
 (use-package geiser
@@ -573,7 +583,7 @@ mit-scheme
 
 (provide 'init) ; make (require 'init) happy
 #+end_src
-** c
+*** c
 
 
 #+begin_src emacs-lisp
@@ -596,7 +606,7 @@ mit-scheme
 
 #+end_src
 
-** x86 assembly 
+*** x86 assembly 
 #+begin_src emacs-lisp
     
 (use-package nasm-mode
@@ -613,6 +623,25 @@ mit-scheme
 
 #+end_src
 
+*** yaml
+Everyone's favorite...
+    #+begin_src emacs-lisp :tangle .emacs.d/init.el
+    (use-package yaml-mode
+       :mode "\\.ya?ml\\'")
+    #+end_src
+    
+** Productivity
+*** Flycheck
+    #+begin_src emacs-lisp :tangle .emacs.d/init.el
+    (use-package flycheck
+      :defer t
+      :hook (lsp-mode . flycheck-mode))
+    #+end_src
+*** Smart Parens 
+    #+begin_src emacs-lisp :tangle .emacs.d/init.el
+    (use-package smartparens
+      :hook (prog-mode . smartparens-mode))
+    #+end_src
 * Applications
 ** eshell
 #+begin_src emacs-lisp

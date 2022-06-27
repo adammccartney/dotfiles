@@ -238,7 +238,6 @@
   :bind (:map lsp-mode-map
      ("TAB" . completion-at-point)))
 
-
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
   :config
@@ -252,6 +251,12 @@
   :diminish which-key-mode
   :config
  (setq which-key-idle-delay 1))
+
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp))))
 
 (use-package projectile
   :diminish projectile-mode
@@ -329,3 +334,13 @@
   :straight t)
 
 (provide 'init) ; make (require 'init) happy
+
+(use-package yaml-mode
+   :mode "\\.ya?ml\\'")
+
+(use-package flycheck
+  :defer t
+  :hook (lsp-mode . flycheck-mode))
+
+(use-package smartparens
+  :hook (prog-mode . smartparens-mode))
