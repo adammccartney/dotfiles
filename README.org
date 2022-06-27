@@ -1,2 +1,6 @@
 #+TITLE: dotfiles
 
+Mostly editor config stuff and a few other manifests for setting up a
+system. Very much a work in progress. Starting to use literate
+programming style to generate the configuration 
+
