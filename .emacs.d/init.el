@@ -158,7 +158,7 @@
   (when (executable-find "firefox")
     (setf browse-url-browser-function #'browse-url-firefox)))
 
-(straight-use-package '(org :type build-in))
+(straight-use-package '(org :type built-in))
 ;; Org mode
 (use-package org 
   :init

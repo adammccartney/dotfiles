@@ -324,7 +324,7 @@ Evil mode get setup some vim style keybindings
 * Org
 #+begin_src emacs-lisp :tangle .emacs.d/init.el
 
-(straight-use-package '(org :type build-in))
+(straight-use-package '(org :type built-in))
 ;; Org mode
 (use-package org 
   :init
