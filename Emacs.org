@@ -97,6 +97,25 @@ Replacement for package.el. Functional package manager for emacs
 
 ;; Clean up unused repos with `straight-remove-unused-repos'
 #+end_src
+* Keep .emacs.d Clean
+As seen on tv, basically moves any transitory files that are normally
+plonked in the .emacs.d directory to another location
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
+(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+      url-history-file (expand-file-name "url/history" user-emacs-directory))
+
+;; Use no-littering to automatically set common paths to the new user-emacs-directory
+(use-package no-littering
+  :straight t)
+
+;; Keep customization settings in a temporary file (thanks Ambrevar!)
+(setq custom-file
+      (if (boundp 'server-socket-dir)
+          (expand-file-name "custom.el" server-socket-dir)
+        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+(load custom-file t)
+#+end_src
 * Update Load Path 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (push "~/.emacs.d/lisp" load-path)  
@@ -104,6 +123,15 @@ Replacement for package.el. Functional package manager for emacs
 (require 'ad-mail)
 
 #+end_src
+* Default Coding System
+use utf-8
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(set-default-coding-systems 'utf-8)
+#+end_src
+* Start server
+  #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (server-start)
+  #+end_src
 * Global settings
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -483,7 +511,7 @@ Project organization
 #+end_src
 
 ** Git
-
+   
 ** Magit
 Very nice interface for Git.    
 
