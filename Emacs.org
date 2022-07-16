@@ -117,11 +117,17 @@ plonked in the .emacs.d directory to another location
 (load custom-file t)
 #+end_src
 * Update Load Path 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(push "~/.emacs.d/lisp" load-path)  
-(require 'unannoy)
-(require 'ad-mail)
 
+** mu4e requires the following dependencies
+#+begin_src conf :tangle .config/debian/manifests/dependencies
+libgmime-3.0-dev
+libxapian-dev
+#+end_src
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (push "~/.emacs.d/lisp" load-path)  
+  (require 'unannoy)
+  (require 'ad-mail)
 #+end_src
 * Default Coding System
 use utf-8
