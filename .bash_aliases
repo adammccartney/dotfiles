@@ -56,3 +56,6 @@ alias actenv="source ./venv/bin/activate"
 alias gh="~/.local/bin/gh/bin/gh"
 alias man="MANWIDTH=72 man"
 
+alias present_rill="open ~/Documents/berosionarticle/presentation.pdf"
+alias play_rill="aplay ~/Music/rill_paper/rill_submission_mix_stereo.wav"
+alias ex_rill="emacs -nw ~/Documents/berosionarticle/example.org"

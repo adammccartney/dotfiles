@@ -60,13 +60,14 @@
 
 (server-start)
 
-;; Some global keybindings
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
+
+;; Some global keybindings
 (column-number-mode)
 (global-display-line-numbers-mode t)
 
 ;; Global line width
-(setq-default fill-column 72)
+(setq-default fill-column 80)
 
 ;;; auto-mode-alist entries
 (add-to-list 'auto-mode-alist '("\\.mom$" . nroff-mode))
@@ -108,6 +109,11 @@
   (global-hl-line-mode 1)
   (custom-set-faces
    '(cursor ((t :background "#eebb28")))))
+
+(use-package visual-fill-column
+  :config
+  (setq visual-fill-column-width 110
+        visual-fill-column-center-text t))
 
 (straight-use-package '(dired :type built-in))
 (use-package dired
@@ -176,13 +182,44 @@
   (when (executable-find "firefox")
     (setf browse-url-browser-function #'browse-url-firefox)))
 
-(straight-use-package '(org :type built-in))
+(use-package bufler
+  :config
+  (evil-collection-define-key 'normal 'bufler-list-mode-map
+       (kbd "RET") 'bufler-list-buffer-switch
+       (kbd "M-RET") 'bufler-list-buffer-peek
+       "D" 'bufler-list-buffer-kill)
+  (setf bufler-groups
+        (bufler-defgroups
+         ;; Subgroup collecting all named workspaces
+         (group (auto-workspace))
+         ;; Subgoup collecting buffers in a projectile project.
+         (group (auto-projectile))
+         (group
+            ;; Group all 
+          (group-or "Help/Info"
+                     (mode-match "*Help*" (rx bos (or "help-" "helpful-")))
+                     (mode-match "*Info*" (rx bos "info-"))))
+         (group
+          ;; Collect all special buffers
+           (group-and "*Special*"
+                      (name-match "**Special**"
+                                  (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace" "Pinentry") "*"))
+                      (lambda (buffer)
+                        (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
+                                             buffer)
+                                    (funcall (mode-match "Dired" (rx bos "dired"))
+                                             buffer)
+                                    (funcall (auto-file) buffer))
+                          "*Special*"))))
+          ;; group remaining buffers by major mode
+         (auto-mode))))
+
+(straight-use-package 'org)
 ;; Org mode
 (use-package org 
-  :init
-  (add-hook 'org-mode-hook '(lambda () (setq fill-column 72)))
-  (add-hook 'org-mode-hook 'turn-on-auto-fill)
-
+  :defer t
+  :after org-roam 
+  :config
   (add-hook 'org-mode-hook
             (lambda () (add-hook 'after-save-hook #'org-babel-tangle
                                  :append :local)))
@@ -197,7 +234,7 @@
      (shell . t)))
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
-  
+
   ;; Capture templates
   (setq org-capture-templates
         '(("w" "Work Todo" entry (file+headline "~/Documents/org/Planner-mdw2022.org" "Tasks")
@@ -212,6 +249,66 @@
 (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
+
+(use-package org-roam
+  :ensure t
+  :init 
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/Notes/org-roam/")
+  (org-roam-dailies-directory "journal/")
+  (org-roam-completion-everywhere t)
+  (org-roam-capture-templates
+   '(("d" "default" plain
+      "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                         "#+title: ${title}\n")
+      :unnarrowed t)
+     ("b" "book notes" plain
+      "\n*Source\n\nAuthor: %^{Author}\nTitle: ${title}\nYear: %^{Year}\n\n* Summary\n\n%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                         "#+title: ${title}\n")
+      :unnarrowed t)
+     ("p" "project" plain 
+      "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n** Dates\n\n"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                         "#+title: ${title}\n#+filetags: Project\n")
+      :unnarrowed t)))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n c" . org-roam-dailies-capture-today)
+         :map org-mode-map
+         (("C-c n i" . org-roam-node-insert)
+         ("C-M-i" . completion-at-point)))
+  :config
+  (org-roam-db-autosync-mode)
+  (org-roam-setup))
+
+;; center the screen
+
+(defun ad/org-present-start ()
+;; Tweak font sizes
+  (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
+                                     (header-line (:height 4.0) variable-pitch)
+                                     (org-document-title (:height 1.75) org-document-title)
+                                     (org-code (:height 1.55) org-code)
+                                     (org-verbatim (:height 1.55) org-verbatim)
+                                     (org-block (:height 1.25) org-block)
+                                     (org-block-begin-line (:height 0.7) org-block)))
+  ;; Center the presentation and wrap lines
+  (visual-fill-column-mode 1)
+  (visual-line-mode 1))
+
+(defun ad/org-present-end ()
+  (visual-fill-column-mode 0)
+  (visual-line-mode 0))
+  
+(use-package org-present
+  :config
+  (add-hook 'org-present-mode-hook 'ad/org-present-start)
+  (add-hook 'org-present-mode-quit-hook 'ad/org-present-end))
+
+(use-package org-tree-slide)
 
 (use-package markdown-mode
   :defer t
@@ -251,12 +348,64 @@
          :map minibuffer-local-map
          ("C-r" . 'counsel-minibuffer-history)))
 
+(use-package yasnippet)
+
+(use-package company
+  :custom
+  (company-idle-delay 0)
+  (company-minimum-prefix-length 1)
+  (company-tooltip-align-annotations t)
+  (company-dabbrev-downcase nil)
+  (company-dabbrev-other-buffers t) ; search buffers with the same major mode
+  :hook
+  (dashboard-after-initialize . global-company-mode)
+  :config
+  (add-to-list 'company-begin-commands 'backwards-delete-char-untabify)
+  
+
+  ;; Show YASnippet snippets in company
+
+  (defun fk/company-backend-with-yas (backend)
+    "Add ':with company-yasnippet' to the given company backend."
+    (if (and (listp backend) (member 'company-yasnippet backend))
+        backend
+      (append (if (consp backend)
+                  backend
+                (list backend))
+              '(:with company-yasnippet))))
+
+  (defun fk/company-smart-snippets (fn command &optional arg &rest _)
+    "Do not show yasnippet candidates after dot."
+    ;;Source:
+    ;;https://www.reddit.com/r/emacs/comments/7dnbxl/how_to_temporally_filter_companymode_candidates/
+    (unless (when (and (equal command 'prefix) (> (point) 0))
+              (let* ((prefix (company-grab-symbol))
+                     (point-before-prefix (if (> (- (point) (length prefix) 1) 0)
+                                              (- (point) (length prefix) 1)
+                                            1))
+                     (char (buffer-substring-no-properties point-before-prefix (1+ point-before-prefix))))
+                (string= char ".")))
+      (funcall fn command arg)))
+
+  ;; TODO: maybe show snippets at first?
+  (defun fk/company-enable-snippets ()
+    "Enable snippet suggestions in company by adding ':with
+company-yasnippet' to all company backends."
+    (interactive)
+    (setq company-backends (mapcar 'fk/company-backend-with-yas company-backends))
+    (advice-add 'company-yasnippet :around 'fk/company-smart-snippets))
+
+  (fk/company-enable-snippets))
+
 (use-package lsp-mode
-  :commands lsp
-  :bind (:map lsp-mode-map
-     ("TAB" . completion-at-point)))
+  :init 
+  (setq lsp-keymap-prefix "C-c l")
+  :hook ((python-mode . lsp)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
 
 (use-package lsp-ui
+  :after lsp
   :hook (lsp-mode . lsp-ui-mode)
   :config
   (setq lsp-ui-sideline-enable t)
@@ -271,6 +420,10 @@
  (setq which-key-idle-delay 1))
 
 (use-package lsp-pyright
+  :after lsp-mode
+  :custom
+  (lsp-pyright-auto-import-completions nil)
+  (lsp-pyright-typechecking-mode "off")
   :ensure t
   :hook (python-mode . (lambda ()
                          (require 'lsp-pyright)
@@ -293,6 +446,8 @@
 
 (use-package magit
   :straight t
+  :init (if (not (boundp 'project-switch-commands)) 
+        (setq project-switch-commands nil))
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
@@ -315,6 +470,9 @@
   :hook (python-mode . lsp-deferred)
   :config
   (setq python-indent-level 4))
+
+(use-package pyvenv
+ :after python-mode)
 
 (use-package typescript-mode
   :mode "\\.ts\\'"
@@ -351,7 +509,38 @@
 (use-package geiser-guile
   :straight t)
 
-(provide 'init) ; make (require 'init) happy
+(use-package clojure-mode
+  :ensure t
+  :mode (("\\.clj\\'" . clojure-mode)
+          ("\\.edn\\'" . clojure-mode))
+  :init
+  (add-hook 'clojure-mode-hook #'subword-mode)           
+  (add-hook 'clojure-mode-hook #'smartparens-mode)       
+  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'clojure-mode-hook #'eldoc-mode))
+
+(use-package cider
+  :ensure t
+  :defer t)
+
+(use-package cc-mode
+  :defer t
+  :init
+  (defun skeeto/c-hook ()
+    (setf c-basic-offset 4)
+    (c-set-offset 'case-label '+)
+    (c-set-offset 'access-label '/)
+    (c-set-offset 'label '/))
+  :config
+  (progn
+    (define-key java-mode-map (kbd "C-x I") 'add-java-import)
+    (add-hook 'c-mode-hook #'skeeto/c-hook)
+    (add-hook 'c++-mode-hook #'skeeto/c-hook)
+    (add-to-list 'c-default-style '(c-mode . "k&r"))
+    (add-to-list 'c-default-style '(c++-mode . "k&r"))))
+
+(use-package go-mode
+  :hook (go-mode . lsp-deferred))
 
 (use-package yaml-mode
    :mode "\\.ya?ml\\'")
@@ -362,3 +551,5 @@
 
 (use-package smartparens
   :hook (prog-mode . smartparens-mode))
+
+(setq-default indent-tabs-mode nil)

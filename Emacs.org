@@ -13,19 +13,19 @@ functional package management.
 * Startup Performance
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 
-;; init.el --- -*- lexical-binding: t; -*-
+  ;; init.el --- -*- lexical-binding: t; -*-
 
-;; The default is 800 kilobytes. Measured in bytes.
-(setq gc-cons-threshold (* 50 1000 1000))
+  ;; The default is 800 kilobytes. Measured in bytes.
+  (setq gc-cons-threshold (* 50 1000 1000))
 
-; Profile emacs startup
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "*** Emacs loaded in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract after-init-time before-init-time)))
-                     gcs-done)))
+  ; Profile emacs startup
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (message "*** Emacs loaded in %s with %d garbage collections."
+                       (format "%.2f seconds"
+                               (float-time
+                                (time-subtract after-init-time before-init-time)))
+                       gcs-done)))
 #+end_src
 
 * Packages
@@ -34,38 +34,38 @@ functional package management.
 NOTE: tangle is disabled, chunk here for reference purposes
 #+begin_src emacs-lisp 
 
-(make-directory (locate-user-emacs-file "local") :no-error)
-(add-to-list 'load-path "~/.emacs.d/lisp")
-(add-to-list 'Load-path
-             (format "~/.emacs.d/site-lisp/%s" emacs-version))
-(add-to-list 'load-path
-             (format "~/.emacs.d/site-lisp/%s/lisp" emacs-version))
-(add-to-list 'load-path
-             (format "~/.emacs.d/site-lisp/%s/etc" emacs-version))
+  (make-directory (locate-user-emacs-file "local") :no-error)
+  (add-to-list 'load-path "~/.emacs.d/lisp")
+  (add-to-list 'Load-path
+               (format "~/.emacs.d/site-lisp/%s" emacs-version))
+  (add-to-list 'load-path
+               (format "~/.emacs.d/site-lisp/%s/lisp" emacs-version))
+  (add-to-list 'load-path
+               (format "~/.emacs.d/site-lisp/%s/etc" emacs-version))
 
 
-(add-to-list 'load-path 
-             (format "~/.emacs.d/site-lisp/%s/dash" emacs-version))
-(add-to-list 'load-path 
-             (format "~/.emacs.d/site-lisp/%s/transient/lisp" emacs-version))
-(add-to-list 'load-path 
-             (format "~/.emacs.d/site-lisp/%s/with-editor" emacs-version))
-(add-to-list 'load-path 
-             (format "~/.emacs.d/site-lisp/%s/magit/lisp" emacs-version))
+  (add-to-list 'load-path 
+               (format "~/.emacs.d/site-lisp/%s/dash" emacs-version))
+  (add-to-list 'load-path 
+               (format "~/.emacs.d/site-lisp/%s/transient/lisp" emacs-version))
+  (add-to-list 'load-path 
+               (format "~/.emacs.d/site-lisp/%s/with-editor" emacs-version))
+  (add-to-list 'load-path 
+               (format "~/.emacs.d/site-lisp/%s/magit/lisp" emacs-version))
 
-(with-eval-after-load 'info
-  (info-initialize)
-  (add-to-list 'Info-directory-list
-               (format "~/.emacs.d/site-lisp/%s/magit/Documentation/" emacs-version)))
+  (with-eval-after-load 'info
+    (info-initialize)
+    (add-to-list 'Info-directory-list
+                 (format "~/.emacs.d/site-lisp/%s/magit/Documentation/" emacs-version)))
                
-(load-file "~/.emacs.d/packages.el")
-(require 'autoloads)
-(setf package-enable-at-startup nil)
-(require 'use-package)
+  (load-file "~/.emacs.d/packages.el")
+  (require 'autoloads)
+  (setf package-enable-at-startup nil)
+  (require 'use-package)
 
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                           ("org" . "https://orgmode.org/elpa/")
+                           ("elpa" . "https://elpa.gnu.org/packages/")))
 #+end_src
 
 ** Straight.el
@@ -132,17 +132,21 @@ use utf-8
   #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (server-start)
   #+end_src
+* Keybindings
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(global-set-key (kbd "C-x k") #'kill-this-buffer)
+
+#+end_src
 * Global settings
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 
 ;; Some global keybindings
-(global-set-key (kbd "C-x k") #'kill-this-buffer)
 (column-number-mode)
 (global-display-line-numbers-mode t)
 
 ;; Global line width
-(setq-default fill-column 72)
+(setq-default fill-column 80)
 
 ;;; auto-mode-alist entries
 (add-to-list 'auto-mode-alist '("\\.mom$" . nroff-mode))
@@ -228,7 +232,6 @@ use utf-8
 (provide 'unannoy)
 #+end_src
 
-
 ** Fonts
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 ;; Frames and fonts
@@ -268,6 +271,15 @@ sanityinc
   (custom-set-faces
    '(cursor ((t :background "#eebb28")))))
 #+end_src
+
+** Set margins (center)
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(use-package visual-fill-column
+  :config
+  (setq visual-fill-column-width 110
+        visual-fill-column-center-text t))
+#+end_src
+  
 
 * Usability
 ** Dired
@@ -348,47 +360,153 @@ Evil mode get setup some vim style keybindings
     (setf browse-url-browser-function #'browse-url-firefox)))
 #+end_src
 
+** Buffler
+[[https://github.com/alphapapa/bufler.el][Buffler]] is a butler for buffers. Helps with organizing buffers according 
+to a set of grouping rules.
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(use-package bufler
+  :config
+  (evil-collection-define-key 'normal 'bufler-list-mode-map
+       (kbd "RET") 'bufler-list-buffer-switch
+       (kbd "M-RET") 'bufler-list-buffer-peek
+       "D" 'bufler-list-buffer-kill)
+  (setf bufler-groups
+        (bufler-defgroups
+         ;; Subgroup collecting all named workspaces
+         (group (auto-workspace))
+         ;; Subgoup collecting buffers in a projectile project.
+         (group (auto-projectile))
+         (group
+            ;; Group all 
+          (group-or "Help/Info"
+                     (mode-match "*Help*" (rx bos (or "help-" "helpful-")))
+                     (mode-match "*Info*" (rx bos "info-"))))
+         (group
+          ;; Collect all special buffers
+           (group-and "*Special*"
+                      (name-match "**Special**"
+                                  (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace" "Pinentry") "*"))
+                      (lambda (buffer)
+                        (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
+                                             buffer)
+                                    (funcall (mode-match "Dired" (rx bos "dired"))
+                                             buffer)
+                                    (funcall (auto-file) buffer))
+                          "*Special*"))))
+          ;; group remaining buffers by major mode
+         (auto-mode))))
+#+end_src
 * Org
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 
-(straight-use-package '(org :type built-in))
-;; Org mode
-(use-package org 
-  :init
-  (add-hook 'org-mode-hook '(lambda () (setq fill-column 72)))
-  (add-hook 'org-mode-hook 'turn-on-auto-fill)
+  (straight-use-package 'org)
+  ;; Org mode
+  (use-package org 
+    :defer t
+    :after org-roam 
+    :config
+    (add-hook 'org-mode-hook
+              (lambda () (add-hook 'after-save-hook #'org-babel-tangle
+                                   :append :local)))
+    (setq org-todo-keywords
+          '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
 
-  (add-hook 'org-mode-hook
-            (lambda () (add-hook 'after-save-hook #'org-babel-tangle
-                                 :append :local)))
-  (setq org-todo-keywords
-        '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+    ;; org babel
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (python . t)
+       (shell . t)))
 
-  ;; org babel
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (python . t)
-     (shell . t)))
-
-  (push '("conf-unix" . conf-unix) org-src-lang-modes)
+    (push '("conf-unix" . conf-unix) org-src-lang-modes)
   
-  ;; Capture templates
-  (setq org-capture-templates
-        '(("w" "Work Todo" entry (file+headline "~/Documents/org/Planner-mdw2022.org" "Tasks")
-           "* TODO %?\n %i\n %a")
-          ("h" "Home Todo" entry (file+headline "~/Documents/org/Planner-home2022.org" "Tasks")
-           "* TODO %?\n %i\n %a")))
-  (setq org-startup-folded "overview"))
+    ;; Capture templates
+    (setq org-capture-templates
+          '(("w" "Work Todo" entry (file+headline "~/Documents/org/Planner-mdw2022.org" "Tasks")
+             "* TODO %?\n %i\n %a")
+            ("h" "Home Todo" entry (file+headline "~/Documents/org/Planner-home2022.org" "Tasks")
+             "* TODO %?\n %i\n %a")))
+    (setq org-startup-folded "overview"))
 
-(require 'org-tempo)
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("sql" . "src sql"))
-(add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("py" . "src python"))
+  (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
+  (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python"))
 #+end_src
 
+** Org Roam
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el 
+  (use-package org-roam
+    :ensure t
+    :init 
+    (setq org-roam-v2-ack t)
+    :custom
+    (org-roam-directory "~/Notes/org-roam/")
+    (org-roam-dailies-directory "journal/")
+    (org-roam-completion-everywhere t)
+    (org-roam-capture-templates
+     '(("d" "default" plain
+        "%?"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                           "#+title: ${title}\n")
+        :unnarrowed t)
+       ("b" "book notes" plain
+        "\n*Source\n\nAuthor: %^{Author}\nTitle: ${title}\nYear: %^{Year}\n\n* Summary\n\n%?"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                           "#+title: ${title}\n")
+        :unnarrowed t)
+       ("p" "project" plain 
+        "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n** Dates\n\n"
+        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                           "#+title: ${title}\n#+filetags: Project\n")
+        :unnarrowed t)))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n c" . org-roam-dailies-capture-today)
+           :map org-mode-map
+           (("C-c n i" . org-roam-node-insert)
+           ("C-M-i" . completion-at-point)))
+    :config
+    (org-roam-db-autosync-mode)
+    (org-roam-setup))
+#+end_src
+
+** Presentations
+*** org-present
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+
+;; center the screen
+
+(defun ad/org-present-start ()
+;; Tweak font sizes
+  (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
+                                     (header-line (:height 4.0) variable-pitch)
+                                     (org-document-title (:height 1.75) org-document-title)
+                                     (org-code (:height 1.55) org-code)
+                                     (org-verbatim (:height 1.55) org-verbatim)
+                                     (org-block (:height 1.25) org-block)
+                                     (org-block-begin-line (:height 0.7) org-block)))
+  ;; Center the presentation and wrap lines
+  (visual-fill-column-mode 1)
+  (visual-line-mode 1))
+
+(defun ad/org-present-end ()
+  (visual-fill-column-mode 0)
+  (visual-line-mode 0))
+  
+(use-package org-present
+  :config
+  (add-hook 'org-present-mode-hook 'ad/org-present-start)
+  (add-hook 'org-present-mode-quit-hook 'ad/org-present-end))
+#+end_src
+
+*** tree-slide
+    #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+    (use-package org-tree-slide)
+    #+end_src
 * Documentation 
 *** markdown 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -453,16 +571,73 @@ Includes a number of minimalist completion tools that make life a bit easier.
 
 #+end_src
 
+** YASnippet
+   #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+   (use-package yasnippet)
+   #+end_src
+** company
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(use-package company
+  :custom
+  (company-idle-delay 0)
+  (company-minimum-prefix-length 1)
+  (company-tooltip-align-annotations t)
+  (company-dabbrev-downcase nil)
+  (company-dabbrev-other-buffers t) ; search buffers with the same major mode
+  :hook
+  (dashboard-after-initialize . global-company-mode)
+  :config
+  (add-to-list 'company-begin-commands 'backwards-delete-char-untabify)
+  
+
+  ;; Show YASnippet snippets in company
+
+  (defun fk/company-backend-with-yas (backend)
+    "Add ':with company-yasnippet' to the given company backend."
+    (if (and (listp backend) (member 'company-yasnippet backend))
+        backend
+      (append (if (consp backend)
+                  backend
+                (list backend))
+              '(:with company-yasnippet))))
+
+  (defun fk/company-smart-snippets (fn command &optional arg &rest _)
+    "Do not show yasnippet candidates after dot."
+    ;;Source:
+    ;;https://www.reddit.com/r/emacs/comments/7dnbxl/how_to_temporally_filter_companymode_candidates/
+    (unless (when (and (equal command 'prefix) (> (point) 0))
+              (let* ((prefix (company-grab-symbol))
+                     (point-before-prefix (if (> (- (point) (length prefix) 1) 0)
+                                              (- (point) (length prefix) 1)
+                                            1))
+                     (char (buffer-substring-no-properties point-before-prefix (1+ point-before-prefix))))
+                (string= char ".")))
+      (funcall fn command arg)))
+
+  ;; TODO: maybe show snippets at first?
+  (defun fk/company-enable-snippets ()
+    "Enable snippet suggestions in company by adding ':with
+company-yasnippet' to all company backends."
+    (interactive)
+    (setq company-backends (mapcar 'fk/company-backend-with-yas company-backends))
+    (advice-add 'company-yasnippet :around 'fk/company-smart-snippets))
+
+  (fk/company-enable-snippets))
+#+end_src
+
 ** lsp
 Haven't really got this running so smoothly yet, find nvim's lsp stuff
 works a bit better out of the box. 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package lsp-mode
-  :commands lsp
-  :bind (:map lsp-mode-map
-     ("TAB" . completion-at-point)))
+  :init 
+  (setq lsp-keymap-prefix "C-c l")
+  :hook ((python-mode . lsp)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
 
 (use-package lsp-ui
+  :after lsp
   :hook (lsp-mode . lsp-ui-mode)
   :config
   (setq lsp-ui-sideline-enable t)
@@ -482,6 +657,10 @@ works a bit better out of the box.
 
      #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
      (use-package lsp-pyright
+       :after lsp-mode
+       :custom
+       (lsp-pyright-auto-import-completions nil)
+       (lsp-pyright-typechecking-mode "off")
        :ensure t
        :hook (python-mode . (lambda ()
                               (require 'lsp-pyright)
@@ -518,6 +697,8 @@ Very nice interface for Git.
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package magit
   :straight t
+  :init (if (not (boundp 'project-switch-commands)) 
+        (setq project-switch-commands nil))
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
@@ -554,6 +735,12 @@ Add slime that uses the sbcl
   :hook (python-mode . lsp-deferred)
   :config
   (setq python-indent-level 4))
+#+end_src
+
+**** pyvenv
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el 
+(use-package pyvenv
+ :after python-mode)
 #+end_src
 
 *** typescript
@@ -598,7 +785,6 @@ Add slime that uses the sbcl
   :straight t)
 #+end_src
 
-
 Add guile and mit scheme
 #+begin_src conf :tangle .config/debian/manifests/interpreters
 guile-3.0
@@ -606,15 +792,44 @@ mit-scheme
 #+end_src
 
 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-
-(provide 'init) ; make (require 'init) happy
+*** Clojure
+Just starting to experiment with the lispy goodness of clojure
+#+begin_src conf :tangle .config/debian/manifests/interpreters
+clojure
 #+end_src
+
+**** Installing 
+
+**** Clojure mode
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package clojure-mode
+    :ensure t
+    :mode (("\\.clj\\'" . clojure-mode)
+            ("\\.edn\\'" . clojure-mode))
+    :init
+    (add-hook 'clojure-mode-hook #'subword-mode)           
+    (add-hook 'clojure-mode-hook #'smartparens-mode)       
+    (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
+    (add-hook 'clojure-mode-hook #'eldoc-mode)) 
+    #+end_src
+
+**** Cider 
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package cider
+    :ensure t
+    :defer t)
+#+end_src
+
+
+**** Leiningen
+project generator for clojure 
+#+begin_src conf :tangle .config/debian/manifests/languagetools
+leiningen
+#+end_src
+
+
 *** c
-
-
-#+begin_src emacs-lisp
-    
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package cc-mode
   :defer t
   :init
@@ -631,6 +846,12 @@ mit-scheme
     (add-to-list 'c-default-style '(c-mode . "k&r"))
     (add-to-list 'c-default-style '(c++-mode . "k&r"))))
 
+#+end_src
+
+*** Go
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(use-package go-mode
+  :hook (go-mode . lsp-deferred))
 #+end_src
 
 *** x86 assembly 
@@ -669,6 +890,11 @@ Everyone's favorite...
     (use-package smartparens
       :hook (prog-mode . smartparens-mode))
     #+end_src
+** Editing Configuration
+*** Use spaces instead of tabs for indentation 
+   #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+   (setq-default indent-tabs-mode nil)
+   #+end_src
 * Applications
 ** eshell
 #+begin_src emacs-lisp
@@ -683,3 +909,4 @@ Everyone's favorite...
             (lambda ()
               (define-key eshell-mode-map (kbd "<f1>") #'quit-window))))
 #+end_src
+:q
