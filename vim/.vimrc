@@ -182,7 +182,7 @@ if has('gui_running')
 elseif has('win32')
     colorscheme slate
 elseif has('nvim')
-    colorscheme nightfox
+    colorscheme dayfox 
 else
     colorscheme ron 
 end 

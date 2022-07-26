@@ -416,10 +416,11 @@ to a set of grouping rules.
      'org-babel-load-languages
      '((emacs-lisp . t)
        (python . t)
+       (scheme . t)
        (shell . t)))
 
     (push '("conf-unix" . conf-unix) org-src-lang-modes)
-  
+
     ;; Capture templates
     (setq org-capture-templates
           '(("w" "Work Todo" entry (file+headline "~/Documents/org/Planner-mdw2022.org" "Tasks")
@@ -431,6 +432,8 @@ to a set of grouping rules.
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
   (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
+  (add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
+  (add-to-list 'org-structure-template-alist '("js" . "src javascript"))
   (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python"))
@@ -629,27 +632,29 @@ company-yasnippet' to all company backends."
 Haven't really got this running so smoothly yet, find nvim's lsp stuff
 works a bit better out of the box. 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(use-package lsp-mode
-  :init 
-  (setq lsp-keymap-prefix "C-c l")
-  :hook ((python-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
+  (use-package lsp-mode
+    :init 
+    (setq lsp-keymap-prefix "C-c l")
+    :hook ((python-mode . lsp)
+           (typescript-mode . lsp)
+           (ls2-mode . lsp)
+           (lsp-mode . lsp-enable-which-key-integration))
+    :commands lsp)
 
-(use-package lsp-ui
-  :after lsp
-  :hook (lsp-mode . lsp-ui-mode)
-  :config
-  (setq lsp-ui-sideline-enable t)
-  (lsp-ui-doc-show))
+  (use-package lsp-ui
+    :after lsp
+    :hook (lsp-mode . lsp-ui-mode)
+    :config
+    (setq lsp-ui-sideline-enable t)
+    (lsp-ui-doc-show))
 
-(use-package lsp-ivy)
+  (use-package lsp-ivy)
 
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
- (setq which-key-idle-delay 1))
+  (use-package which-key
+    :init (which-key-mode)
+    :diminish which-key-mode
+    :config
+   (setq which-key-idle-delay 1))
 #+end_src
 
 *** Language Servers
@@ -730,11 +735,13 @@ Add slime that uses the sbcl
 
 *** python
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(use-package python-mode
-  :mode "\\.py\\'"
-  :hook (python-mode . lsp-deferred)
-  :config
-  (setq python-indent-level 4))
+  (use-package python-mode
+    :mode "\\.py\\'"
+    :init
+    (setq python-shell-interpreter "python3")
+    :hook (python-mode . lsp-deferred)
+    :config
+    (setq python-indent-level 4))
 #+end_src
 
 **** pyvenv

@@ -231,6 +231,7 @@
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t)
+     (scheme . t)
      (shell . t)))
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
@@ -246,6 +247,8 @@
 (require 'org-tempo)
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
 (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
+(add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
+(add-to-list 'org-structure-template-alist '("js" . "src javascript"))
 (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
@@ -401,6 +404,8 @@ company-yasnippet' to all company backends."
   :init 
   (setq lsp-keymap-prefix "C-c l")
   :hook ((python-mode . lsp)
+         (typescript-mode . lsp)
+         (ls2-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
@@ -467,6 +472,8 @@ company-yasnippet' to all company backends."
 
 (use-package python-mode
   :mode "\\.py\\'"
+  :init
+  (setq python-shell-interpreter "python3")
   :hook (python-mode . lsp-deferred)
   :config
   (setq python-indent-level 4))
