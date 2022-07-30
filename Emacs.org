@@ -286,7 +286,6 @@ sanityinc
         visual-fill-column-center-text t))
 #+end_src
   
-
 * Usability
 ** Dired
     
@@ -310,97 +309,106 @@ Use dired for searching directories
     
 Evil mode get setup some vim style keybindings 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+  (use-package evil
+    :init
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    (setq evil-want-C-i-jump nil)
+    :config
+    (evil-mode 1)
+    (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+    (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
 
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+    ;; Use visual line motions even outside of visual-line-mode buffers
+    (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+    (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
+    (evil-set-initial-state 'messages-buffer-mode 'normal)
+    (evil-set-initial-state 'dashboard-mode 'normal))
 
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
+  (use-package evil-collection
+    :after evil
+    :config
+    (evil-collection-init))
 
-(use-package paren
-  :config (show-paren-mode))
+  (use-package paren
+    :config (show-paren-mode))
 
-(use-package rainbow-delimiters
-  :defer t
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode)
-  :config
-  (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4")
-  (setf rainbow-delimiters-max-face-count 1)
-  (set-face-attribute 'rainbow-delimiters-unmatched-face nil
-                      :foreground 'unspecified
-                      :inherit 'error)
-  (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4"))
+  (use-package rainbow-delimiters
+    :defer t
+    :init
+    (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+    (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode)
+    :config
+    (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4")
+    (setf rainbow-delimiters-max-face-count 1)
+    (set-face-attribute 'rainbow-delimiters-unmatched-face nil
+                        :foreground 'unspecified
+                        :inherit 'error)
+    (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4"))
+
+  (use-package rainbow-mode
+    :defer t
+    :hook (org-mode
+           emacs-lisp-mode
+           web-mode
+           typescript-mode
+           js2-mode))
 
 
-(use-package javadoc-lookup
-  :defer t
-  :bind ("C-h j" . javadoc-lookup)
-  :config
-  (ignore-errors
-    (setf javadoc-lookup-cache-dir (locate-user-emacs-file "local/javadoc"))))
+  (use-package javadoc-lookup
+    :defer t
+    :bind ("C-h j" . javadoc-lookup)
+    :config
+    (ignore-errors
+      (setf javadoc-lookup-cache-dir (locate-user-emacs-file "local/javadoc"))))
 
-(use-package browse-url
-  :defer t
-  :init
-  (setf url-cache-directory (locate-user-emacs-file "local/url"))
-  :config
-  (when (executable-find "firefox")
-    (setf browse-url-browser-function #'browse-url-firefox)))
+  (use-package browse-url
+    :defer t
+    :init
+    (setf url-cache-directory (locate-user-emacs-file "local/url"))
+    :config
+    (when (executable-find "firefox")
+      (setf browse-url-browser-function #'browse-url-firefox)))
 #+end_src
 
 ** Buffler
 [[https://github.com/alphapapa/bufler.el][Buffler]] is a butler for buffers. Helps with organizing buffers according 
 to a set of grouping rules.
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(use-package bufler
-  :config
-  (evil-collection-define-key 'normal 'bufler-list-mode-map
-       (kbd "RET") 'bufler-list-buffer-switch
-       (kbd "M-RET") 'bufler-list-buffer-peek
-       "D" 'bufler-list-buffer-kill)
-  (setf bufler-groups
-        (bufler-defgroups
-         ;; Subgroup collecting all named workspaces
-         (group (auto-workspace))
-         ;; Subgoup collecting buffers in a projectile project.
-         (group (auto-projectile))
-         (group
-            ;; Group all 
-          (group-or "Help/Info"
-                     (mode-match "*Help*" (rx bos (or "help-" "helpful-")))
-                     (mode-match "*Info*" (rx bos "info-"))))
-         (group
-          ;; Collect all special buffers
-           (group-and "*Special*"
-                      (name-match "**Special**"
-                                  (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace" "Pinentry") "*"))
-                      (lambda (buffer)
-                        (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
-                                             buffer)
-                                    (funcall (mode-match "Dired" (rx bos "dired"))
-                                             buffer)
-                                    (funcall (auto-file) buffer))
-                          "*Special*"))))
-          ;; group remaining buffers by major mode
-         (auto-mode))))
+  (use-package bufler
+    :disabled
+    :config
+    (evil-collection-define-key 'normal 'bufler-list-mode-map
+         (kbd "RET") 'bufler-list-buffer-switch
+         (kbd "M-RET") 'bufler-list-buffer-peek
+         "D" 'bufler-list-buffer-kill)
+    (setf bufler-groups
+          (bufler-defgroups
+           ;; Subgroup collecting all named workspaces
+           (group (auto-workspace))
+           ;; Subgoup collecting buffers in a projectile project.
+           (group (auto-projectile))
+           (group
+              ;; Group all 
+            (group-or "Help/Info"
+                       (mode-match "*Help*" (rx bos (or "help-" "helpful-")))
+                       (mode-match "*Info*" (rx bos "info-"))))
+           (group
+            ;; Collect all special buffers
+             (group-and "*Special*"
+                        (name-match "**Special**"
+                                    (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace" "Pinentry") "*"))
+                        (lambda (buffer)
+                          (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
+                                               buffer)
+                                      (funcall (mode-match "Dired" (rx bos "dired"))
+                                               buffer)
+                                      (funcall (auto-file) buffer))
+                            "*Special*"))))
+            ;; group remaining buffers by major mode
+           (auto-mode))))
 #+end_src
 * Org
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -414,15 +422,17 @@ to a set of grouping rules.
     (add-hook 'org-mode-hook
               (lambda () (add-hook 'after-save-hook #'org-babel-tangle
                                    :append :local)))
+
+  ;; todo-keywords
     (setq org-todo-keywords
           '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
-
-    ;; org babel
+  ;; org babel
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((emacs-lisp . t)
        (python . t)
        (scheme . t)
+       (go . t)
        (shell . t)))
 
     (push '("conf-unix" . conf-unix) org-src-lang-modes)
@@ -441,6 +451,7 @@ to a set of grouping rules.
   (add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
   (add-to-list 'org-structure-template-alist '("js" . "src javascript"))
   (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
+  (add-to-list 'org-structure-template-alist '("go" . "src go"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("py" . "src python"))
 #+end_src
@@ -634,6 +645,63 @@ company-yasnippet' to all company backends."
   (fk/company-enable-snippets))
 #+end_src
 
+
+** Dap Mode
+Emacs Debug Adapter Protocol aka DAP Mode means we can debug programs. Pfff...what sort of a
+shoddy developer needs a debugger, eh?!
+
+The following config is from https://github.com/neppramod/java_emacs/blob/master/emacs-configuration.org
+
+Below we will integrate dap-mode with dap-hydra. Dap-hydra shows keys you can use to enable various
+options and jump through code at runtime. After we install dap-mode we will also install dap-java.
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(use-package dap-mode
+  :ensure t
+  :after (lsp-mode)
+  :functions dap-hydra/nil
+  :config
+  (require 'dap-java)
+  :bind (:map lsp-mode-map
+         ("<f5>" . dap-debug)
+         ("M-<f5>" . dap-hydra))
+  :hook ((dap-mode . dap-ui-mode)
+    (dap-session-created . (lambda (&_rest) (dap-hydra)))
+    (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+
+#+end_src
+
+** Treemacs
+Treemacs provides UI elements used for LSP UI. M-9 shows error list. 
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(use-package lsp-treemacs
+  :after (lsp-mode treemacs)
+  :ensure t
+  :commands lsp-treemacs-errors-list
+  :bind (:map lsp-mode-map
+         ("M-9" . lsp-treemacs-errors-list)))
+
+(use-package treemacs
+  :ensure t
+  :commands (treemacs)
+  :after (lsp-mode))  
+#+end_src
+
+
+*** Treemacs evil
+We are of course evil
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package treemacs-evil)
+#+end_src
+
+
+*** Treemacs projectile
+This will quickly add projectile projects to Treemacs
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package treemacs-projectile)
+#+end_src
+
 ** lsp
 Haven't really got this running so smoothly yet, find nvim's lsp stuff
 works a bit better out of the box. 
@@ -642,8 +710,7 @@ works a bit better out of the box.
     :init 
     (setq lsp-keymap-prefix "C-c l")
     :hook ((python-mode . lsp)
-           (typescript-mode . lsp)
-           (ls2-mode . lsp)
+           ((typescript-mode js2-mode web-mode) . lsp)
            (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
 
@@ -730,6 +797,17 @@ Very nice interface for Git.
 Various packages and dependencies that make working with certain
 languages a bit easier.
    
+
+*** html
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package web-mode
+    :mode "(\\.\\(html?\\|ejs\\|tsx|jsx\\)\\'"
+    :config
+    (setq-default web-mode-code-indent-ofset 2)
+    (setq-default web-mode-markup-indent-offset 2)
+    (setq-default web-mode-attribute-indent-offset 2))
+#+end_src
 *** lisp
  
 Add slime that uses the sbcl 
@@ -867,6 +945,10 @@ leiningen
   :hook (go-mode . lsp-deferred))
 #+end_src
 
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(use-package ob-go)
+#+end_src
+
 *** x86 assembly 
 #+begin_src emacs-lisp
     
@@ -890,6 +972,19 @@ Everyone's favorite...
     (use-package yaml-mode
        :mode "\\.ya?ml\\'")
     #+end_src
+    
+
+
+*** java
+
+    #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+      (use-package lsp-java
+        :after lsp-mode
+        :ensure t
+        :config (add-hook 'java-mode-hook 'lsp))
+
+    #+end_src
+
     
 ** Productivity
 *** Flycheck

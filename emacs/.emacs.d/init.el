@@ -166,6 +166,14 @@
                       :inherit 'error)
   (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4"))
 
+(use-package rainbow-mode
+  :defer t
+  :hook (org-mode
+         emacs-lisp-mode
+         web-mode
+         typescript-mode
+         js2-mode))
+
 
 (use-package javadoc-lookup
   :defer t
@@ -183,6 +191,7 @@
     (setf browse-url-browser-function #'browse-url-firefox)))
 
 (use-package bufler
+  :disabled
   :config
   (evil-collection-define-key 'normal 'bufler-list-mode-map
        (kbd "RET") 'bufler-list-buffer-switch
@@ -223,15 +232,18 @@
   (add-hook 'org-mode-hook
             (lambda () (add-hook 'after-save-hook #'org-babel-tangle
                                  :append :local)))
+
+;; todo-keywords
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
-
-  ;; org babel
+;; org babel
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t)
      (scheme . t)
+     (go . t)
+     (dot . t)
      (shell . t)))
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
@@ -250,6 +262,7 @@
 (add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
 (add-to-list 'org-structure-template-alist '("js" . "src javascript"))
 (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
+(add-to-list 'org-structure-template-alist '("go" . "src go"))
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
 
@@ -400,12 +413,40 @@ company-yasnippet' to all company backends."
 
   (fk/company-enable-snippets))
 
+(use-package dap-mode
+  :ensure t
+  :after (lsp-mode)
+  :functions dap-hydra/nil
+  :config
+  (require 'dap-java)
+  :bind (:map lsp-mode-map
+         ("<f5>" . dap-debug)
+         ("M-<f5>" . dap-hydra))
+  :hook ((dap-mode . dap-ui-mode)
+    (dap-session-created . (lambda (&_rest) (dap-hydra)))
+    (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+
+(use-package lsp-treemacs
+  :after (lsp-mode treemacs)
+  :ensure t
+  :commands lsp-treemacs-errors-list
+  :bind (:map lsp-mode-map
+         ("M-9" . lsp-treemacs-errors-list)))
+
+(use-package treemacs
+  :ensure t
+  :commands (treemacs)
+  :after (lsp-mode))
+
+(use-package treemacs-evil)
+
+(use-package treemacs-projectile)
+
 (use-package lsp-mode
   :init 
   (setq lsp-keymap-prefix "C-c l")
   :hook ((python-mode . lsp)
-         (typescript-mode . lsp)
-         (ls2-mode . lsp)
+         ((typescript-mode js2-mode web-mode) . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
@@ -465,6 +506,13 @@ company-yasnippet' to all company backends."
 ;;  :hook (python-mode . (lambda ()
 ;;                          (require 'lsp-pyright)
 ;;                          (lsp)))) ;; or lsp-deferred
+
+(use-package web-mode
+  :mode "(\\.\\(html?\\|ejs\\|tsx|jsx\\)\\'"
+  :config
+  (setq-default web-mode-code-indent-ofset 2)
+  (setq-default web-mode-markup-indent-offset 2)
+  (setq-default web-mode-attribute-indent-offset 2))
 
 (use-package slime
   :init 
@@ -549,8 +597,15 @@ company-yasnippet' to all company backends."
 (use-package go-mode
   :hook (go-mode . lsp-deferred))
 
+(use-package ob-go)
+
 (use-package yaml-mode
    :mode "\\.ya?ml\\'")
+
+(use-package lsp-java
+  :after lsp-mode
+  :ensure t
+  :config (add-hook 'java-mode-hook 'lsp))
 
 (use-package flycheck
   :defer t
