@@ -128,6 +128,7 @@ libxapian-dev
   (push "~/.emacs.d/lisp" load-path)  
   (require 'unannoy)
   (require 'ad-mail)
+  (require 'mu4e)
 #+end_src
 * Default Coding System
 use utf-8

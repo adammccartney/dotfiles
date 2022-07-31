@@ -33,6 +33,8 @@ alias jlox="~/.local/src/jlox/build/distributions/jlox/bin/jlox"
 
 # python3.8
 alias py3.8="/usr/local/bin/python3.8"
+
+# python 3.10
 alias py310="/usr/local/bin/python3.10"
 
 # wagtail python 3.8
@@ -49,13 +51,12 @@ alias vim="/usr/local/bin/nvim"
 # -h flag and the socket that is specified by the debian system
 alias psql="psql -h /var/run/postgresql"
 
-alias python="python3"
+alias DIZA="192.168.0.193"
 
-alias actenv="source ./venv/bin/activate"
+alias tlog="$HOME/Documents/traininglogs/training22.md"
 
-alias gh="~/.local/bin/gh/bin/gh"
-alias man="MANWIDTH=72 man"
+alias actenv="source venv/bin/activate"
 
-alias present_rill="open ~/Documents/berosionarticle/presentation.pdf"
-alias play_rill="aplay ~/Music/rill_paper/rill_submission_mix_stereo.wav"
-alias ex_rill="emacs -nw ~/Documents/berosionarticle/example.org"
+alias train="source $HOME/bin/train"
+
+alias !P="PS1='# '"

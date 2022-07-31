@@ -152,7 +152,7 @@ fi
 export PATH=$HOME/.local/bin:$PATH
 export C_INCLUDE_PATH=$HOME/.local/include
 export CPLUS_INCLUDE_PATH=$HOME/.local/include
-export LD_LIBRARY_PATH=$HOME/.local/lib
+export LIBRARY_PATH=$HOME/.local/lib
 export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig
 
 # This tells the run time linker where to find
@@ -184,12 +184,6 @@ source "$HOME/.cargo/env"
 export REMOTE1=206.189.52.96
 . "$HOME/.cargo/env"
 
-#add flutter to path
-export PATH="$HOME/.local/src/flutter/bin:$PATH"
-export CHROME_EXECUTABLE=/usr/bin/chromium
-#add android studio to path
-export PATH="$HOME/.local/tools/android-studio/bin:$PATH"
-
 # use vim keybindings
 set -o vi
 [ -f "/home/adam/.ghcup/env" ] && source "/home/adam/.ghcup/env" # ghcup-env
@@ -219,10 +213,8 @@ export GOPATH=$HOME/.local/go
 export GOBIN=/usr/local/go/bin
 export GOROOT=/usr/local/go
 export PATH=$PATH:$GOPATH:$GOBIN
-export PATH=$PATH:/usr/local/bin/docker-credential-pass
-. "$HOME/.cargo/env"
-#Java home
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/bin/java-11-openjdk-amd64
 
-# set visual editor
-export VISUAL=nvim
+export myip="$(dig +short myip.opendns.com @resolver1.opendns.com)"
+
+# call the function to swap ctrl and capslock keys
+swap_ctrl_caps

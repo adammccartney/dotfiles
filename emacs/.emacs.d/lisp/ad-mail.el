@@ -97,12 +97,6 @@
 ;; Use mu4e for sending e-mail
 (setq message-send-mail-function 'smtpmail-send-it)
 
-(add-to-list 'mu4e-bookmarks
-            (make-mu4e-bookmark
-                :name "All Inboxes"
-                :query "maildir:/murat/INBOX"
-                :key ?i))
-
 ;; don't keep message buffers around
 (setq message-kill-buffer-on-exit t)
 

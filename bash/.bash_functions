@@ -1,3 +1,8 @@
+function swap_ctrl_caps () {
+  XKBOPTIONS="ctrl:swapcaps"
+  /usr/bin/setxkbmap -option $XKBOPTIONS
+}
+
 # ~/.bash_functions: collection of command line functions
 
 
