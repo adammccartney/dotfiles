@@ -1,0 +1,33 @@
+* Literate config for a system
+
+Here we're going to track packages that we need to bootstrap a system.
+Assumes that the base install of the system we are using is Debian/Bullseye
+
+** Dependencies for building emacs from source
+
+As mentioned in [[id:c54194f7-200c-4290-8767-94e361c37e68][emacs 28.1 compilation]], debian requires a whole pile of specific x11
+dependencies for building from source
+
+
+#+begin_src emacs-lisp :tangle ~/dotfiles/.config/debian/manifests/emacs28.1
+  build-essential
+  libc6-dev
+  libjpeg62-turbo
+  libncurses5-dev
+  libpng-dev
+  libtiff5-dev
+  libgif-dev
+  xaw3dg-dev
+  zlib1g-dev
+  libx11-dev
+  libcairo2-dev
+  libgtk-3-dev
+  libfreetype6-dev
+  libxft-dev
+#+end_src
+
+On top of this, both emacs and mu require the meson build tool
+
+#+begin_src shell :tangle ~/dotfiles/.config/python3/manifests/buildtools-requirements.txt
+meson==0.62.0
+#+end_src
