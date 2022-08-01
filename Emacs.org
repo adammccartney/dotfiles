@@ -72,30 +72,33 @@ NOTE: tangle is disabled, chunk here for reference purposes
 Replacement for package.el. Functional package manager for emacs 
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-;; bootstrap straight.el
-   (defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage)) 
-  
-;; Emacs version >= 27
-(setq package-enable-at-startup nil)
-  
-;; Use by default
-(straight-use-package 'use-package)
+  ;; bootstrap straight.el
+     (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage)) 
 
-;; Saves typing `:straight t` after every use-package expression  
-(setq straight-use-package-by-default t)
+  ;; Emacs version >= 27
+  (setq package-enable-at-startup nil)
 
-;; Clean up unused repos with `straight-remove-unused-repos'
+  ;; Use by default
+  (straight-use-package 'use-package)
+
+  ;; Saves typing `:straight t` after every use-package expression  
+  (setq straight-use-package-by-default t)
+
+  ;; Clean up unused repos with `straight-remove-unused-repos'
+
+  ;; grab the right version of org
+  (straight-use-package 'org)
 #+end_src
 * Keep .emacs.d Clean
 As seen on tv, basically moves any transitory files that are normally
@@ -164,119 +167,190 @@ use utf-8
 (add-to-list 'auto-mode-alist '("\\.make$" . makefile-gmake-mode))
 #+end_src
 
-* Fonts and Themes 
-** Some custom emacs config 
+* User Interface
+** unannoy 
+
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/lisp/unannoy.el
-;;; unannoy.el --- disable Emacs' annoying bits
-;;; originally written by nullprogram (Chris Wellons)
+  ;;; unannoy.el --- disable Emacs' annoying bits
+  ;;; originally written by nullprogram (Chris Wellons)
 
-;;; Code:
+  ;;; Code:
+  (setf backup-inhibited t
+        auto-save-default nil
+        auto-save-list-file-prefix (locate-user-emacs-file "local/saves")
+        inhibit-startup-message t
+        initial-scratch-message nil
+        wdired-allow-to-change-permissions t
+        echo-keystrokes 0.1
+        delete-active-region nil
+        disabled-command-function nil
+        custom-file (make-temp-file "emacs-custom")
+        large-file-warning-threshold 536870911
+        gc-cons-threshold (* 1024 1024 32)
+        vc-display-status nil
+        ring-bell-function (lambda ()))
 
-(setf backup-inhibited t
-      auto-save-default nil
-      auto-save-list-file-prefix (locate-user-emacs-file "local/saves")
-      inhibit-startup-message t
-      initial-scratch-message nil
-      wdired-allow-to-change-permissions t
-      echo-keystrokes 0.1
-      delete-active-region nil
-      disabled-command-function nil
-      custom-file (make-temp-file "emacs-custom")
-      large-file-warning-threshold 536870911
-      gc-cons-threshold (* 1024 1024 32)
-      vc-display-status nil
-      ring-bell-function (lambda ()))
+  ;; GUIs are for newbs
+  (menu-bar-mode -1)
+  (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
-;; GUIs are for newbs
-(menu-bar-mode -1)
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  ;; Too distracting
+  (blink-cursor-mode -1)
 
-;; Too distracting
-(blink-cursor-mode -1)
+  ;; I never want to use this
+  (when (fboundp 'set-horizontal-scroll-bar-mode)
+    (set-horizontal-scroll-bar-mode nil))
 
-;; I never want to use this
-(when (fboundp 'set-horizontal-scroll-bar-mode)
-  (set-horizontal-scroll-bar-mode nil))
+  ;; Do sensible clipboard things, please
+  (setf select-enable-clipboard nil
+        select-enable-primary t
+        mouse-drag-copy-region t
+        mouse-yank-at-point t)
 
-;; Do sensible clipboard things, please
-(setf select-enable-clipboard nil
-      select-enable-primary t
-      mouse-drag-copy-region t
-      mouse-yank-at-point t)
-      
-;; Lexical binding by default. Must be delayed since Emacs sets this
-;; on its own to nil after initialization.
-(run-at-time 0 nil (lambda ()
-		     (setq-default lexical-binding t)))
+  ;; Lexical binding by default. Must be delayed since Emacs sets this
+  ;; on its own to nil after initialization.
+  (run-at-time 0 nil (lambda ()
+                       (setq-default lexical-binding t)))
 
-;; Tabs suck
-(setq-default indent-tabs-mode nil)
+  ;; Tabs suck
+  (setq-default indent-tabs-mode nil)
 
-;; I hate typing
-(defalias 'yes-or-no-p 'y-or-n-p)
+  ;; I hate typing
+  (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; Always use the one true encoding
-(prefer-coding-system 'utf-8-unix)
+  ;; Always use the one true encoding
+  (prefer-coding-system 'utf-8-unix)
 
-;; Insert key is stupid
-(define-key global-map [(insert)] nil)
-(define-key global-map [(control insert)] 'overwrite-mode)
+  ;; Insert key is stupid
+  (define-key global-map [(insert)] nil)
+  (define-key global-map [(control insert)] 'overwrite-mode)
 
-;; I hate hitting this by accident
-(global-set-key (kbd "C-<up>") #'previous-line)
-(global-set-key (kbd "C-<down>") #'next-line)
+  ;; I hate hitting this by accident
+  (global-set-key (kbd "C-<up>") #'previous-line)
+  (global-set-key (kbd "C-<down>") #'next-line)
 
-;; Magit is the only front-end I care about
-(setf vc-handled-backends nil
-      vc-follow-symlinks t)
+  ;; Magit is the only front-end I care about
+  (setf vc-handled-backends nil
+        vc-follow-symlinks t)
 
-;; Stop scrolling by huge leaps
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
-      scroll-conservatively most-positive-fixnum
-      scroll-preserve-screen-position t)
+  ;; Stop scrolling by huge leaps
+  (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))
+        scroll-conservatively most-positive-fixnum
+        scroll-preserve-screen-position t)
 
-(provide 'unannoy)
+  (provide 'unannoy)
 #+end_src
 
-** Fonts
+* Look and feel
+** Theme 
+
+Going to try out these snazzy looking doom themes.
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-;; Frames and fonts
+  (use-package spacegray-theme
+    :defer t)
 
-(defvar my-preferred-fonts
-  '("Noto Mono-10"
-    "Inconsolata-12"))
+  (use-package doom-themes
+    :ensure t
+    :config
+    ;; Global settings (defaults)
+    (setq doom-themes-enable-bold t
+          doom-themes-enable-italic t)
+    (load-theme 'doom-nord t)
 
-(defun my-set-preferred-font (&optional frame)
-  "Set the first available font from `my-preferred-fonts'."
-  (catch 'done
-    (with-selected-frame (or frame (selected-frame))
-      (dolist (font my-preferred-fonts)
-        (when (ignore-errors (x-list-fonts font))
-          (set-frame-font font)
-          (throw 'done nil))))))
+    ;; Enable flashing mode-line on errors
+    (doom-themes-visual-bell-config)
+    ;; treemacs 
+    (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors for less minimal icon theme
+    (doom-themes-treemacs-config)
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config))
 
-(defun my-set-frame-fullscreen (&optional frame)
-  (set-frame-parameter frame 'fullscreen 'fullheight))
-
-(add-hook 'after-make-frame-functions #'my-set-preferred-font)
-(add-hook 'after-make-frame-functions #'my-set-frame-fullscreen t)
-
-
-;; Calendar and planner notification stuff
-(appt-activate t)
 #+end_src
 
-** Themes 
-sanityinc
+sanityinc was the theme that I had been using, leaving it here for a minute.
+#+begin_src emacs-lisp 
+  (use-package color-theme-sanityinc-tomorrow
+    :config
+    (setf custom-safe-themes t)
+    (color-theme-sanityinc-tomorrow-night)
+    (global-hl-line-mode 1)
+    (custom-set-faces
+     '(cursor ((t :background "#eebb28")))))
+#+end_src
+
+** Font
+
+This function needs to run after the doom-theme has been loaded
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(use-package color-theme-sanityinc-tomorrow
-  :config
-  (setf custom-safe-themes t)
-  (color-theme-sanityinc-tomorrow-night)
-  (global-hl-line-mode 1)
   (custom-set-faces
-   '(cursor ((t :background "#eebb28")))))
+   `(mode-line ((t (:background ,(doom-color 'dark-violet)))))
+   `(font-lock-comment-face ((t (:foreground ,(doom-color 'base6))))))
+#+end_src
+
+
+
+#+begin_src emacs-lisp
+
+  ;; Frames and fonts
+  ;; currently disabled
+
+  (defvar my-preferred-fonts
+    '("Noto Mono-10"
+      "Inconsolata-12"))
+
+  (defun my-set-preferred-font (&optional frame)
+    "Set the first available font from `my-preferred-fonts'."
+    (catch 'done
+      (with-selected-frame (or frame (selected-frame))
+        (dolist (font my-preferred-fonts)
+          (when (ignore-errors (x-list-fonts font))
+            (set-frame-font font)
+            (throw 'done nil))))))
+
+  (defun my-set-frame-fullscreen (&optional frame)
+    (set-frame-parameter frame 'fullscreen 'fullheight))
+
+  (add-hook 'after-make-frame-functions #'my-set-preferred-font)
+  (add-hook 'after-make-frame-functions #'my-set-frame-fullscreen t)
+
+#+end_src
+
+** Mode line
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+      (use-package all-the-icons
+        :if (display-graphic-p))
+
+      ;; You must run (all-the-icons-install-fonts) one time after installing
+      ;; this package
+      (use-package minions
+        :hook (doom-modeline-mode . minions-mode))
+
+      (use-package doom-modeline
+        :after eshell
+        :hook (after-init . doom-modeline-init)
+        :custom-face
+        (mode-line ((t (:height 0.85))))
+        (mode-line-intactive ((t (:height 0.85))))
+        :custom
+        (doom-modeline-height 15)
+        (doom-modeline-bar-width 6)
+        (doom-modeline-lsp t)
+        (doom-modeline-github nil)
+        (doom-modeline-mu4e t)
+        (doom-modeline-irc nil)
+        (doom-modeline-persp-name nil)
+        (doom-modeline-buffer-file.name-style 'truncate-except-project)
+        (doom-modeline-major-mode-icon nil))
+#+end_src
+
+
+** Calender and planner notification stuff
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+
+  ;; Calendar and planner notification stuff
+  (appt-activate t)
 #+end_src
 
 ** Set margins (center)
@@ -293,17 +367,19 @@ sanityinc
 Use dired for searching directories 
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(straight-use-package '(dired :type built-in))
-(use-package dired
-  :config
-  (progn
-    (add-hook 'dired-mode-hook #'toggle-truncate-lines)
-    (setf dired-listing-switches "-alhG"
-          dired-guess-shell-alist-user
-          '(("\\.pdf\\'" "evince")
-            ("\\(\\.ods\\|\\.xlsx?\\|\\.docx?\\|\\.csv\\)\\'" "libreoffice")
-            ("\\(\\.png\\|\\.jpe?g\\)\\'" "qiv")
-            ("\\.gif\\'" "animate")))))
+  (use-package all-the-icons-dired)
+
+  (straight-use-package '(dired :type built-in))
+  (use-package dired
+    :config
+    (progn
+      (add-hook 'dired-mode-hook #'toggle-truncate-lines)
+      (setf dired-listing-switches "-alhG"
+            dired-guess-shell-alist-user
+            '(("\\.pdf\\'" "evince")
+              ("\\(\\.ods\\|\\.xlsx?\\|\\.docx?\\|\\.csv\\)\\'" "libreoffice")
+              ("\\(\\.png\\|\\.jpe?g\\)\\'" "qiv")
+              ("\\.gif\\'" "animate")))))
 #+end_src
 
 ** Evil
@@ -414,7 +490,6 @@ to a set of grouping rules.
 * Org
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 
-  (straight-use-package 'org)
   ;; Org mode
   (use-package org 
     :defer t
@@ -1018,4 +1093,3 @@ Everyone's favorite...
             (lambda ()
               (define-key eshell-mode-map (kbd "<f1>") #'quit-window))))
 #+end_src
-:q

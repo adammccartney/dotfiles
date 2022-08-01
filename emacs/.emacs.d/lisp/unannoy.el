@@ -2,7 +2,6 @@
 ;;; originally written by nullprogram (Chris Wellons)
 
 ;;; Code:
-
 (setf backup-inhibited t
       auto-save-default nil
       auto-save-list-file-prefix (locate-user-emacs-file "local/saves")
@@ -35,11 +34,11 @@
       select-enable-primary t
       mouse-drag-copy-region t
       mouse-yank-at-point t)
-      
+
 ;; Lexical binding by default. Must be delayed since Emacs sets this
 ;; on its own to nil after initialization.
 (run-at-time 0 nil (lambda ()
-		     (setq-default lexical-binding t)))
+                     (setq-default lexical-binding t)))
 
 ;; Tabs suck
 (setq-default indent-tabs-mode nil)

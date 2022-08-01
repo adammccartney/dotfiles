@@ -25,10 +25,10 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage)) 
-  
+
 ;; Emacs version >= 27
 (setq package-enable-at-startup nil)
-  
+
 ;; Use by default
 (straight-use-package 'use-package)
 
@@ -36,6 +36,9 @@
 (setq straight-use-package-by-default t)
 
 ;; Clean up unused repos with `straight-remove-unused-repos'
+
+;; grab the right version of org
+(straight-use-package 'org)
 
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
@@ -55,6 +58,7 @@
 (push "~/.emacs.d/lisp" load-path)  
 (require 'unannoy)
 (require 'ad-mail)
+(require 'mu4e)
 
 (set-default-coding-systems 'utf-8)
 
@@ -77,43 +81,63 @@
 (add-to-list 'auto-mode-alist '("\\.mak$" . makefile-gmake-mode))
 (add-to-list 'auto-mode-alist '("\\.make$" . makefile-gmake-mode))
 
-;; Frames and fonts
+(use-package spacegray-theme
+  :defer t)
 
-(defvar my-preferred-fonts
-  '("Noto Mono-10"
-    "Inconsolata-12"))
+(use-package doom-themes
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
+  (load-theme 'doom-nord t)
 
-(defun my-set-preferred-font (&optional frame)
-  "Set the first available font from `my-preferred-fonts'."
-  (catch 'done
-    (with-selected-frame (or frame (selected-frame))
-      (dolist (font my-preferred-fonts)
-        (when (ignore-errors (x-list-fonts font))
-          (set-frame-font font)
-          (throw 'done nil))))))
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; treemacs 
+  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors for less minimal icon theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
-(defun my-set-frame-fullscreen (&optional frame)
-  (set-frame-parameter frame 'fullscreen 'fullheight))
+(custom-set-faces
+ `(mode-line ((t (:background ,(doom-color 'dark-violet)))))
+ `(font-lock-comment-face ((t (:foreground ,(doom-color 'base6))))))
 
-(add-hook 'after-make-frame-functions #'my-set-preferred-font)
-(add-hook 'after-make-frame-functions #'my-set-frame-fullscreen t)
+(use-package all-the-icons
+  :if (display-graphic-p))
 
+;; You must run (all-the-icons-install-fonts) one time after installing
+;; this package
+(use-package minions
+  :hook (doom-modeline-mode . minions-mode))
+
+(use-package doom-modeline
+  :after eshell
+  :hook (after-init . doom-modeline-init)
+  :custom-face
+  (mode-line ((t (:height 0.85))))
+  (mode-line-intactive ((t (:height 0.85))))
+  :custom
+  (doom-modeline-height 15)
+  (doom-modeline-bar-width 6)
+  (doom-modeline-lsp t)
+  (doom-modeline-github nil)
+  (doom-modeline-mu4e t)
+  (doom-modeline-irc nil)
+  (doom-modeline-persp-name nil)
+  (doom-modeline-buffer-file.name-style 'truncate-except-project)
+  (doom-modeline-major-mode-icon nil))
 
 ;; Calendar and planner notification stuff
 (appt-activate t)
-
-(use-package color-theme-sanityinc-tomorrow
-  :config
-  (setf custom-safe-themes t)
-  (color-theme-sanityinc-tomorrow-night)
-  (global-hl-line-mode 1)
-  (custom-set-faces
-   '(cursor ((t :background "#eebb28")))))
 
 (use-package visual-fill-column
   :config
   (setq visual-fill-column-width 110
         visual-fill-column-center-text t))
+
+(use-package all-the-icons-dired)
 
 (straight-use-package '(dired :type built-in))
 (use-package dired
@@ -223,7 +247,6 @@
           ;; group remaining buffers by major mode
          (auto-mode))))
 
-(straight-use-package 'org)
 ;; Org mode
 (use-package org 
   :defer t
@@ -243,7 +266,6 @@
      (python . t)
      (scheme . t)
      (go . t)
-     (dot . t)
      (shell . t)))
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
