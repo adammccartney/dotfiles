@@ -4,7 +4,7 @@ function swap_ctrl_caps () {
 }
 
 # ~/.bash_functions: collection of command line functions
-
+# useage: source via ~/.bashrc at runtime
 
 # Functions
 

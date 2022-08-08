@@ -145,8 +145,16 @@ use utf-8
 * Keybindings
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
-
 #+end_src
+
+** Rebind the universal argument key 
+Evil is using C-u for scrolling, so this needs to be rebound to another variable.
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(global-set-key (kbd "C-M-u") 'universal-argument)
+#+end_src
+
+
 * Global settings
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
