@@ -217,7 +217,3 @@ export PATH=$PATH:$(go env GOPATH)/bin
 
 # call the function to swap ctrl and capslock keys
 swap_ctrl_caps
-
-# Add JBang to environment
-alias j!=jbang
-export PATH="$HOME/.jbang/bin:$PATH"
