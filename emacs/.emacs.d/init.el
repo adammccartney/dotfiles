@@ -251,6 +251,8 @@
 (use-package org 
   :defer t
   :after (org-roam ob-go) 
+  :custom
+  (org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
   :config
   (add-hook 'org-mode-hook
             (lambda () (add-hook 'after-save-hook #'org-babel-tangle

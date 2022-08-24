@@ -497,6 +497,8 @@ to a set of grouping rules.
   (use-package org 
     :defer t
     :after (org-roam ob-go) 
+    :custom
+    (org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
     :config
     (add-hook 'org-mode-hook
               (lambda () (add-hook 'after-save-hook #'org-babel-tangle
@@ -733,6 +735,7 @@ version.
     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
     (use-package org-tree-slide)
     #+end_src
+
 * Documentation 
 *** markdown 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
