@@ -514,6 +514,7 @@ to a set of grouping rules.
        (python . t)
        (scheme . t)
        (go . t)
+       (gnuplot . t)
        (shell . t)))
 
     (push '("conf-unix" . conf-unix) org-src-lang-modes)
@@ -537,6 +538,7 @@ to a set of grouping rules.
   (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
   (add-to-list 'org-structure-template-alist '("go" . "src go"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("gnpl" . "src gnuplot"))
   (add-to-list 'org-structure-template-alist '("py" . "src python"))
 #+end_src
 
@@ -1006,6 +1008,14 @@ Very nice interface for Git.
 Various packages and dependencies that make working with certain
 languages a bit easier.
    
+*** gnuplot
+We need to add a couple of packages related to gnuplot to get emacs to reconize it on the system.
+I'm possibly adding redundency here, but who doesn't love a bit of redundency?!
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package gnuplot-mode)
+  (use-package gnuplot)
+#+end_src
 
 *** html
 
