@@ -251,6 +251,8 @@
 (use-package org 
   :defer t
   :after (org-roam ob-go) 
+  :custom
+  (org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
   :config
   (add-hook 'org-mode-hook
             (lambda () (add-hook 'after-save-hook #'org-babel-tangle
@@ -266,6 +268,7 @@
      (python . t)
      (scheme . t)
      (go . t)
+     (gnuplot . t)
      (shell . t)))
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
@@ -289,6 +292,7 @@
 (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
 (add-to-list 'org-structure-template-alist '("go" . "src go"))
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("gnpl" . "src gnuplot"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
 
 (defun my/org-roam-node-list ()
@@ -646,6 +650,9 @@ company-yasnippet' to all company backends."
 ;;  :hook (python-mode . (lambda ()
 ;;                          (require 'lsp-pyright)
 ;;                          (lsp)))) ;; or lsp-deferred
+
+(use-package gnuplot-mode)
+(use-package gnuplot)
 
 (use-package web-mode
   :mode "(\\.\\(html?\\|ejs\\|tsx|jsx\\)\\'"
