@@ -470,6 +470,23 @@ GROUP BY id")))
 
 (use-package org-tree-slide)
 
+(use-package erc
+  :commands erc
+  :config
+  (setq
+   erc-server "irc.libera.chat"
+   erc-nick "amccart"
+   erc-user-full-name "Adam McCartney"
+   erc-track-shorten-start 8
+   erc-auto-join-channels '(("irc.libera.chat" "#emacs"))
+   erc-kill-buffer-on-part t
+   erc-auto-query 'bury
+   erc-fill-function 'erc-fill-static
+   erc-fill-static-center 20
+   erc-track-exclude '("#emacs")
+   erc-track-exclude-types '("JOIN" "NICK" "QUIT" "MODE" "AWAY")
+   erc-track-exclude-server-buffer t))
+
 (use-package markdown-mode
   :defer t
   :mode ("\\.md$" "\\.markdown$" "vimperator-.+\\.tmp$")
