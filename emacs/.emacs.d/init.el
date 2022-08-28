@@ -66,6 +66,8 @@
 
 (global-set-key (kbd "C-M-u") 'universal-argument)
 
+(global-set-key (kbd "C-M-u") 'universal-argument)
+
 ;; Some global keybindings
 (column-number-mode)
 (global-display-line-numbers-mode t)
@@ -266,6 +268,7 @@
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t)
+     (C . t)
      (scheme . t)
      (go . t)
      (gnuplot . t)
@@ -285,6 +288,7 @@
   (setq org-startup-folded "overview"))
 
 (require 'org-tempo)
+(add-to-list 'org-structure-template-alist '("krc" . "src C"))
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
 (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
 (add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
@@ -399,7 +403,7 @@ GROUP BY id")))
            (my/org-roam-filter-by-tag tag-name)
            (my/org-roam-node-list))))
 
-(defun my/org-raom-refresh-agenda-list ()
+(defun my/org-roam-refresh-agenda-list ()
   (interactive)
   (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project")))
 
@@ -442,7 +446,8 @@ GROUP BY id")))
          (("C-c n i" . org-roam-node-insert)
          ("C-M-i" . completion-at-point)))
   :config
-  (org-roam-db-autosync-mode))
+  (org-roam-db-autosync-mode)
+  (my/org-roam-refresh-agenda-list))
 
 ;; center the screen
 

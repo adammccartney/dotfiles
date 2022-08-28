@@ -143,13 +143,26 @@ use utf-8
   (server-start)
   #+end_src
 * Keybindings
+<<<<<<< Updated upstream
 
 ** Rebind the universal argument key 
 Evil is using C-u for scrolling, so this needs to be rebound to another variable.
+=======
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(global-set-key (kbd "C-x k") #'kill-this-buffer)
+#+end_src
+
+** Rebind universal argument key
+
+>>>>>>> Stashed changes
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (global-set-key (kbd "C-M-u") 'universal-argument)
 #+end_src
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 * Global settings
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -512,6 +525,7 @@ to a set of grouping rules.
      'org-babel-load-languages
      '((emacs-lisp . t)
        (python . t)
+       (C . t)
        (scheme . t)
        (go . t)
        (gnuplot . t)
@@ -531,6 +545,7 @@ to a set of grouping rules.
     (setq org-startup-folded "overview"))
 
   (require 'org-tempo)
+  (add-to-list 'org-structure-template-alist '("krc" . "src C"))
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
   (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
   (add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
@@ -648,60 +663,61 @@ version.
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el 
 
-    (defun my/org-roam-filter-by-tag (tag-name)
-      (lambda (node)
-        (member tag-name (org-roam-node-tags node))))
+      (defun my/org-roam-filter-by-tag (tag-name)
+        (lambda (node)
+          (member tag-name (org-roam-node-tags node))))
 
-    (defun my/org-roam-list-notes-by-tag (tag-name)
-      (mapcar #'org-roam-node-file
-              (seq-filter
-               (my/org-roam-filter-by-tag tag-name)
-               (my/org-roam-node-list))))
+      (defun my/org-roam-list-notes-by-tag (tag-name)
+        (mapcar #'org-roam-node-file
+                (seq-filter
+                 (my/org-roam-filter-by-tag tag-name)
+                 (my/org-roam-node-list))))
 
-    (defun my/org-raom-refresh-agenda-list ()
-      (interactive)
-      (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project")))
+      (defun my/org-roam-refresh-agenda-list ()
+        (interactive)
+        (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project")))
 
 
-    (use-package org-roam
-      :demand t
-      :straight t
-      :init 
-      (setq org-roam-v2-ack t)
-      :custom
-      (org-roam-directory "~/Notes/org-roam/")
-      (org-roam-dailies-directory "journal/")
-      (org-roam-completion-everywhere t)
-      (org-roam-capture-templates
-       '(("d" "default" plain
-          "%?"
-          :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                             "#+title: ${title}\n")
-          :unnarrowed t)
-         ("b" "book notes" plain
-          "\n* Source\n\nAuthor: %^{Author}\nTitle: ${title}\nYear: %^{Year}\n\n* Summary\n\n%?"
-          :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                             "#+title: ${title}\n")
-          :unnarrowed t)
-         ("p" "project" plain 
-          "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n** Dates\n\n"
-          :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-                             "#+title: ${title}\n#+filetags: Project\n")
-          :unnarrowed t)))
-      (org-roam-dailies-capture-templates
-       '(("d" "default" plain 
-          "\n* Thanks\n\n %?\n\n* WorkingOn\n\n* WorkingTowards\n\n* Excited About\n\n* Woes\n\n* Ideas\n\n* Housekeeping\n\n* Questions\n\n* Thanks"
-          :if-new (file+head "%<%Y-%m-%d>.org"
-                             "#+title: %<%Y-%m-%d>\n")
-          :unnarrowed t)))
-      :bind (("C-c n l" . org-roam-buffer-toggle)
-             ("C-c n f" . org-roam-node-find)
-             ("C-c n c" . org-roam-dailies-capture-today)
-             :map org-mode-map
-             (("C-c n i" . org-roam-node-insert)
-             ("C-M-i" . completion-at-point)))
-      :config
-      (org-roam-db-autosync-mode))
+      (use-package org-roam
+        :demand t
+        :straight t
+        :init 
+        (setq org-roam-v2-ack t)
+        :custom
+        (org-roam-directory "~/Notes/org-roam/")
+        (org-roam-dailies-directory "journal/")
+        (org-roam-completion-everywhere t)
+        (org-roam-capture-templates
+         '(("d" "default" plain
+            "%?"
+            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                               "#+title: ${title}\n")
+            :unnarrowed t)
+           ("b" "book notes" plain
+            "\n* Source\n\nAuthor: %^{Author}\nTitle: ${title}\nYear: %^{Year}\n\n* Summary\n\n%?"
+            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                               "#+title: ${title}\n")
+            :unnarrowed t)
+           ("p" "project" plain 
+            "* Goals\n\n%?\n\n* Tasks\n\n** TODO Add initial tasks\n\n** Dates\n\n"
+            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+                               "#+title: ${title}\n#+filetags: Project\n")
+            :unnarrowed t)))
+        (org-roam-dailies-capture-templates
+         '(("d" "default" plain 
+            "\n* Thanks\n\n %?\n\n* WorkingOn\n\n* WorkingTowards\n\n* Excited About\n\n* Woes\n\n* Ideas\n\n* Housekeeping\n\n* Questions\n\n* Thanks"
+            :if-new (file+head "%<%Y-%m-%d>.org"
+                               "#+title: %<%Y-%m-%d>\n")
+            :unnarrowed t)))
+        :bind (("C-c n l" . org-roam-buffer-toggle)
+               ("C-c n f" . org-roam-node-find)
+               ("C-c n c" . org-roam-dailies-capture-today)
+               :map org-mode-map
+               (("C-c n i" . org-roam-node-insert)
+               ("C-M-i" . completion-at-point)))
+        :config
+        (org-roam-db-autosync-mode)
+        (my/org-roam-refresh-agenda-list))
 #+end_src
 
 ** Presentations
