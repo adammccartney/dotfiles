@@ -31,3 +31,68 @@ On top of this, both emacs and mu require the meson build tool
 #+begin_src shell :tangle ~/dotfiles/.config/python3/manifests/buildtools-requirements.txt
 meson==0.62.0
 #+end_src
+
+* Pulling individual packages from other pacakge repository
+
+
+
+#+begin_src emacs-lisp :tangle etc/apt/sources.list.d/stable-proposed-updates.list
+ deb http://deb.debian.org/debian bullseye-proposed-updates main 
+#+end_src
+
+#+begin_src emacs-lisp :tangle etc/apt/sources.list.d/testing.list
+  deb http://deb.debian.org/debian/ testing main contrib non-free
+  deb-src http://deb.debian.org/debian/ testing main contrib non-free
+#+end_src
+
+** Apt Pinning in Debian
+
+Warning: recipe for disaster, mind those kittens.
+
+The following is from the man(5) apt preferences
+#+begin_src emacs-lisp :tangle etc/apt/preferences.d/preferences
+  Explanation: Uninstall or do not install any Debian-originated
+  Explanation: package versions other than those in the stable distro
+  Package: *
+  Pin: release a=stable
+  Pin-Priority: 900
+
+  Package: *
+  Pin: release a=proposed-updates
+  Pin-Priority: 100
+
+  Package: *
+  Pin: release o=Debian
+  Pin-Priority: -10
+#+end_src
+
+
+To install a package from testing:
+
+The following packages will then not be upgraded until this command is given again
+#+begin_src shell
+  apt install -t testing vagrant-libvirt
+#+end_src
+
+
+List of packages installed from testing 
+#+begin_src conf :tangle ~/dotfiles/.config/debian/manifests/testing.txt
+  vagrant-libvirt
+  libvirt-daemon-system
+  virt-manager
+  gcc-multilib
+  torbrowser-launc
+  tor
+  clang
+  clangd
+#+end_src
+         
+
+** Vagrant dependencies
+
+Debian 11 requires pulling the vagrant / libvert packages from testing.
+Also it requires a more recent version of a ruby gem
+
+#+begin_src conf :tangle ~/dotfiles/.config/debian/manifests/ruby.txt
+          net-ssh --version 7.0.0.beta1
+#+end_src

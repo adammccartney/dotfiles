@@ -1090,6 +1090,12 @@ Add slime that uses the sbcl
  :after python-mode)
 #+end_src
 
+**** pytest
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package python-test
+    :after python-mode)
+#+end_src
+
 *** typescript
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package typescript-mode

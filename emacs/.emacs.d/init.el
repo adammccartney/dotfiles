@@ -64,7 +64,7 @@
 
 (server-start)
 
-(global-set-key (kbd "C-M-u") 'universal-argument)
+(global-set-key (kbd "C-x k") #'kill-this-buffer)
 
 (global-set-key (kbd "C-M-u") 'universal-argument)
 
@@ -697,6 +697,9 @@ company-yasnippet' to all company backends."
 
 (use-package pyvenv
  :after python-mode)
+
+(use-package python-test
+  :after python-mode)
 
 (use-package typescript-mode
   :mode "\\.ts\\'"
