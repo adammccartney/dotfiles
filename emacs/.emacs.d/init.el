@@ -58,6 +58,7 @@
 (push "~/.emacs.d/lisp" load-path)  
 (require 'unannoy)
 (require 'ad-mail)
+(require 'adlisp)
 (require 'mu4e)
 
 (set-default-coding-systems 'utf-8)

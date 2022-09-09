@@ -127,10 +127,13 @@ libgmime-3.0-dev
 libxapian-dev
 #+end_src
 
+
+** Custom lisp stuff
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (push "~/.emacs.d/lisp" load-path)  
   (require 'unannoy)
   (require 'ad-mail)
+  (require 'adlisp)
   (require 'mu4e)
 #+end_src
 * Default Coding System
@@ -143,26 +146,19 @@ use utf-8
   (server-start)
   #+end_src
 * Keybindings
-<<<<<<< Updated upstream
 
 ** Rebind the universal argument key 
 Evil is using C-u for scrolling, so this needs to be rebound to another variable.
-=======
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
 #+end_src
 
 ** Rebind universal argument key
 
->>>>>>> Stashed changes
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (global-set-key (kbd "C-M-u") 'universal-argument)
 #+end_src
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 * Global settings
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
