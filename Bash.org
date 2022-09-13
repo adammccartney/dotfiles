@@ -204,7 +204,7 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
   # files installed in the home directory.
   # WARNING: may cause issues if an officially installed package is looking for
   # a library that is also installed on the system in a more holy manner.
-  export LD_LIBRARY_PATH=$HOME/.local/lib
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/:$HOME/.local/lib/
 
   # Set mail environment variable
   MAIL=/var/mail/adam && export MAIL
@@ -254,51 +254,27 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
   fi
 
   #+end_src
- 
-
-* Go setup
-
-There seems to have been a bit of confusion around how to set up a number of
-variables typically used in creating a go workflow. Might well have been my
-own misunderstaning of the various docs online the following [[https://go.dev/doc/gopath_code][guide to writing code with gopath]]
-seems to suggest the following solution as of August 2022. This bash config snippet
-has been used on a machine where the install site of the [[https://go.dev/doc/install][go binary]] is "/usr/local/go".
-
-#+begin_src shell :tangle ./bash/.bashrc
-  # Gopath
-  # add the go binary to path
-  export PATH=$PATH:/usr/local/go/bin
-  export GOPATH=$HOME/.local/go
-  # add the GOPATH/bin to PATH
-  export PATH=$PATH:$(go env GOPATH)/bin
-#+end_src
-
-
-** .bash_functions
-
-Some functions that I tend to use
-
-*** Custom Keyboard Bindings
-
-Mostly just the one - rebind ctrl to caps lock ... because emacs.
-
-#+begin_src shell :tangle ./bash/.bash_functions
-  function swap_ctrl_caps () {
-    XKBOPTIONS="ctrl:swapcaps"
-    /usr/bin/setxkbmap -option $XKBOPTIONS
-  }
-#+end_src
-
-#+begin_src shell :tangle ./bash/.bashrc
-  # call the function to swap ctrl and capslock keys
-  swap_ctrl_caps
-#+end_src
-
-
-#+begin_src shell :tangle ./bash/.bash_functions
-  # ~/.bash_functions: collection of command line functions
-  # useage: source via ~/.bashrc at runtime
   
+
+** bash functions
+
+Swap the control and caps key (avoid emacs trench pinky)
+
+#+begin_src shell :tangle ./bash/.bash_functions
+
+# ~/.bash_functions: collection of command line functions
+# useage: source via ~/.bashrc at runtime
+  
+      function swap_ctrl_caps () {
+      XKBOPTIONS="ctrl:swapcaps"
+      /usr/bin/setxkbmap -option $XKBOPTIONS
+    }
+
+#+end_src
+
+Some random testy functions
+
+#+begin_src shell :tangle ./bash/.bash_functions
   # Functions
 
   ds () {
@@ -310,13 +286,24 @@ Mostly just the one - rebind ctrl to caps lock ... because emacs.
       echo "Home Space Utilzation For $USER"
       du -sh /home/*
   }
+#+end_src
 
+That time Bob Nystrom wrote a great book and we needed a tool to extract the binary of
+the cool language he developed.
+
+#+begin_src shell :tangle ./bash/.bash_functions
   extractLoxBin () {
       DISTDIR=/home/adam/.local/src/jlox/build/distributions
       TARGETDIR=${DISTDIR}
       tar -xf "${DISTDIR}/jlox.tar" -C "${TARGETDIR}"
   }
+#+end_src
 
+
+I think I used to use this for renaming files after cloning C projects,
+or any other time I needed to recursively rename files.
+
+#+begin_src shell :tangle ./bash/.bash_functions
   function renameFilesRecursively () {
 
     SEARCH_PATH="$1"
@@ -329,7 +316,13 @@ Mostly just the one - rebind ctrl to caps lock ... because emacs.
     done
 
   }
+#+end_src
 
+
+This is for spawning a new tmux namespace with a split configuration that is nice for
+your face.
+
+#+begin_src shell :tangle ./bash/.bash_functions
   function tmux_ns () {
       SESNAME="$1"
       tmux new-session -s $SESNAME -d
@@ -337,27 +330,40 @@ Mostly just the one - rebind ctrl to caps lock ... because emacs.
       tmux split-window -v
       tmux -2 attach-session -d 
   }
+#+end_src
 
-  function hello () {
-      NAME="$1"
-      echo "hello ${NAME}, how are you this evening?"
-  }
 
+Get the ip of a docker container, assumes that docker is running on your system (poor you)
+#+begin_src shell :tangle ./bash/.bash_functions
   function containerip () {
      sudo docker inspect −−format '{{ .NetworkSettings.IPAddress }}' "$@"
   }
+#+end_src
 
+
+Creates a python3.8 virtualenvironment and plonks it in ~/.virtualenvs future me will just
+use virtual machines
+#+begin_src shell :tangle ./bash/.bash_functions
   function make_py3.8venv () {
       NAME="$1"
       #python3.8 -m venv "~/.virtualenvs/${NAME}"
       echo "~/.virtualenvs/${NAME}"
   }
+#+end_src
 
+
+Handy dump of all currently LISTENing sockets on a system (will run as sudo)
+#+begin_src shell :tangle ./bash/.bash_functions
   # list all ports currently listening
   get_listening_ports () {
       sudo lsof -i -P -n | grep LISTEN 
   }
+#+end_src
 
+
+I think these might have been a bunch of functions that were useful for the System Programming for Linux Containers course.
+Or possibly the OSTEP book... can't remember.
+#+begin_src shell :tangle ./bash/.bash_functions
   function installed {
       cmd=$(command -v "${1}")
 
@@ -383,24 +389,106 @@ Mostly just the one - rebind ctrl to caps lock ... because emacs.
       xargs stat --printf "%s "); do ((t+=n)); done; echo $t; 
   }
 
+#+end_src
 
+Leverages a cool api to show the current weather in your terminal (I mean, hopefully there is no actual
+weather happening in your terminal) outside I mean, in the environment where you run the computer that
+houses your terminal.
+#+begin_src shell :tangle ./bash/.bash_functions
   function weather { 
       curl -s --connect-timeout 3 -m 5 http://wttr.in/$1 
   }
+#+end_src
 
-
+Elastic search (what and why and how and who is elastic search I hear you ask, I also have no idea,
+I think it's an index for someone who hasn't heard about C.
+#+begin_src shell :tangle ./bash/.bash_functions
   # Elastic search functions
   if [ -f ~/.elastic_fun ]; then
       . ~/.elastic_fun
   fi
+#+end_src
 
+
+C / gnuMake repl
+#+begin_src shell :tangle ./bash/.bash_functions
   function makeonchange () {
       while inotifywait -q . ; do echo -e '\n\n'; make; done
   }
+#+end_src
 
+
+Haul that mail truck in 
+#+begin_src shell :tangle ./bash/.bash_functions
   getmail () {
       mbsync -a
   }
+
+#+end_src
+
+** Backup functions
+
+A selection of wrappers for calling rsync in a bunch of ways that are generally useful for my particular situation.
+
+
+*** Backup home
+rsync allows for the specification of paths to be excluded from the backup
+The trick with rsync is to use relative paths for the files/directories to be excluded
+#+begin_src conf :tangle ~/backup_excludes.txt
+  /.android
+  /.cache   
+  /Code
+  /.local/src
+  /.virtualenvs
+  /snap
+  /openFrameworks
+  /node_modules
+  /dotfiles
+  /.config
+#+end_src
+
+We want to copy everything in $HOME, excluding stuff that is anyway in version control, anything related to cache,
+and any sort of temp or environment files.
+#+begin_src shell :tangle ./bash/.bash_functions
+    function backup_home () {
+        # WARNING: assumes that you are running from home!
+        BACKUP_PATH=$1
+        EXCLUDES_PATH=$2
+        rsync -raP  --exclude="/.*" --exclude-from=$EXCLUDES_PATH --include="/.ssh" --include="/.password-store" ./ $BACKUP_PATH
+  }
+
+  function backup () {
+      export CURRENTDATE=`date +"%b%d%Y"`
+      export BACKUPTYPE="diza"
+
+      if [ ! -d "/media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE/" ]; then
+          mkdir -p /media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE
+          export BACKUP_DIR="/media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE"
+      fi
+
+      EXCLUDES_LIST="$HOME/backup_excludes.txt"
+
+      backup_home $BACKUP_DIR $EXCLUDES_LIST
+  }
+  #+end_src
+
+  
+
+* Go setup
+
+There seems to have been a bit of confusion around how to set up a number of
+variables typically used in creating a go workflow. Might well have been my
+own misunderstaning of the various docs online the following [[https://go.dev/doc/gopath_code][guide to writing code with gopath]]
+seems to suggest the following solution as of August 2022. This bash config snippet
+has been used on a machine where the install site of the [[https://go.dev/doc/install][go binary]] is "/usr/local/go".
+
+#+begin_src shell :tangle ./bash/.bashrc
+  # Gopath
+  # add the go binary to path
+  export PATH=$PATH:/usr/local/go/bin
+  export GOPATH=$HOME/.local/go
+  # add the GOPATH/bin to PATH
+  export PATH=$PATH:$(go env GOPATH)/bin
 #+end_src
 
 ** .bash_aliases
@@ -408,9 +496,6 @@ Mostly just the one - rebind ctrl to caps lock ... because emacs.
 Bunch of aliases used for alter egos.
 
 #+begin_src shell :tangle ./bash/.bash_aliases
-    # backup system
-  alias backup="rsync -a --exclude=.cache --progress /home/adam /media/adam/adb/backup/home/adam"
-
   ## virtualenv alias
   #alias sv="source env/bin/activate"
   #

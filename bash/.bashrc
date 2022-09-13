@@ -159,7 +159,7 @@ export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig
 # files installed in the home directory.
 # WARNING: may cause issues if an officially installed package is looking for
 # a library that is also installed on the system in a more holy manner.
-export LD_LIBRARY_PATH=$HOME/.local/lib
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/:$HOME/.local/lib/
 
 # Set mail environment variable
 MAIL=/var/mail/adam && export MAIL
@@ -214,10 +214,3 @@ export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/.local/go
 # add the GOPATH/bin to PATH
 export PATH=$PATH:$(go env GOPATH)/bin
-
-# call the function to swap ctrl and capslock keys
-swap_ctrl_caps
-
-# Add JBang to environment
-alias j!=jbang
-export PATH="$HOME/.jbang/bin:$PATH"

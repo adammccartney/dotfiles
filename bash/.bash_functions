@@ -1,10 +1,10 @@
-function swap_ctrl_caps () {
-  XKBOPTIONS="ctrl:swapcaps"
-  /usr/bin/setxkbmap -option $XKBOPTIONS
-}
-
 # ~/.bash_functions: collection of command line functions
 # useage: source via ~/.bashrc at runtime
+  
+      function swap_ctrl_caps () {
+      XKBOPTIONS="ctrl:swapcaps"
+      /usr/bin/setxkbmap -option $XKBOPTIONS
+    }
 
 # Functions
 
@@ -43,11 +43,6 @@ function tmux_ns () {
     tmux split-window -h
     tmux split-window -v
     tmux -2 attach-session -d 
-}
-
-function hello () {
-    NAME="$1"
-    echo "hello ${NAME}, how are you this evening?"
 }
 
 function containerip () {
@@ -90,11 +85,9 @@ function size {
     xargs stat --printf "%s "); do ((t+=n)); done; echo $t; 
 }
 
-
 function weather { 
     curl -s --connect-timeout 3 -m 5 http://wttr.in/$1 
 }
-
 
 # Elastic search functions
 if [ -f ~/.elastic_fun ]; then
@@ -107,4 +100,25 @@ function makeonchange () {
 
 getmail () {
     mbsync -a
+}
+
+function backup_home () {
+      # WARNING: assumes that you are running from home!
+      BACKUP_PATH=$1
+      EXCLUDES_PATH=$2
+      rsync -raP  --exclude="/.*" --exclude-from=$EXCLUDES_PATH --include="/.ssh" --include="/.password-store" ./ $BACKUP_PATH
+}
+
+function backup () {
+    export CURRENTDATE=`date +"%b%d%Y"`
+    export BACKUPTYPE="diza"
+
+    if [ ! -d "/media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE/" ]; then
+        mkdir -p /media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE
+        export BACKUP_DIR="/media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE"
+    fi
+
+    EXCLUDES_LIST="$HOME/backup_excludes.txt"
+
+    backup_home $BACKUP_DIR $EXCLUDES_LIST
 }
