@@ -397,7 +397,30 @@ Mostly just the one - rebind ctrl to caps lock ... because emacs.
   function makeonchange () {
       while inotifywait -q . ; do echo -e '\n\n'; make; done
   }
+** repltings with inotifywait
 
+*** C projects
+
+#+begin_src shell :tangle ./bash/.bash_functions
+  function makeonchange () {
+      while inotifywait -q . ; do echo -e '\n\n'; make; done
+  }
+#+end_src
+
+*** Pytest
+
+#+begin_src shell :tangle ./bash/.bash_functions
+    function pytestonchange () {
+        TESTS=$1
+        while inotifywait -q ${TESTS};
+        do
+            echo -e '\n\n';
+            pytest ${TESTS} -v;
+        done
+    }
+#+end_src
+
+#+begin_src shell :tangle ./bash/.bash_functions
   getmail () {
       mbsync -a
   }
