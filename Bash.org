@@ -413,15 +413,32 @@ I think it's an index for someone who hasn't heard about C.
 #+end_src
 
 
-C / gnuMake repl
+** repltings with inotifywait
+
+*** C projects
+
 #+begin_src shell :tangle ./bash/.bash_functions
   function makeonchange () {
       while inotifywait -q . ; do echo -e '\n\n'; make; done
   }
 #+end_src
 
+*** Pytest
+
+#+begin_src shell :tangle ./bash/.bash_functions
+    function pytestonchange () {
+        TESTS=$1
+        while inotifywait -q ${TESTS};
+        do
+            echo -e '\n\n';
+            pytest ${TESTS} -v;
+        done
+    }
+#+end_src
+
 
 Haul that mail truck in 
+
 #+begin_src shell :tangle ./bash/.bash_functions
   getmail () {
       mbsync -a

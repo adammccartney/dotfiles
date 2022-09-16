@@ -98,6 +98,15 @@ function makeonchange () {
     while inotifywait -q . ; do echo -e '\n\n'; make; done
 }
 
+function pytestonchange () {
+    TESTS=$1
+    while inotifywait -q ${TESTS};
+    do
+        echo -e '\n\n';
+        pytest ${TESTS} -v;
+    done
+}
+
 getmail () {
     mbsync -a
 }

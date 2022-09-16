@@ -58,6 +58,7 @@
 (push "~/.emacs.d/lisp" load-path)  
 (require 'unannoy)
 (require 'ad-mail)
+(require 'adlisp)
 (require 'mu4e)
 
 (set-default-coding-systems 'utf-8)
@@ -264,14 +265,17 @@
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
 ;; org babel
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
      (python . t)
      (C . t)
      (scheme . t)
+     (ruby . t)
      (go . t)
      (gnuplot . t)
+     (dot . t)
      (shell . t)))
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
@@ -288,16 +292,18 @@
   (setq org-startup-folded "overview"))
 
 (require 'org-tempo)
-(add-to-list 'org-structure-template-alist '("krc" . "src C"))
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("sql" . "src sql"))
-(add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
-(add-to-list 'org-structure-template-alist '("js" . "src javascript"))
-(add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
-(add-to-list 'org-structure-template-alist '("go" . "src go"))
+(add-to-list 'org-structure-template-alist '("dot" . "src dot"))
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("gnpl" . "src gnuplot"))
+(add-to-list 'org-structure-template-alist '("go" . "src go"))
+(add-to-list 'org-structure-template-alist '("js" . "src javascript"))
+(add-to-list 'org-structure-template-alist '("krc" . "src C"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
+(add-to-list 'org-structure-template-alist '("rb" . "src ruby"))
+(add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("sql" . "src sql"))
+(add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
 
 (defun my/org-roam-node-list ()
   "Return all nodes stored in the database as a list of `org-roam-node's."
@@ -435,7 +441,7 @@ GROUP BY id")))
       :unnarrowed t)))
   (org-roam-dailies-capture-templates
    '(("d" "default" plain 
-      "\n* Thanks\n\n %?\n\n* WorkingOn\n\n* WorkingTowards\n\n* Excited About\n\n* Woes\n\n* Ideas\n\n* Housekeeping\n\n* Questions\n\n* Thanks"
+      "\n* Thanks\n\n %?\n\n* WorkingOn\n\n* WorkingTowards\n\n* Excited About\n\n* Woes\n\n* Ideas\n\n* Housekeeping\n\n* Family Planning\n\n* Thanks"
       :if-new (file+head "%<%Y-%m-%d>.org"
                          "#+title: %<%Y-%m-%d>\n")
       :unnarrowed t)))
@@ -474,6 +480,11 @@ GROUP BY id")))
   (add-hook 'org-present-mode-quit-hook 'ad/org-present-end))
 
 (use-package org-tree-slide)
+
+(use-package graphviz-dot-mode
+  :ensure t
+  :config
+  (setq graphviz-dot-indent-width 4))
 
 (use-package erc
   :commands erc
@@ -683,6 +694,8 @@ company-yasnippet' to all company backends."
   (setq-default web-mode-markup-indent-offset 2)
   (setq-default web-mode-attribute-indent-offset 2))
 
+(require 'cl-lib)
+
 (use-package slime
   :init 
   (setq inferior-lisp-program "/usr/local/bin/sbcl"))
@@ -697,6 +710,9 @@ company-yasnippet' to all company backends."
 
 (use-package pyvenv
  :after python-mode)
+
+(use-package python-test
+  :after python-mode)
 
 (use-package typescript-mode
   :mode "\\.ts\\'"

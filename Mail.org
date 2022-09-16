@@ -28,10 +28,10 @@ of the config below is very much his doing.
     (setq mu4e-attachment-dir
         (lambda (fname mtype)
         (cond 
-            ;; docfiles go to ~/Documents
-            ((and fname (string-match "\\.doc$" fname)) "~/Documents")
-            ((and fname (string-match "\\.pdf$" fname)) "~/Documents")
-            (t "~/Downloads")))) ;; everything else
+            ;; docfiles go to ~/Documents/email-attachments
+            ((and fname (string-match "\\.doc$" fname)) "~/Documents/email-attachments")
+            ((and fname (string-match "\\.pdf$" fname)) "~/Documents/email-attachments")
+            (t "~/Downloads/email-attachments")))) ;; everything else
 
 
     ;; Make sure that moving a message (like to Trash) causes the

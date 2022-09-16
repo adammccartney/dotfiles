@@ -1,0 +1,8 @@
+vagrant-libvirt
+libvirt-daemon-system
+virt-manager
+gcc-multilib
+torbrowser-launc
+tor
+clang
+clangd

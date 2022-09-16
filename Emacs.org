@@ -127,10 +127,13 @@ libgmime-3.0-dev
 libxapian-dev
 #+end_src
 
+
+** Custom lisp stuff
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (push "~/.emacs.d/lisp" load-path)  
   (require 'unannoy)
   (require 'ad-mail)
+  (require 'adlisp)
   (require 'mu4e)
 #+end_src
 * Default Coding System
@@ -143,26 +146,19 @@ use utf-8
   (server-start)
   #+end_src
 * Keybindings
-<<<<<<< Updated upstream
 
 ** Rebind the universal argument key 
 Evil is using C-u for scrolling, so this needs to be rebound to another variable.
-=======
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
 #+end_src
 
 ** Rebind universal argument key
 
->>>>>>> Stashed changes
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (global-set-key (kbd "C-M-u") 'universal-argument)
 #+end_src
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 * Global settings
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -521,14 +517,17 @@ to a set of grouping rules.
     (setq org-todo-keywords
           '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
   ;; org babel
+
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((emacs-lisp . t)
        (python . t)
        (C . t)
        (scheme . t)
+       (ruby . t)
        (go . t)
        (gnuplot . t)
+       (dot . t)
        (shell . t)))
 
     (push '("conf-unix" . conf-unix) org-src-lang-modes)
@@ -545,16 +544,19 @@ to a set of grouping rules.
     (setq org-startup-folded "overview"))
 
   (require 'org-tempo)
-  (add-to-list 'org-structure-template-alist '("krc" . "src C"))
-  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-  (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
-  (add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
-  (add-to-list 'org-structure-template-alist '("js" . "src javascript"))
-  (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
-  (add-to-list 'org-structure-template-alist '("go" . "src go"))
+  (add-to-list 'org-structure-template-alist '("dot" . "src dot"))
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("gnpl" . "src gnuplot"))
+  (add-to-list 'org-structure-template-alist '("go" . "src go"))
+  (add-to-list 'org-structure-template-alist '("js" . "src javascript"))
+  (add-to-list 'org-structure-template-alist '("krc" . "src C"))
   (add-to-list 'org-structure-template-alist '("py" . "src python"))
+  (add-to-list 'org-structure-template-alist '("rb" . "src ruby"))
+  (add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
+  (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
+
 #+end_src
 
 ** Org Roam
@@ -705,7 +707,7 @@ version.
             :unnarrowed t)))
         (org-roam-dailies-capture-templates
          '(("d" "default" plain 
-            "\n* Thanks\n\n %?\n\n* WorkingOn\n\n* WorkingTowards\n\n* Excited About\n\n* Woes\n\n* Ideas\n\n* Housekeeping\n\n* Questions\n\n* Thanks"
+            "\n* Thanks\n\n %?\n\n* WorkingOn\n\n* WorkingTowards\n\n* Excited About\n\n* Woes\n\n* Ideas\n\n* Housekeeping\n\n* Family Planning\n\n* Thanks"
             :if-new (file+head "%<%Y-%m-%d>.org"
                                "#+title: %<%Y-%m-%d>\n")
             :unnarrowed t)))
@@ -753,6 +755,15 @@ version.
     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
     (use-package org-tree-slide)
     #+end_src
+
+** graphviz
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package graphviz-dot-mode
+    :ensure t
+    :config
+    (setq graphviz-dot-indent-width 4))
+#+end_src
+
 
 * Chat
 ** irc
@@ -1065,6 +1076,12 @@ I'm possibly adding redundency here, but who doesn't love a bit of redundency?!
     (setq-default web-mode-attribute-indent-offset 2))
 #+end_src
 *** lisp
+
+To access some functions such as first or second in elisp, common lisp is required.
+This is used by org-mode dot. Not sure if this will cause conflicts.
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el 
+  (require 'cl-lib)
+#+end_src
  
 Add slime that uses the sbcl 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -1088,6 +1105,12 @@ Add slime that uses the sbcl
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el 
 (use-package pyvenv
  :after python-mode)
+#+end_src
+
+**** pytest
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package python-test
+    :after python-mode)
 #+end_src
 
 *** typescript
