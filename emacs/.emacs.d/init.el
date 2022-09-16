@@ -766,16 +766,16 @@ company-yasnippet' to all company backends."
 (use-package cc-mode
   :defer t
   :init
-  (defun skeeto/c-hook ()
-    (setf c-basic-offset 4)
+  (defun my/c-hook ()
+    (setf c-basic-offset 8)   ;; follow linux kernel style guide
     (c-set-offset 'case-label '+)
     (c-set-offset 'access-label '/)
     (c-set-offset 'label '/))
   :config
   (progn
     (define-key java-mode-map (kbd "C-x I") 'add-java-import)
-    (add-hook 'c-mode-hook #'skeeto/c-hook)
-    (add-hook 'c++-mode-hook #'skeeto/c-hook)
+    (add-hook 'c-mode-hook #'my/c-hook)
+    (add-hook 'c++-mode-hook #'my/c-hook)
     (add-to-list 'c-default-style '(c-mode . "k&r"))
     (add-to-list 'c-default-style '(c++-mode . "k&r"))))
 
@@ -791,6 +791,8 @@ company-yasnippet' to all company backends."
   :after lsp-mode
   :ensure t
   :config (add-hook 'java-mode-hook 'lsp))
+
+(setq gdb-many-windows t)
 
 (use-package flycheck
   :defer t

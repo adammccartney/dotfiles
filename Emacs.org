@@ -1203,16 +1203,16 @@ leiningen
 (use-package cc-mode
   :defer t
   :init
-  (defun skeeto/c-hook ()
-    (setf c-basic-offset 4)
+  (defun my/c-hook ()
+    (setf c-basic-offset 8)   ;; follow linux kernel style guide
     (c-set-offset 'case-label '+)
     (c-set-offset 'access-label '/)
     (c-set-offset 'label '/))
   :config
   (progn
     (define-key java-mode-map (kbd "C-x I") 'add-java-import)
-    (add-hook 'c-mode-hook #'skeeto/c-hook)
-    (add-hook 'c++-mode-hook #'skeeto/c-hook)
+    (add-hook 'c-mode-hook #'my/c-hook)
+    (add-hook 'c++-mode-hook #'my/c-hook)
     (add-to-list 'c-default-style '(c-mode . "k&r"))
     (add-to-list 'c-default-style '(c++-mode . "k&r"))))
 
@@ -1264,7 +1264,13 @@ Everyone's favorite...
 
     #+end_src
 
-    
+** Debuggers
+*** gdb setup
+Emacs integrates really nicely with gdb, in particular it has a sweet many windows mode that gives
+really nice UI for beduggin!
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (setq gdb-many-windows t)
+#+end_src
 ** Productivity
 *** Flycheck
     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
