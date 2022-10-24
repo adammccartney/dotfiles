@@ -98,6 +98,18 @@ function makeonchange () {
     while inotifywait -q . ; do echo -e '\n\n'; make; done
 }
 
+function make_html_onchange () {
+    # Run from the 'project/docs' directory
+    while inotifywait -q ./source ; do echo -e '\n\n'; make html; done
+    # Watch the source directory, if there are any changes, remake the docs.
+    }
+
+function serve_html_docs () {
+    # Run from the 'project/docs' directory
+    cd ./build/html && python3 -m http.server
+    # Serve the html docs built by sphinx
+}
+
 function pytestonchange () {
     TESTS=$1
     while inotifywait -q ${TESTS};

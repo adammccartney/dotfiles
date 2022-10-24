@@ -919,8 +919,6 @@ options and jump through code at runtime. After we install dap-mode we will also
   :ensure t
   :after (lsp-mode)
   :functions dap-hydra/nil
-  :config
-  (require 'dap-java)
   :bind (:map lsp-mode-map
          ("<f5>" . dap-debug)
          ("M-<f5>" . dap-hydra))
@@ -970,6 +968,7 @@ works a bit better out of the box.
     (setq lsp-keymap-prefix "C-c l")
     :hook ((python-mode . lsp)
            ((typescript-mode js2-mode web-mode) . lsp)
+           (docker-mode . lsp)
            (lsp-mode . lsp-enable-which-key-integration))
     :commands lsp)
 
@@ -1256,13 +1255,22 @@ Everyone's favorite...
 
 *** java
 
-    #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+Excluded, currently not doing any java development.
+    #+begin_src emacs-lisp 
       (use-package lsp-java
         :after lsp-mode
         :ensure t
         :config (add-hook 'java-mode-hook 'lsp))
 
     #+end_src
+
+
+*** Dockerfile
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package dockerfile-mode
+    :ensure t)
+#+end_src
 
 ** Debuggers
 *** gdb setup
@@ -1304,7 +1312,7 @@ really nice UI for beduggin!
 #+end_src
 
 
-* web
+* readers
 
 ** elfeed
 
@@ -1312,5 +1320,8 @@ Chris Wellon's elfeed package
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (use-package elfeed
-    :ensure t)
+    :ensure t
+    :config
+    (setq elfeed-feeds
+          '("https://nullprogram.com/feed/")))
 #+end_src

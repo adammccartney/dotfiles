@@ -13,10 +13,10 @@
 (setq mu4e-attachment-dir
     (lambda (fname mtype)
     (cond 
-        ;; docfiles go to ~/Documents
-        ((and fname (string-match "\\.doc$" fname)) "~/Documents")
-        ((and fname (string-match "\\.pdf$" fname)) "~/Documents")
-        (t "~/Downloads")))) ;; everything else
+        ;; docfiles go to ~/Documents/email-attachments
+        ((and fname (string-match "\\.doc$" fname)) "~/Documents/email-attachments")
+        ((and fname (string-match "\\.pdf$" fname)) "~/Documents/email-attachments")
+        (t "~/Downloads/email-attachments")))) ;; everything else
 
 
 ;; Make sure that moving a message (like to Trash) causes the
@@ -38,7 +38,7 @@
                     (mu4e-sent-folder . "/murat/Sent")
                     (mu4e-trash-folder . "/murat/Trash")
                     (mu4e-drafts-folder . "/murat/Drafts")
-                    (mu4e-refile-folder . "/murat/Archive")
+                    (mu4e-refile-folder . "/murat/Archives")
                     (mu4e-sent-messages-behavior . sent)
                     (mu4e-compose-signature .
                                             (concat

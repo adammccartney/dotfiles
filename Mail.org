@@ -11,7 +11,7 @@ owed to David Wilson for his efforts with SystemCrafters. The structure
 of the config below is very much his doing.
 
 
-#+begin_src emacs-lisp :tangle .emacs.d/lisp/ad-mail.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/lisp/ad-mail.el
 
     (use-package mu4e
     :defer 20
@@ -53,7 +53,7 @@ of the config below is very much his doing.
                         (mu4e-sent-folder . "/murat/Sent")
                         (mu4e-trash-folder . "/murat/Trash")
                         (mu4e-drafts-folder . "/murat/Drafts")
-                        (mu4e-refile-folder . "/murat/Archive")
+                        (mu4e-refile-folder . "/murat/Archives")
                         (mu4e-sent-messages-behavior . sent)
                         (mu4e-compose-signature .
                                                 (concat
@@ -128,7 +128,7 @@ of the config below is very much his doing.
 
 Provide the above as an emacs-lisp package so it can be included in the init.el
 
-    #+begin_src emacs-lisp :tangle .emacs.d/lisp/ad-mail.el
+    #+begin_src emacs-lisp :tangle emacs/.emacs.d/lisp/ad-mail.el
     (provide 'ad-mail)
     #+end_src
 

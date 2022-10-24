@@ -594,8 +594,6 @@ company-yasnippet' to all company backends."
   :ensure t
   :after (lsp-mode)
   :functions dap-hydra/nil
-  :config
-  (require 'dap-java)
   :bind (:map lsp-mode-map
          ("<f5>" . dap-debug)
          ("M-<f5>" . dap-hydra))
@@ -624,6 +622,7 @@ company-yasnippet' to all company backends."
   (setq lsp-keymap-prefix "C-c l")
   :hook ((python-mode . lsp)
          ((typescript-mode js2-mode web-mode) . lsp)
+         (docker-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
 
@@ -787,10 +786,8 @@ company-yasnippet' to all company backends."
 (use-package yaml-mode
    :mode "\\.ya?ml\\'")
 
-(use-package lsp-java
-  :after lsp-mode
-  :ensure t
-  :config (add-hook 'java-mode-hook 'lsp))
+(use-package dockerfile-mode
+  :ensure t)
 
 (setq gdb-many-windows t)
 
@@ -804,4 +801,7 @@ company-yasnippet' to all company backends."
 (setq-default indent-tabs-mode nil)
 
 (use-package elfeed
-  :ensure t)
+  :ensure t
+  :config
+  (setq elfeed-feeds
+        '("https://nullprogram.com/feed/")))
