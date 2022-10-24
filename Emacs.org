@@ -1055,7 +1055,7 @@ The following config is from https://github.com/neppramod/java_emacs/blob/master
 Below we will integrate dap-mode with dap-hydra. Dap-hydra shows keys you can use to enable various
 options and jump through code at runtime. After we install dap-mode we will also install dap-java.
 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+#+begin_src emacs-lisp 
 (use-package dap-mode
   :ensure t
   :after (lsp-mode)
@@ -1072,18 +1072,20 @@ options and jump through code at runtime. After we install dap-mode we will also
 ** Treemacs
 Treemacs provides UI elements used for LSP UI. M-9 shows error list. 
 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(use-package lsp-treemacs
-  :after (lsp-mode treemacs)
-  :ensure t
-  :commands lsp-treemacs-errors-list
-  :bind (:map lsp-mode-map
-         ("M-9" . lsp-treemacs-errors-list)))
+#+begin_src emacs-lisp 
+  (use-package lsp-treemacs
+    :after (lsp-mode treemacs)
+    :ensure t
+    :commands lsp-treemacs-errors-list
+    :bind (:map lsp-mode-map
+           ("M-9" . lsp-treemacs-errors-list)))
+#+end_src
 
-(use-package treemacs
-  :ensure t
-  :commands (treemacs)
-  :after (lsp-mode))  
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package treemacs
+    :ensure t
+    :commands (treemacs)
+    :after (lsp-mode))  
 #+end_src
 
 
@@ -1103,7 +1105,7 @@ This will quickly add projectile projects to Treemacs
 ** lsp
 Haven't really got this running so smoothly yet, find nvim's lsp stuff
 works a bit better out of the box. 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+#+begin_src emacs-lisp 
   (use-package lsp-mode
     :init 
     (setq lsp-keymap-prefix "C-c l")
@@ -1122,7 +1124,9 @@ works a bit better out of the box.
     (lsp-ui-doc-show))
 
   (use-package lsp-ivy)
+#+end_src
 
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (use-package which-key
     :init (which-key-mode)
     :diminish which-key-mode
@@ -1130,10 +1134,19 @@ works a bit better out of the box.
    (setq which-key-idle-delay 1))
 #+end_src
 
+*** Eglot
+
+Take eglot out for a sping.
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package eglot
+    :ensure t)
+#+end_src
+
 *** Language Servers
 **** pyright
 
-     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+Shelve this for the time being
+     #+begin_src emacs-lisp 
      (use-package lsp-pyright
        :after lsp-mode
        :custom
