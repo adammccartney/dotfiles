@@ -208,6 +208,9 @@ if [ -f ~/.bash.d/cht.sh ] ; then
     . ~/.bash.d/cht.sh
 fi
 
+# swap the control and caps key
+swap_ctrl_caps
+
 # Gopath
 # add the go binary to path
 export PATH=$PATH:/usr/local/go/bin
