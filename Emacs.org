@@ -946,6 +946,12 @@ Basic erc setup
 #+end_src
 
 * Completion & searching 
+** company mode
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package company-mode
+    :ensure t)
+#+end_src
+
 ** ivy 
 Includes a number of minimalist completion tools that make life a bit easier.
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -1250,7 +1256,6 @@ Add slime that uses the sbcl
     :mode "\\.py\\'"
     :init
     (setq python-shell-interpreter "python3")
-    :hook (python-mode . lsp-deferred)
     :config
     (setq python-indent-level 4))
 #+end_src

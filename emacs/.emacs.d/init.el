@@ -636,6 +636,9 @@ GROUP BY id")))
         markdown-command
         "pandoc -f markdown -t html5 -s --self-contained --smart"))
 
+(use-package company-mode
+  :ensure t)
+
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -780,7 +783,6 @@ company-yasnippet' to all company backends."
   :mode "\\.py\\'"
   :init
   (setq python-shell-interpreter "python3")
-  :hook (python-mode . lsp-deferred)
   :config
   (setq python-indent-level 4))
 
