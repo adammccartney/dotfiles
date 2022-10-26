@@ -29,44 +29,6 @@ functional package management.
 #+end_src
 
 * Packages
-** Old package managment with package.el
-     
-NOTE: tangle is disabled, chunk here for reference purposes
-#+begin_src emacs-lisp 
-
-  (make-directory (locate-user-emacs-file "local") :no-error)
-  (add-to-list 'load-path "~/.emacs.d/lisp")
-  (add-to-list 'Load-path
-               (format "~/.emacs.d/site-lisp/%s" emacs-version))
-  (add-to-list 'load-path
-               (format "~/.emacs.d/site-lisp/%s/lisp" emacs-version))
-  (add-to-list 'load-path
-               (format "~/.emacs.d/site-lisp/%s/etc" emacs-version))
-
-
-  (add-to-list 'load-path 
-               (format "~/.emacs.d/site-lisp/%s/dash" emacs-version))
-  (add-to-list 'load-path 
-               (format "~/.emacs.d/site-lisp/%s/transient/lisp" emacs-version))
-  (add-to-list 'load-path 
-               (format "~/.emacs.d/site-lisp/%s/with-editor" emacs-version))
-  (add-to-list 'load-path 
-               (format "~/.emacs.d/site-lisp/%s/magit/lisp" emacs-version))
-
-  (with-eval-after-load 'info
-    (info-initialize)
-    (add-to-list 'Info-directory-list
-                 (format "~/.emacs.d/site-lisp/%s/magit/Documentation/" emacs-version)))
-               
-  (load-file "~/.emacs.d/packages.el")
-  (require 'autoloads)
-  (setf package-enable-at-startup nil)
-  (require 'use-package)
-
-  (setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                           ("org" . "https://orgmode.org/elpa/")
-                           ("elpa" . "https://elpa.gnu.org/packages/")))
-#+end_src
 
 ** Straight.el
 Replacement for package.el. Functional package manager for emacs 
@@ -378,49 +340,7 @@ Evil is using C-u for scrolling, so this needs to be rebound to another variable
             (t . (semibold)))))
 #+end_src
 
-Going to try out these snazzy looking doom themes.
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-  (use-package spacegray-theme
-    :defer t)
-
-  (use-package doom-themes
-    :ensure t
-    :config
-    ;; Global settings (defaults)
-    (setq doom-themes-enable-bold t
-          doom-themes-enable-italic t)
-    ;;(load-theme 'doom-nord t)
-
-    ;; Enable flashing mode-line on errors
-    (doom-themes-visual-bell-config)
-    ;; treemacs 
-    (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors for less minimal icon theme
-    (doom-themes-treemacs-config)
-    ;; Corrects (and improves) org-mode's native fontification.
-    (doom-themes-org-config))
-#+end_src
-
-sanityinc was the theme that I had been using, leaving it here for a minute.
-#+begin_src emacs-lisp 
-  (use-package color-theme-sanityinc-tomorrow
-    :config
-    (setf custom-safe-themes t)
-    (color-theme-sanityinc-tomorrow-night)
-    (global-hl-line-mode 1)
-    (custom-set-faces
-     '(cursor ((t :background "#eebb28")))))
-#+end_src
-
 ** Font
-
-This function needs to run after the doom-theme has been loaded
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-  (custom-set-faces
-   `(mode-line ((t (:background ,(doom-color 'dark-violet)))))
-   `(font-lock-comment-face ((t (:foreground ,(doom-color 'base6))))))
-#+end_src
-
-
 
 #+begin_src emacs-lisp
 
@@ -581,6 +501,17 @@ Evil mode get setup some vim style keybindings
     :config
     (when (executable-find "firefox")
       (setf browse-url-browser-function #'browse-url-firefox)))
+      
+      #+end_src
+
+* Buffer management
+
+** ibuffer
+
+Use emacs ibuffer in place of list-buffers, this command is called with =C-x C-b=
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (global-set-key [remap list-buffers] 'ibuffer)
 #+end_src
 
 ** Buffler
@@ -950,23 +881,23 @@ Basic erc setup
 ** ivy 
 Includes a number of minimalist completion tools that make life a bit easier.
 #+begin_src emacs-lisp 
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
+  (use-package ivy
+    :diminish
+    :bind (("C-s" . swiper)
+           :map ivy-minibuffer-map
+           ("TAB" . ivy-alt-done)
+           ("C-l" . ivy-alt-done)
+           ("C-j" . ivy-next-line)
+           ("C-k" . ivy-previous-line)
+           :map ivy-switch-buffer-map
+           ("C-k" . ivy-previous-line)
+           ("C-l" . ivy-done)
+           ("C-d" . ivy-switch-buffer-kill)
+           :map ivy-reverse-i-search-map
+           ("C-k" . ivy-previous-line)
+           ("C-d" . ivy-reverse-i-search-kill))
+    :config
+    (ivy-moe 1))
 #+end_src
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -974,16 +905,36 @@ Includes a number of minimalist completion tools that make life a bit easier.
     :ensure t)
 #+end_src
 
+** Vertico
+
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (use-package vertico
     :ensure t
-    :bind (("C-s" . swiper)))
+    :bind (("C-s" . swiper))
+    :custom
+    (vertico-cycle t)
+    :init
+    (vertico-mode))
+
+  (use-package savehist
+    :init
+    (savehist-mode))
+
+  (use-package marginalia
+    :after vertico
+    :ensure t
+    :custom
+    (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+    :init
+    (marginalia-mode))
 #+end_src
 
 ** counsel
 ~M-x~ on steroids
 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+Give this a rest for a while in favor of counsel
+
+#+begin_src emacs-lisp 
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
          ("C-x b" . counsel-ibuffer)
@@ -992,15 +943,23 @@ Includes a number of minimalist completion tools that make life a bit easier.
          ("C-r" . 'counsel-minibuffer-history)))
 #+end_src
 
-** ctags
-#+begin_src emacs-lisp
-    
-(use-package ctags
-  :init
-  (global-set-key (kbd "M-.") #'ctags-find)
-  (global-set-key (kbd "M-?") #'ctags-find-reference))
 
+** consult
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package consult
+    :ensure t)
 #+end_src
+
+** orderless
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package orderless
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
+#+end_src
+
 
 ** YASnippet
    #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -1450,7 +1409,7 @@ really nice UI for beduggin!
     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
     (use-package flycheck
       :defer t
-      :hook (lsp-mode . flycheck-mode))
+      :hook (eglot . flycheck-mode))
     #+end_src
 *** Smart Parens 
     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
