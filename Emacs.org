@@ -946,15 +946,10 @@ Basic erc setup
 #+end_src
 
 * Completion & searching 
-** company mode
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-  (use-package company-mode
-    :ensure t)
-#+end_src
 
 ** ivy 
 Includes a number of minimalist completion tools that make life a bit easier.
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+#+begin_src emacs-lisp 
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -974,6 +969,17 @@ Includes a number of minimalist completion tools that make life a bit easier.
   (ivy-mode 1))
 #+end_src
 
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package consult
+    :ensure t)
+#+end_src
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package vertico
+    :ensure t
+    :bind (("C-s" . swiper)))
+#+end_src
+
 ** counsel
 ~M-x~ on steroids
 
@@ -984,7 +990,6 @@ Includes a number of minimalist completion tools that make life a bit easier.
          ("C-x C-f" . counsel-find-file)
          :map minibuffer-local-map
          ("C-r" . 'counsel-minibuffer-history)))
-         
 #+end_src
 
 ** ctags
@@ -1001,6 +1006,7 @@ Includes a number of minimalist completion tools that make life a bit easier.
    #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
    (use-package yasnippet)
    #+end_src
+
 ** company
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package company
