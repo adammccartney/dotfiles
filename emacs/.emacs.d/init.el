@@ -203,25 +203,6 @@
           (2 . (rainbow overline 1.1))
           (t . (semibold)))))
 
-(use-package spacegray-theme
-  :defer t)
-
-(use-package doom-themes
-  :ensure t
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t)
-  ;;(load-theme 'doom-nord t)
-
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; treemacs 
-  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors for less minimal icon theme
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
-
 (custom-set-faces
  `(mode-line ((t (:background ,(doom-color 'dark-violet)))))
  `(font-lock-comment-face ((t (:foreground ,(doom-color 'base6))))))
@@ -336,6 +317,8 @@
   :config
   (when (executable-find "firefox")
     (setf browse-url-browser-function #'browse-url-firefox)))
+
+(global-set-key [remap list-buffers] 'ibuffer)
 
 (use-package bufler
   :disabled
@@ -641,14 +624,26 @@ GROUP BY id")))
 
 (use-package vertico
   :ensure t
-  :bind (("C-s" . swiper)))
+  :bind (("C-s" . swiper))
+  :custom
+  (vertico-cycle t)
+  :init
+  (vertico-mode))
 
-(use-package counsel
-  :bind (("M-x" . counsel-M-x)
-         ("C-x b" . counsel-ibuffer)
-         ("C-x C-f" . counsel-find-file)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history)))
+(use-package savehist
+  :init
+  (savehist-mode))
+
+(use-package marginalia
+  :after vertico
+  :ensure t
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  :init
+  (marginalia-mode))
+
+(use-package consult
+  :ensure t)
 
 (use-package yasnippet)
 
@@ -858,7 +853,7 @@ company-yasnippet' to all company backends."
 
 (use-package flycheck
   :defer t
-  :hook (lsp-mode . flycheck-mode))
+  :hook (eglot . flycheck-mode))
 
 (use-package smartparens
   :hook (prog-mode . smartparens-mode))
