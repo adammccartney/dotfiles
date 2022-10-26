@@ -342,15 +342,6 @@ Evil is using C-u for scrolling, so this needs to be rebound to another variable
 
 ** Font
 
-This function needs to run after the doom-theme has been loaded
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-  (custom-set-faces
-   `(mode-line ((t (:background ,(doom-color 'dark-violet)))))
-   `(font-lock-comment-face ((t (:foreground ,(doom-color 'base6))))))
-#+end_src
-
-
-
 #+begin_src emacs-lisp
 
   ;; Frames and fonts
@@ -960,16 +951,15 @@ Give this a rest for a while in favor of counsel
     :ensure t)
 #+end_src
 
-
-** ctags
-#+begin_src emacs-lisp
-    
-(use-package ctags
-  :init
-  (global-set-key (kbd "M-.") #'ctags-find)
-  (global-set-key (kbd "M-?") #'ctags-find-reference))
-
+** orderless
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package orderless
+    :ensure t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
 #+end_src
+
 
 ** YASnippet
    #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el

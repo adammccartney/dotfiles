@@ -203,10 +203,6 @@
           (2 . (rainbow overline 1.1))
           (t . (semibold)))))
 
-(custom-set-faces
- `(mode-line ((t (:background ,(doom-color 'dark-violet)))))
- `(font-lock-comment-face ((t (:foreground ,(doom-color 'base6))))))
-
 (use-package all-the-icons
   :if (display-graphic-p))
 
@@ -644,6 +640,12 @@ GROUP BY id")))
 
 (use-package consult
   :ensure t)
+
+(use-package orderless
+  :ensure t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package yasnippet)
 
