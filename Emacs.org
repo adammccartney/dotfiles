@@ -1,3 +1,4 @@
+
 #+TITLE: Emacs config
 
 * Preface
@@ -109,15 +110,22 @@ use utf-8
   #+end_src
 * Keybindings
 
-** Rebind the universal argument key 
-Evil is using C-u for scrolling, so this needs to be rebound to another variable.
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+** Rebinds necessary 
+
+Evil mode obscures some important key bindings in emacs. [[id:84275220-e45f-4031-9fdb-b4a41028113f][vim to emacs keybindings]] shows a list
+of the important ones that I use personally most often.
+
+
+#+begin_src emacs-lisp 
 (global-set-key (kbd "C-x k") #'kill-this-buffer)
 #+end_src
 
 ** Rebind universal argument key
 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+Remove this for now as we try to be delivered from evil.
+Evil is using C-u for scrolling, so this needs to be rebound to another variable.
+
+#+begin_src emacs-lisp 
 (global-set-key (kbd "C-M-u") 'universal-argument)
 #+end_src
 
@@ -436,15 +444,19 @@ Use dired for searching directories
 #+end_src
 
 ** Evil
-    
+
+Putting evil on hold for a while. Running into trouble with obscurificaation of built in emacs
+keybindings, going to see how life is without evil for a while.
+
 Evil mode get setup some vim style keybindings 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+#+begin_src emacs-lisp 
   (use-package evil
     :init
     (setq evil-want-integration t)
     (setq evil-want-keybinding nil)
     (setq evil-want-C-u-scroll t)
     (setq evil-want-C-i-jump nil)
+    (setq evil-search-module 'isearch)
     :config
     (evil-mode 1)
     (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
@@ -455,12 +467,21 @@ Evil mode get setup some vim style keybindings
     (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
     (evil-set-initial-state 'messages-buffer-mode 'normal)
-    (evil-set-initial-state 'dashboard-mode 'normal))
+    (evil-set-initial-state 'dashboard-mode 'normal)
+    )
 
   (use-package evil-collection
     :after evil
     :config
     (evil-collection-init))
+
+  #+end_src
+  
+
+
+* Parenthesis highlighting
+
+  #+begin_src emacs-lisp
 
   (use-package paren
     :config (show-paren-mode))
@@ -486,14 +507,6 @@ Evil mode get setup some vim style keybindings
            typescript-mode
            js2-mode))
 
-
-  (use-package javadoc-lookup
-    :defer t
-    :bind ("C-h j" . javadoc-lookup)
-    :config
-    (ignore-errors
-      (setf javadoc-lookup-cache-dir (locate-user-emacs-file "local/javadoc"))))
-
   (use-package browse-url
     :defer t
     :init
@@ -501,7 +514,7 @@ Evil mode get setup some vim style keybindings
     :config
     (when (executable-find "firefox")
       (setf browse-url-browser-function #'browse-url-firefox)))
-      
+
       #+end_src
 
 * Buffer management
@@ -517,7 +530,7 @@ Use emacs ibuffer in place of list-buffers, this command is called with =C-x C-b
 ** Buffler
 [[https://github.com/alphapapa/bufler.el][Buffler]] is a butler for buffers. Helps with organizing buffers according 
 to a set of grouping rules.
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+#+begin_src emacs-lisp 
   (use-package bufler
     :disabled
     :config
@@ -816,7 +829,6 @@ version.
     (setq graphviz-dot-indent-width 4))
 #+end_src
 
-
 * Readers
 ** nov.el
 
@@ -859,22 +871,42 @@ Basic erc setup
      erc-track-exclude-server-buffer t))
 #+end_src
 * Documentation 
-*** markdown 
+** markdown 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(use-package markdown-mode
-  :defer t
-  :mode ("\\.md$" "\\.markdown$" "vimperator-.+\\.tmp$")
-  :config
-  (add-hook 'markdown-mode-hook
-            (lambda ()
-              (remove-hook 'fill-nobreak-predicate
-                           'markdown-inside-link-p t)))
-  (setf sentence-end-double-space nil
-        markdown-indent-on-enter nil
-        markdown-command
-        "pandoc -f markdown -t html5 -s --self-contained --smart"))
-
+  (use-package markdown-mode
+    :defer t
+    :mode ("\\.md$" "\\.markdown$" "vimperator-.+\\.tmp$")
+    :config
+    (add-hook 'markdown-mode-hook
+              (lambda ()
+                (remove-hook 'fill-nobreak-predicate
+                             'markdown-inside-link-p t)))
+    (add-hook 'markdown-mode-hook 'flyspell-mode)
+    (add-hook 'markdown-mode-hook 'conditionally-turn-on-pandoc)
+    (setf sentence-end-double-space nil
+          markdown-indent-on-enter nil
+          markdown-command
+          "pandoc -f markdown -t html"))
 #+end_src
+
+*** imenu-list
+This is useful for creating an imenu list of headings in a markdown document.
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package imenu-list
+    :ensure t
+    :bind (("C-'" . imenu-list-smart-toggle))
+    :config
+    (setq imenu-list-focus-after-activation t
+        imenu-list-auto-resize nil))
+#+end_src
+
+** pandoc
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package pandoc-mode
+    :ensure t)
+#+end_src
+
 
 * Completion & searching 
 
@@ -910,7 +942,6 @@ Includes a number of minimalist completion tools that make life a bit easier.
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (use-package vertico
     :ensure t
-    :bind (("C-s" . swiper))
     :custom
     (vertico-cycle t)
     :init
@@ -943,7 +974,6 @@ Give this a rest for a while in favor of counsel
          ("C-r" . 'counsel-minibuffer-history)))
 #+end_src
 
-
 ** consult
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -960,7 +990,6 @@ Give this a rest for a while in favor of counsel
     (completion-category-overrides '((file (styles basic partial-completion)))))
 #+end_src
 
-
 ** YASnippet
    #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
    (use-package yasnippet)
@@ -968,54 +997,55 @@ Give this a rest for a while in favor of counsel
 
 ** company
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(use-package company
-  :custom
-  (company-idle-delay 0)
-  (company-minimum-prefix-length 1)
-  (company-tooltip-align-annotations t)
-  (company-dabbrev-downcase nil)
-  (company-dabbrev-other-buffers t) ; search buffers with the same major mode
-  :hook
-  (dashboard-after-initialize . global-company-mode)
-  :config
-  (add-to-list 'company-begin-commands 'backwards-delete-char-untabify)
-  
+  (use-package company
+    :custom
+    (company-idle-delay 0)
+    (company-minimum-prefix-length 1)
+    (company-tooltip-align-annotations t)
+    (company-dabbrev-downcase nil)
+    (company-dabbrev-other-buffers t) ; search buffers with the same major mode
+    :hook
+    (dashboard-after-initialize . global-company-mode)
+    :config
+    (add-to-list 'company-begin-commands 'backwards-delete-char-untabify)
 
-  ;; Show YASnippet snippets in company
 
-  (defun fk/company-backend-with-yas (backend)
-    "Add ':with company-yasnippet' to the given company backend."
-    (if (and (listp backend) (member 'company-yasnippet backend))
-        backend
-      (append (if (consp backend)
-                  backend
-                (list backend))
-              '(:with company-yasnippet))))
+    ;; Show YASnippet snippets in company
 
-  (defun fk/company-smart-snippets (fn command &optional arg &rest _)
-    "Do not show yasnippet candidates after dot."
-    ;;Source:
-    ;;https://www.reddit.com/r/emacs/comments/7dnbxl/how_to_temporally_filter_companymode_candidates/
-    (unless (when (and (equal command 'prefix) (> (point) 0))
-              (let* ((prefix (company-grab-symbol))
-                     (point-before-prefix (if (> (- (point) (length prefix) 1) 0)
-                                              (- (point) (length prefix) 1)
-                                            1))
-                     (char (buffer-substring-no-properties point-before-prefix (1+ point-before-prefix))))
-                (string= char ".")))
-      (funcall fn command arg)))
+    (defun fk/company-backend-with-yas (backend)
+      "Add ':with company-yasnippet' to the given company backend."
+      (if (and (listp backend) (member 'company-yasnippet backend))
+          backend
+        (append (if (consp backend)
+                    backend
+                  (list backend))
+                '(:with company-yasnippet))))
 
-  ;; TODO: maybe show snippets at first?
-  (defun fk/company-enable-snippets ()
-    "Enable snippet suggestions in company by adding ':with
-company-yasnippet' to all company backends."
-    (interactive)
-    (setq company-backends (mapcar 'fk/company-backend-with-yas company-backends))
-    (advice-add 'company-yasnippet :around 'fk/company-smart-snippets))
+    (defun fk/company-smart-snippets (fn command &optional arg &rest _)
+      "Do not show yasnippet candidates after dot."
+      ;;Source:
+      ;;https://www.reddit.com/r/emacs/comments/7dnbxl/how_to_temporally_filter_companymode_candidates/
+      (unless (when (and (equal command 'prefix) (> (point) 0))
+                (let* ((prefix (company-grab-symbol))
+                       (point-before-prefix (if (> (- (point) (length prefix) 1) 0)
+                                                (- (point) (length prefix) 1)
+                                              1))
+                       (char (buffer-substring-no-properties point-before-prefix (1+ point-before-prefix))))
+                  (string= char ".")))
+        (funcall fn command arg)))
 
-  (fk/company-enable-snippets))
+    ;; TODO: maybe show snippets at first?
+    (defun fk/company-enable-snippets ()
+      "Enable snippet suggestions in company by adding ':with
+  company-yasnippet' to all company backends."
+      (interactive)
+      (setq company-backends (mapcar 'fk/company-backend-with-yas company-backends))
+      (advice-add 'company-yasnippet :around 'fk/company-smart-snippets))
+
+    (fk/company-enable-snippets))
+
+  (add-hook 'after-init-hook 'global-company-mode)
 #+end_src
-
 
 ** Dap Mode
 Emacs Debug Adapter Protocol aka DAP Mode means we can debug programs. Pfff...what sort of a
@@ -1107,10 +1137,15 @@ works a bit better out of the box.
 
 *** Eglot
 
-Take eglot out for a sping.
+Take eglot out for a spin.
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (use-package eglot
-    :ensure t)
+    :ensure t
+    :hook
+    (add-hook 'python-mode-hook 'eglot-ensure)
+    :config
+    (setq eglot-autoshutdown t))
+  
 #+end_src
 
 *** Language Servers
@@ -1134,7 +1169,7 @@ Shelve this for the time being
 
 Project organization 
 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+#+begin_src emacs-lisp 
  (use-package projectile
   :diminish projectile-mode
   :config (projectile-mode)
@@ -1227,8 +1262,9 @@ Add slime that uses the sbcl
 
 **** pyvenv
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el 
-(use-package pyvenv
- :after python-mode)
+  (use-package pyvenv
+   :ensure t
+   :after python-mode)
 #+end_src
 
 **** pytest
@@ -1407,9 +1443,10 @@ really nice UI for beduggin!
 ** Productivity
 *** Flycheck
     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-    (use-package flycheck
-      :defer t
-      :hook (eglot . flycheck-mode))
+      (use-package flycheck
+        :defer t
+        :hook
+        (eglot . flycheck-mode))
     #+end_src
 *** Smart Parens 
     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el

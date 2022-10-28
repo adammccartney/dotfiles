@@ -65,10 +65,6 @@
 
 (server-start)
 
-(global-set-key (kbd "C-x k") #'kill-this-buffer)
-
-(global-set-key (kbd "C-M-u") 'universal-argument)
-
 ;; Some global keybindings
 (column-number-mode)
 (global-display-line-numbers-mode t)
@@ -251,103 +247,7 @@
             ("\\(\\.png\\|\\.jpe?g\\)\\'" "qiv")
             ("\\.gif\\'" "animate")))))
 
-(use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-i-jump nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-
-  ;; Use visual line motions even outside of visual-line-mode buffers
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
-
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
-
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
-
-(use-package paren
-  :config (show-paren-mode))
-
-(use-package rainbow-delimiters
-  :defer t
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode)
-  :config
-  (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4")
-  (setf rainbow-delimiters-max-face-count 1)
-  (set-face-attribute 'rainbow-delimiters-unmatched-face nil
-                      :foreground 'unspecified
-                      :inherit 'error)
-  (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4"))
-
-(use-package rainbow-mode
-  :defer t
-  :hook (org-mode
-         emacs-lisp-mode
-         web-mode
-         typescript-mode
-         js2-mode))
-
-
-(use-package javadoc-lookup
-  :defer t
-  :bind ("C-h j" . javadoc-lookup)
-  :config
-  (ignore-errors
-    (setf javadoc-lookup-cache-dir (locate-user-emacs-file "local/javadoc"))))
-
-(use-package browse-url
-  :defer t
-  :init
-  (setf url-cache-directory (locate-user-emacs-file "local/url"))
-  :config
-  (when (executable-find "firefox")
-    (setf browse-url-browser-function #'browse-url-firefox)))
-
 (global-set-key [remap list-buffers] 'ibuffer)
-
-(use-package bufler
-  :disabled
-  :config
-  (evil-collection-define-key 'normal 'bufler-list-mode-map
-       (kbd "RET") 'bufler-list-buffer-switch
-       (kbd "M-RET") 'bufler-list-buffer-peek
-       "D" 'bufler-list-buffer-kill)
-  (setf bufler-groups
-        (bufler-defgroups
-         ;; Subgroup collecting all named workspaces
-         (group (auto-workspace))
-         ;; Subgoup collecting buffers in a projectile project.
-         (group (auto-projectile))
-         (group
-            ;; Group all 
-          (group-or "Help/Info"
-                     (mode-match "*Help*" (rx bos (or "help-" "helpful-")))
-                     (mode-match "*Info*" (rx bos "info-"))))
-         (group
-          ;; Collect all special buffers
-           (group-and "*Special*"
-                      (name-match "**Special**"
-                                  (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace" "Pinentry") "*"))
-                      (lambda (buffer)
-                        (unless (or (funcall (mode-match "Magit" (rx bos "magit-status"))
-                                             buffer)
-                                    (funcall (mode-match "Dired" (rx bos "dired"))
-                                             buffer)
-                                    (funcall (auto-file) buffer))
-                          "*Special*"))))
-          ;; group remaining buffers by major mode
-         (auto-mode))))
 
 ;; Org mode
 (use-package org 
@@ -610,17 +510,28 @@ GROUP BY id")))
             (lambda ()
               (remove-hook 'fill-nobreak-predicate
                            'markdown-inside-link-p t)))
+  (add-hook 'markdown-mode-hook 'flyspell-mode)
+  (add-hook 'markdown-mode-hook 'conditionally-turn-on-pandoc)
   (setf sentence-end-double-space nil
         markdown-indent-on-enter nil
         markdown-command
-        "pandoc -f markdown -t html5 -s --self-contained --smart"))
+        "pandoc -f markdown -t html"))
+
+(use-package imenu-list
+  :ensure t
+  :bind (("C-'" . imenu-list-smart-toggle))
+  :config
+  (setq imenu-list-focus-after-activation t
+      imenu-list-auto-resize nil))
+
+(use-package pandoc-mode
+  :ensure t)
 
 (use-package consult
   :ensure t)
 
 (use-package vertico
   :ensure t
-  :bind (("C-s" . swiper))
   :custom
   (vertico-cycle t)
   :init
@@ -660,7 +571,7 @@ GROUP BY id")))
   (dashboard-after-initialize . global-company-mode)
   :config
   (add-to-list 'company-begin-commands 'backwards-delete-char-untabify)
-  
+
 
   ;; Show YASnippet snippets in company
 
@@ -696,6 +607,8 @@ company-yasnippet' to all company backends."
 
   (fk/company-enable-snippets))
 
+(add-hook 'after-init-hook 'global-company-mode)
+
 (use-package treemacs
   :ensure t
   :commands (treemacs)
@@ -712,22 +625,11 @@ company-yasnippet' to all company backends."
  (setq which-key-idle-delay 1))
 
 (use-package eglot
-  :ensure t)
-
-(use-package projectile
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  ;; NOTE: Set this to the folder where you keep your Git repos!
-  (when (file-directory-p "~/.local/src")
-    (setq projectile-project-search-path '("~/.local/src" "~/Code" "~/.local/src/mdw")))
-  (setq projectile-switch-project-action #'projectile-dired))
-
-(use-package counsel-projectile
-  :config (counsel-projectile-mode))
+  :ensure t
+  :hook
+  (add-hook 'python-mode-hook 'eglot-ensure)
+  :config
+  (setq eglot-autoshutdown t))
 
 (use-package magit
   :straight t
@@ -770,6 +672,7 @@ company-yasnippet' to all company backends."
   (setq python-indent-level 4))
 
 (use-package pyvenv
+ :ensure t
  :after python-mode)
 
 (use-package python-test
@@ -855,7 +758,8 @@ company-yasnippet' to all company backends."
 
 (use-package flycheck
   :defer t
-  :hook (eglot . flycheck-mode))
+  :hook
+  (eglot . flycheck-mode))
 
 (use-package smartparens
   :hook (prog-mode . smartparens-mode))
