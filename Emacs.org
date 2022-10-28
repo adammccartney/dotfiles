@@ -907,7 +907,6 @@ This is useful for creating an imenu list of headings in a markdown document.
     :ensure t)
 #+end_src
 
-
 * Completion & searching 
 
 ** ivy 
@@ -937,8 +936,8 @@ Includes a number of minimalist completion tools that make life a bit easier.
     :ensure t)
 #+end_src
 
-** Vertico
 
+** Vertico
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (use-package vertico
     :ensure t
