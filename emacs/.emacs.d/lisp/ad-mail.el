@@ -2,6 +2,8 @@
 :defer 20
 :config
 
+;; Turn off auto fill
+(add-hook 'mu4e-compose-mode-hook 'turn-off-auto-fill)
 ;; automatically add a gpg signature to every email (signed as adam@mur.at) 
 (add-hook 'message-send-hook 'mml-secure-message-sign-pgpmime)
 
@@ -99,9 +101,6 @@
 
 ;; don't keep message buffers around
 (setq message-kill-buffer-on-exit t)
-
-;; allow for flowed formatting
-(setq mu4e-compose-format-flowed t)
 
 ;; Use a specific key for signing by referencing its thumbprint
 (setq mml-secure-openpgp-signers '("C5BF27EE0290CDE5BC8A8801A5FCE0B0A42EFDA8"))
