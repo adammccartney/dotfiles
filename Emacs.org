@@ -478,7 +478,6 @@ Evil mode get setup some vim style keybindings
   #+end_src
   
 
-
 * Parenthesis highlighting
 
   #+begin_src emacs-lisp
@@ -909,33 +908,6 @@ This is useful for creating an imenu list of headings in a markdown document.
 
 * Completion & searching 
 
-** ivy 
-Includes a number of minimalist completion tools that make life a bit easier.
-#+begin_src emacs-lisp 
-  (use-package ivy
-    :diminish
-    :bind (("C-s" . swiper)
-           :map ivy-minibuffer-map
-           ("TAB" . ivy-alt-done)
-           ("C-l" . ivy-alt-done)
-           ("C-j" . ivy-next-line)
-           ("C-k" . ivy-previous-line)
-           :map ivy-switch-buffer-map
-           ("C-k" . ivy-previous-line)
-           ("C-l" . ivy-done)
-           ("C-d" . ivy-switch-buffer-kill)
-           :map ivy-reverse-i-search-map
-           ("C-k" . ivy-previous-line)
-           ("C-d" . ivy-reverse-i-search-kill))
-    :config
-    (ivy-moe 1))
-#+end_src
-
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-  (use-package consult
-    :ensure t)
-#+end_src
-
 
 ** Vertico
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -959,20 +931,6 @@ Includes a number of minimalist completion tools that make life a bit easier.
     (marginalia-mode))
 #+end_src
 
-** counsel
-~M-x~ on steroids
-
-Give this a rest for a while in favor of counsel
-
-#+begin_src emacs-lisp 
-(use-package counsel
-  :bind (("M-x" . counsel-M-x)
-         ("C-x b" . counsel-ibuffer)
-         ("C-x C-f" . counsel-find-file)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history)))
-#+end_src
-
 ** consult
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -994,57 +952,62 @@ Give this a rest for a while in favor of counsel
    (use-package yasnippet)
    #+end_src
 
-** company
+** corfu
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-  (use-package company
+  (use-package corfu
+    :ensure t
     :custom
-    (company-idle-delay 0)
-    (company-minimum-prefix-length 1)
-    (company-tooltip-align-annotations t)
-    (company-dabbrev-downcase nil)
-    (company-dabbrev-other-buffers t) ; search buffers with the same major mode
-    :hook
-    (dashboard-after-initialize . global-company-mode)
-    :config
-    (add-to-list 'company-begin-commands 'backwards-delete-char-untabify)
+    (corfu-cycle t)       ;; Enable cylcing for 'corfu-next/previous
+    (corfu-auto t)        ;; Enable auto completion
+    (corfu-separator ?\s) ;; Orderless field seperator
+    (corfu-quit-at-boundary nil) ;; Never quit at completion boundary.
+    (corfu-echo-documentation t) ;; Show doumentation in the echo area
 
-
-    ;; Show YASnippet snippets in company
-
-    (defun fk/company-backend-with-yas (backend)
-      "Add ':with company-yasnippet' to the given company backend."
-      (if (and (listp backend) (member 'company-yasnippet backend))
-          backend
-        (append (if (consp backend)
-                    backend
-                  (list backend))
-                '(:with company-yasnippet))))
-
-    (defun fk/company-smart-snippets (fn command &optional arg &rest _)
-      "Do not show yasnippet candidates after dot."
-      ;;Source:
-      ;;https://www.reddit.com/r/emacs/comments/7dnbxl/how_to_temporally_filter_companymode_candidates/
-      (unless (when (and (equal command 'prefix) (> (point) 0))
-                (let* ((prefix (company-grab-symbol))
-                       (point-before-prefix (if (> (- (point) (length prefix) 1) 0)
-                                                (- (point) (length prefix) 1)
-                                              1))
-                       (char (buffer-substring-no-properties point-before-prefix (1+ point-before-prefix))))
-                  (string= char ".")))
-        (funcall fn command arg)))
-
-    ;; TODO: maybe show snippets at first?
-    (defun fk/company-enable-snippets ()
-      "Enable snippet suggestions in company by adding ':with
-  company-yasnippet' to all company backends."
-      (interactive)
-      (setq company-backends (mapcar 'fk/company-backend-with-yas company-backends))
-      (advice-add 'company-yasnippet :around 'fk/company-smart-snippets))
-
-    (fk/company-enable-snippets))
-
-  (add-hook 'after-init-hook 'global-company-mode)
+    ;; Enable Corfu globally
+    :init
+    (global-corfu-mode))
 #+end_src
+
+** emacs
+From corfu readme
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package emacs
+    :init
+    ;; TAB cycle if there are only a few candidates
+    (setq completion-cycle-threshold 3)
+
+    ;; Hide commands in M-x which do not apply to the current mode
+    (setq read-extended-command-predicate
+          #'command-completion-default-include-p)
+
+    ;; Enable indentation+completion using the TAB key.
+    ;; completion-at-point is often bound to M-TAB
+    (setq tab-always-indent 'complete))
+#+end_src
+
+** dabbrev
+Again from the corfu readme, recommended to use with corfu
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package dabbrev
+    :ensure t
+    ;; Swap M-/ and C-M-/
+    :bind (("M-/" . dabbrev-completion)
+           ("C-M-/" . dabbrev-expand))
+    ;; Other useful Dabbrev configurations.
+    :custom
+    (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
+#+end_src
+
+** dumb jump
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package dumb-jump
+    :ensure t)
+
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+  (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+#+end_src
+
 
 ** Dap Mode
 Emacs Debug Adapter Protocol aka DAP Mode means we can debug programs. Pfff...what sort of a
@@ -1106,7 +1069,7 @@ This will quickly add projectile projects to Treemacs
 Haven't really got this running so smoothly yet, find nvim's lsp stuff
 works a bit better out of the box. 
 #+begin_src emacs-lisp 
-  (use-package lsp-mode
+  (use-package lsp-mode 
     :init 
     (setq lsp-keymap-prefix "C-c l")
     :hook ((python-mode . lsp)
@@ -1137,11 +1100,11 @@ works a bit better out of the box.
 *** Eglot
 
 Take eglot out for a spin.
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el 
   (use-package eglot
     :ensure t
     :hook
-    (add-hook 'python-mode-hook 'eglot-ensure)
+    (python-mode-hook . eglot-ensure)
     :config
     (setq eglot-autoshutdown t))
   
@@ -1164,29 +1127,6 @@ Shelve this for the time being
      #+end_src
 
 * Development
-** projectile
-
-Project organization 
-
-#+begin_src emacs-lisp 
- (use-package projectile
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  ;; NOTE: Set this to the folder where you keep your Git repos!
-  (when (file-directory-p "~/.local/src")
-    (setq projectile-project-search-path '("~/.local/src" "~/Code" "~/.local/src/mdw")))
-  (setq projectile-switch-project-action #'projectile-dired))
-
-(use-package counsel-projectile
-  :config (counsel-projectile-mode))
-#+end_src
-
-** Git
-   
 ** Magit
 Very nice interface for Git.    
 
@@ -1259,6 +1199,18 @@ Add slime that uses the sbcl
     (setq python-indent-level 4))
 #+end_src
 
+**** Jedi mode for company
+
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+  (use-package company-jedi
+    :ensure t
+    :after company)
+
+  (defun my/python-mode-hook ()
+    (add-to-list 'company-backends 'company-jedi))
+  (add-hook 'python-mode-hook 'my/python-mode-hook)
+#+end_src
+
 **** pyvenv
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el 
   (use-package pyvenv
@@ -1320,43 +1272,6 @@ guile-3.0
 mit-scheme
 #+end_src
 
-
-*** Clojure
-Just starting to experiment with the lispy goodness of clojure
-#+begin_src conf :tangle .config/debian/manifests/interpreters
-clojure
-#+end_src
-
-**** Installing 
-
-**** Clojure mode
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-  (use-package clojure-mode
-    :ensure t
-    :mode (("\\.clj\\'" . clojure-mode)
-            ("\\.edn\\'" . clojure-mode))
-    :init
-    (add-hook 'clojure-mode-hook #'subword-mode)           
-    (add-hook 'clojure-mode-hook #'smartparens-mode)       
-    (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-    (add-hook 'clojure-mode-hook #'eldoc-mode)) 
-    #+end_src
-
-**** Cider 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-  (use-package cider
-    :ensure t
-    :defer t)
-#+end_src
-
-
-**** Leiningen
-project generator for clojure 
-#+begin_src conf :tangle .config/debian/manifests/languagetools
-leiningen
-#+end_src
-
-
 *** c
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package cc-mode
@@ -1412,19 +1327,6 @@ Everyone's favorite...
     #+end_src
     
 
-
-*** java
-
-Excluded, currently not doing any java development.
-    #+begin_src emacs-lisp 
-      (use-package lsp-java
-        :after lsp-mode
-        :ensure t
-        :config (add-hook 'java-mode-hook 'lsp))
-
-    #+end_src
-
-
 *** Dockerfile
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -1432,22 +1334,22 @@ Excluded, currently not doing any java development.
     :ensure t)
 #+end_src
 
-** Debuggers
+* Debuggers
 *** gdb setup
 Emacs integrates really nicely with gdb, in particular it has a sweet many windows mode that gives
 really nice UI for beduggin!
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (setq gdb-many-windows t)
 #+end_src
-** Productivity
-*** Flycheck
+* Productivity
+** Flycheck
     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
       (use-package flycheck
         :defer t
         :hook
         (eglot . flycheck-mode))
     #+end_src
-*** Smart Parens 
+** Smart Parens 
     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
     (use-package smartparens
       :hook (prog-mode . smartparens-mode))

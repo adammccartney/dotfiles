@@ -527,9 +527,6 @@ GROUP BY id")))
 (use-package pandoc-mode
   :ensure t)
 
-(use-package consult
-  :ensure t)
-
 (use-package vertico
   :ensure t
   :custom
@@ -560,54 +557,46 @@ GROUP BY id")))
 
 (use-package yasnippet)
 
-(use-package company
+(use-package corfu
+  :ensure t
   :custom
-  (company-idle-delay 0)
-  (company-minimum-prefix-length 1)
-  (company-tooltip-align-annotations t)
-  (company-dabbrev-downcase nil)
-  (company-dabbrev-other-buffers t) ; search buffers with the same major mode
-  :hook
-  (dashboard-after-initialize . global-company-mode)
-  :config
-  (add-to-list 'company-begin-commands 'backwards-delete-char-untabify)
+  (corfu-cycle t)       ;; Enable cylcing for 'corfu-next/previous
+  (corfu-auto t)        ;; Enable auto completion
+  (corfu-separator ?\s) ;; Orderless field seperator
+  (corfu-quit-at-boundary nil) ;; Never quit at completion boundary.
+  (corfu-echo-documentation t) ;; Show doumentation in the echo area
 
+  ;; Enable Corfu globally
+  :init
+  (global-corfu-mode))
 
-  ;; Show YASnippet snippets in company
+(use-package emacs
+  :init
+  ;; TAB cycle if there are only a few candidates
+  (setq completion-cycle-threshold 3)
 
-  (defun fk/company-backend-with-yas (backend)
-    "Add ':with company-yasnippet' to the given company backend."
-    (if (and (listp backend) (member 'company-yasnippet backend))
-        backend
-      (append (if (consp backend)
-                  backend
-                (list backend))
-              '(:with company-yasnippet))))
+  ;; Hide commands in M-x which do not apply to the current mode
+  (setq read-extended-command-predicate
+        #'command-completion-default-include-p)
 
-  (defun fk/company-smart-snippets (fn command &optional arg &rest _)
-    "Do not show yasnippet candidates after dot."
-    ;;Source:
-    ;;https://www.reddit.com/r/emacs/comments/7dnbxl/how_to_temporally_filter_companymode_candidates/
-    (unless (when (and (equal command 'prefix) (> (point) 0))
-              (let* ((prefix (company-grab-symbol))
-                     (point-before-prefix (if (> (- (point) (length prefix) 1) 0)
-                                              (- (point) (length prefix) 1)
-                                            1))
-                     (char (buffer-substring-no-properties point-before-prefix (1+ point-before-prefix))))
-                (string= char ".")))
-      (funcall fn command arg)))
+  ;; Enable indentation+completion using the TAB key.
+  ;; completion-at-point is often bound to M-TAB
+  (setq tab-always-indent 'complete))
 
-  ;; TODO: maybe show snippets at first?
-  (defun fk/company-enable-snippets ()
-    "Enable snippet suggestions in company by adding ':with
-company-yasnippet' to all company backends."
-    (interactive)
-    (setq company-backends (mapcar 'fk/company-backend-with-yas company-backends))
-    (advice-add 'company-yasnippet :around 'fk/company-smart-snippets))
+(use-package dabbrev
+  :ensure t
+  ;; Swap M-/ and C-M-/
+  :bind (("M-/" . dabbrev-completion)
+         ("C-M-/" . dabbrev-expand))
+  ;; Other useful Dabbrev configurations.
+  :custom
+  (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
 
-  (fk/company-enable-snippets))
+(use-package dumb-jump
+  :ensure t)
 
-(add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+(setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 
 (use-package treemacs
   :ensure t
@@ -627,7 +616,7 @@ company-yasnippet' to all company backends."
 (use-package eglot
   :ensure t
   :hook
-  (add-hook 'python-mode-hook 'eglot-ensure)
+  (python-mode-hook . eglot-ensure)
   :config
   (setq eglot-autoshutdown t))
 
@@ -671,6 +660,14 @@ company-yasnippet' to all company backends."
   :config
   (setq python-indent-level 4))
 
+(use-package company-jedi
+  :ensure t
+  :after company)
+
+(defun my/python-mode-hook ()
+  (add-to-list 'company-backends 'company-jedi))
+(add-hook 'python-mode-hook 'my/python-mode-hook)
+
 (use-package pyvenv
  :ensure t
  :after python-mode)
@@ -712,20 +709,6 @@ company-yasnippet' to all company backends."
 
 (use-package geiser-guile
   :straight t)
-
-(use-package clojure-mode
-  :ensure t
-  :mode (("\\.clj\\'" . clojure-mode)
-          ("\\.edn\\'" . clojure-mode))
-  :init
-  (add-hook 'clojure-mode-hook #'subword-mode)           
-  (add-hook 'clojure-mode-hook #'smartparens-mode)       
-  (add-hook 'clojure-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'clojure-mode-hook #'eldoc-mode))
-
-(use-package cider
-  :ensure t
-  :defer t)
 
 (use-package cc-mode
   :defer t
