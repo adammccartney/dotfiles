@@ -627,6 +627,24 @@ GROUP BY id")))
     ("m" headlong-bookmark "buf")
     ("q" nil "cancel")))
 
+(use-package dap-mode
+  :ensure t
+  :after (lsp-mode)
+  :functions dap-hydra/nil
+  :bind (:map lsp-mode-map
+         ("<f5>" . dap-debug)
+         ("M-<f5>" . dap-hydra))
+  :hook ((dap-mode . dap-ui-mode)
+    (dap-session-created . (lambda (&_rest) (dap-hydra)))
+    (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+
+(use-package lsp-treemacs
+  :after (lsp-mode treemacs)
+  :ensure t
+  :commands lsp-treemacs-errors-list
+  :bind (:map lsp-mode-map
+         ("M-9" . lsp-treemacs-errors-list)))
+
 (use-package treemacs
   :ensure t
   :commands (treemacs)
@@ -635,6 +653,25 @@ GROUP BY id")))
 (use-package treemacs-evil)
 
 (use-package treemacs-projectile)
+
+(use-package lsp-mode 
+  :init 
+  (setq lsp-keymap-prefix "C-c l")
+  :hook ((python-mode . lsp)
+         (c-mode . lsp)
+         ((typescript-mode js2-mode web-mode) . lsp)
+         (docker-mode . lsp)
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+(use-package lsp-ui
+  :after lsp
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (setq lsp-ui-sideline-enable t)
+  (lsp-ui-doc-show))
+
+;;(use-package lsp-ivy)
 
 (use-package which-key
   :init (which-key-mode)
@@ -648,6 +685,16 @@ GROUP BY id")))
   (python-mode-hook . eglot-ensure)
   :config
   (setq eglot-autoshutdown t))
+
+(use-package lsp-pyright
+  :after lsp-mode
+  :custom
+  (lsp-pyright-auto-import-completions nil)
+  (lsp-pyright-typechecking-mode "off")
+  :ensure t
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp))))
 
 (use-package magit
   :straight t
@@ -684,18 +731,11 @@ GROUP BY id")))
 
 (use-package python-mode
   :mode "\\.py\\'"
+  :hook (python-mode . lsp-deferred)
   :init
   (setq python-shell-interpreter "python3")
   :config
   (setq python-indent-level 4))
-
-(use-package company-jedi
-  :ensure t
-  :after company)
-
-(defun my/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
-(add-hook 'python-mode-hook 'my/python-mode-hook)
 
 (use-package pyvenv
  :ensure t
@@ -741,6 +781,7 @@ GROUP BY id")))
 
 (use-package cc-mode
   :defer t
+  :hook (cc-mode . lsp-deferred)
   :init
   (defun my/c-hook ()
     (setf c-basic-offset 8)   ;; follow linux kernel style guide

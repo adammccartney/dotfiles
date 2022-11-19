@@ -1052,7 +1052,7 @@ The following config is from https://github.com/neppramod/java_emacs/blob/master
 Below we will integrate dap-mode with dap-hydra. Dap-hydra shows keys you can use to enable various
 options and jump through code at runtime. After we install dap-mode we will also install dap-java.
 
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
 (use-package dap-mode
   :ensure t
   :after (lsp-mode)
@@ -1069,7 +1069,7 @@ options and jump through code at runtime. After we install dap-mode we will also
 ** Treemacs
 Treemacs provides UI elements used for LSP UI. M-9 shows error list. 
 
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el 
   (use-package lsp-treemacs
     :after (lsp-mode treemacs)
     :ensure t
@@ -1102,7 +1102,7 @@ This will quickly add projectile projects to Treemacs
 ** lsp
 Haven't really got this running so smoothly yet, find nvim's lsp stuff
 works a bit better out of the box. 
-#+begin_src emacs-lisp 
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (use-package lsp-mode 
     :init 
     (setq lsp-keymap-prefix "C-c l")
@@ -1120,7 +1120,7 @@ works a bit better out of the box.
     (setq lsp-ui-sideline-enable t)
     (lsp-ui-doc-show))
 
-  (use-package lsp-ivy)
+  ;;(use-package lsp-ivy)
 #+end_src
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
@@ -1148,7 +1148,7 @@ Take eglot out for a spin.
 **** pyright
 
 Shelve this for the time being
-     #+begin_src emacs-lisp 
+     #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
      (use-package lsp-pyright
        :after lsp-mode
        :custom
@@ -1227,6 +1227,7 @@ Add slime that uses the sbcl
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (use-package python-mode
     :mode "\\.py\\'"
+    :hook (python-mode . lsp-deferred)
     :init
     (setq python-shell-interpreter "python3")
     :config
@@ -1235,7 +1236,7 @@ Add slime that uses the sbcl
 
 **** Jedi mode for company
 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+#+begin_src emacs-lisp 
   (use-package company-jedi
     :ensure t
     :after company)
@@ -1308,21 +1309,22 @@ mit-scheme
 
 *** c
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(use-package cc-mode
-  :defer t
-  :init
-  (defun my/c-hook ()
-    (setf c-basic-offset 8)   ;; follow linux kernel style guide
-    (c-set-offset 'case-label '+)
-    (c-set-offset 'access-label '/)
-    (c-set-offset 'label '/))
-  :config
-  (progn
-    (define-key java-mode-map (kbd "C-x I") 'add-java-import)
-    (add-hook 'c-mode-hook #'my/c-hook)
-    (add-hook 'c++-mode-hook #'my/c-hook)
-    (add-to-list 'c-default-style '(c-mode . "k&r"))
-    (add-to-list 'c-default-style '(c++-mode . "k&r"))))
+  (use-package cc-mode
+    :defer t
+    :hook (cc-mode . lsp-deferred)
+    :init
+    (defun my/c-hook ()
+      (setf c-basic-offset 8)   ;; follow linux kernel style guide
+      (c-set-offset 'case-label '+)
+      (c-set-offset 'access-label '/)
+      (c-set-offset 'label '/))
+    :config
+    (progn
+      (define-key java-mode-map (kbd "C-x I") 'add-java-import)
+      (add-hook 'c-mode-hook #'my/c-hook)
+      (add-hook 'c++-mode-hook #'my/c-hook)
+      (add-to-list 'c-default-style '(c-mode . "k&r"))
+      (add-to-list 'c-default-style '(c++-mode . "k&r"))))
 
 #+end_src
 
@@ -1336,6 +1338,12 @@ mit-scheme
 (use-package ob-go)
 #+end_src
 
+*** Lilypond
+todo
+#+begin_src emacs-lisp
+  
+  (require 'lilypond-mode)
+#+end_src
 *** x86 assembly 
 #+begin_src emacs-lisp
     
