@@ -1053,16 +1053,19 @@ Below we will integrate dap-mode with dap-hydra. Dap-hydra shows keys you can us
 options and jump through code at runtime. After we install dap-mode we will also install dap-java.
 
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
-(use-package dap-mode
-  :ensure t
-  :after (lsp-mode)
-  :functions dap-hydra/nil
-  :bind (:map lsp-mode-map
-         ("<f5>" . dap-debug)
-         ("M-<f5>" . dap-hydra))
-  :hook ((dap-mode . dap-ui-mode)
-    (dap-session-created . (lambda (&_rest) (dap-hydra)))
-    (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+  (use-package dap-mode
+    :ensure t
+    :after (lsp-mode)
+    :functions dap-hydra/nil
+    :bind (:map lsp-mode-map
+           ("<f5>" . dap-debug)
+           ("M-<f5>" . dap-hydra))
+    :hook ((dap-mode . dap-ui-mode)
+      (dap-session-created . (lambda (&_rest) (dap-hydra)))
+      (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+
+  (require 'dap-gdb-lldb)
+  (require 'dap-python)
 
 #+end_src
 

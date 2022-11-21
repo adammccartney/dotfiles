@@ -638,6 +638,9 @@ GROUP BY id")))
     (dap-session-created . (lambda (&_rest) (dap-hydra)))
     (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
 
+(require 'dap-gdb-lldb)
+(require 'dap-python)
+
 (use-package lsp-treemacs
   :after (lsp-mode treemacs)
   :ensure t
