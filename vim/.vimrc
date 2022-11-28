@@ -159,6 +159,7 @@ if has("nvim")
     Plug 'EdenEast/nightfox.nvim'
     Plug 'Olical/conjure'
     Plug 'ray-x/go.nvim'
+    Plug 'github/copilot.vim'
 endif
 
 call plug#end()
