@@ -1,9 +1,14 @@
 # ~/.bash_functions: collection of command line functions
-# useage: source via ~/.bashrc at runtime
-  
-      function swap_ctrl_caps () {
+  # useage: source via ~/.bashrc at runtime
+
+function swap_ctrl_caps () {
       XKBOPTIONS="ctrl:swapcaps"
-      /usr/bin/setxkbmap -option $XKBOPTIONS
+      if command /usr/bin/gsettings &> /dev/null; then
+          /usr/bin/gsettings set org.gnome.desktop.input-sources xkb-options "['caps:ctrl_modifier']"
+      fi
+      if command /usr/bin/setxbmap &> /dev/null; then
+          /usr/bin/setxkbmap -option $XKBOPTIONS
+      fi
     }
 
 # Functions

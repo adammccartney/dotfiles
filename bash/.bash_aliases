@@ -41,7 +41,7 @@ alias wtpy38="source ~/.virtualenvs/wtpy38/bin/activate"
 alias pstgrsql="source ~/.virtualenvs/postgresql/bin/activate"
 
 # neovim
-alias vim="/usr/local/bin/nvim"
+alias vim="$(which nvim)"
 
 # psql alias (hand compiled version on unix has the side effect of trying to
 # connect with another port. To get around this, we have to connect using the

@@ -47,28 +47,25 @@
                                                 "Adam McCartney | https://admccartney.mur.at \n"
                                                 "Markhofgasse 11-17/2/6 1030 Vienna\n"))))
             ,(make-mu4e-context
-            :name "work-mdw"
+            :name "tuw"
             :match-func (lambda (msg) (when msg
-                                        (string-prefix-p "/mdw" (mu4e-message-field msg :maildir))))
+                                        (string-prefix-p "/tuw" (mu4e-message-field msg :maildir))))
             :vars '(
                     (user-full-name . "Adam McCartney")
-                    (user-mail-address . "mccartney@mdw.ac.at")
-                    (smtpmail-smtp-server . "mail.mdw.ac.at")
-                    (smtpmail-smtp-service . 587)
+                    (user-mail-address . "adam.mccartney@tuwien.ac.at")
+                    (smtpmail-smtp-server . "mail.intern.tuwien.ac.at")
+                    (smtpmail-smtp-service . 993)
                     (smtpmail-stream-type . ssl)
-                    (mu4e-send-folder . "/mdw/Sent Items")
-                    (mu4e-trash-folder . "/mdw/Trash")
-                    (mu4e-drafts-folder . "/mdw/Work In Progress")
-                    (mu4e-refile-folder . "/mdw/Cabinet")
+                    (mu4e-send-folder . "/tuw/Sent Items")
+                    (mu4e-trash-folder . "/tuw/Deleted Items")
+                    (mu4e-junk-folder . "/tuw/Junk Email")
+                    (mu4e-drafts-folder . "/tuw/Drafts")
+                    (mu4e-refile-folder . "/tuw/Cabinet")
                     (mu4e-sent-message-behavior . sent)
                     (mu4e-compose-signature .
                                             (concat
                                                 "Adam McCartney\n"
-                                                "Software Developer\n"
-                                                "Zentraler Informatik Dienst (ZID)\n"
-                                                "mdw - Universitaet fuer Musik und darstellende Kunst Wien\n"
-                                                "Anton-von-Webern-Platz 1, 1030 Wien\n"
-                                                "+43 1 71155 7333\n"))))
+                                                "//------------\n"))))
         ))
 (setq mu4e-context-policy 'pick-first)
 ;; Prevent mu4e from permanently deleting trashed items
