@@ -265,13 +265,19 @@ Swap the control and caps key (avoid emacs trench pinky)
 
 #+begin_src shell :tangle ./bash/.bash_functions
 
-# ~/.bash_functions: collection of command line functions
-# useage: source via ~/.bashrc at runtime
+    # ~/.bash_functions: collection of command line functions
+    # useage: source via ~/.bashrc at runtime
   
-      function swap_ctrl_caps () {
-      XKBOPTIONS="ctrl:swapcaps"
-      /usr/bin/setxkbmap -option $XKBOPTIONS
-    }
+  function swap_ctrl_caps () {
+        XKBOPTIONS="ctrl:swapcaps"
+        if command /usr/bin/gsettings &> /dev/null; then
+            /usr/bin/gsettings set org.gnome.desktop.input-sources xkb-options "['caps:ctrl_modifier']"
+        fi
+        if command /usr/bin/setxbmap &> /dev/null; then
+            /usr/bin/setxkbmap -option $XKBOPTIONS
+        fi
+      }
+
 
 #+end_src
 
@@ -581,7 +587,7 @@ Bunch of aliases used for alter egos.
   alias pstgrsql="source ~/.virtualenvs/postgresql/bin/activate"
 
   # neovim
-  alias vim="/usr/local/bin/nvim"
+  alias vim="$(which nvim)"
  
   # psql alias (hand compiled version on unix has the side effect of trying to
   # connect with another port. To get around this, we have to connect using the
