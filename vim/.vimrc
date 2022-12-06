@@ -131,6 +131,7 @@ Plug 'preservim/nerdtree'
 Plug 'supercollider/scvim'
 Plug 'leafgarland/typescript-vim'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'bfrg/vim-cpp-modern'
 Plug 'junegunn/vim-easy-align'
 Plug 'alx741/vim-hindent'
@@ -143,6 +144,7 @@ Plug 'dbeniamine/cheat.sh-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'ryanoasis/vim-devicons'
 
 if has("nvim")
     Plug 'neovim/nvim-lspconfig'
@@ -159,7 +161,9 @@ if has("nvim")
     Plug 'EdenEast/nightfox.nvim'
     Plug 'Olical/conjure'
     Plug 'ray-x/go.nvim'
+    Plug 'ray-x/guihua.lua', { 'do': 'cd lua/fzy && make'}
     Plug 'github/copilot.vim'
+    Plug 'mfussenegger/nvim-dap'
 endif
 
 call plug#end()
@@ -290,13 +294,22 @@ let g:CheatSheetIdPath=expand('~/.cht.sh/id')
 " Make plugin silent by  setting bellow variable to 1
 let g:CheatSheetSilent=0
 
-
 filetype off
 set runtimepath+=/usr/share/lilypond/2.22.0/vim
 filetype on
 syntax on
 
-" go setup 
-autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.go lua goimports(1000)
 
+if has ('nvim')
+    " some setup for plugins
+    " nvim-cmp setup
+    set completeopt=menu,menuone,noselect   
+    " telescope setup
+    nnoremap <silent> ff <Cmd>Telescope find_files<CR>
+    nnoremap <silent> fg <Cmd>Telescope live_grep<CR>
+    nnoremap <silent> fb <Cmd>Telescope buffers<CR>
+    nnoremap <silent> fh <Cmd>Telescope help_tags<CR>
+endif
+
+
+let g:airline_powerline_fonts = 1
