@@ -223,11 +223,11 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
   export NEWSHORTCODES=$HOME/Websites/admccartney/layouts/shortcodes
   export NEWSOUNDS=$HOME/Websites/admccartney/static/sounds
 
-  source "$HOME/.cargo/env"
+  #source "$HOME/.cargo/env"
 
   # Remote server variable
-  export REMOTE1=206.189.52.96
-  . "$HOME/.cargo/env"
+  #export REMOTE1=206.189.52.96
+  #. "$HOME/.cargo/env"
 
   # use vim keybindings
   set -o vi
@@ -242,11 +242,11 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
   export PS1='<\u@\h \W>$(__git_ps1 " (%s)")\$'
 
   # virtualenv wrapper
-  export WORKON_HOME=$HOME/.virtualenvs
-  export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-  export VIRTUALENVWRAPPER_VIRTUALENV_ARGS=' -p /usr/bin/python3 '
-  export PROJECT_HOME=$HOME/.virtualenvs/venvs
-  source /usr/local/bin/virtualenvwrapper.sh
+  #export WORKON_HOME=$HOME/.virtualenvs
+  #export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+  #export VIRTUALENVWRAPPER_VIRTUALENV_ARGS=' -p /usr/bin/python3 '
+  #export PROJECT_HOME=$HOME/.virtualenvs/venvs
+  #source /usr/local/bin/virtualenvwrapper.sh
 
   # source the cht.sh bashcompletion file
   if [ -f ~/.bash.d/cht.sh ] ; then
@@ -256,6 +256,8 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
   # swap the control and caps key
   swap_ctrl_caps
 
+  export EDITOR=nvim
+  export MANWIDTH=80
   #+end_src
   
 
@@ -534,10 +536,32 @@ has been used on a machine where the install site of the [[https://go.dev/doc/in
   # Gopath
   # add the go binary to path
   export PATH=$PATH:/usr/local/go/bin
-  export GOPATH=$HOME/.local/go
+  export GOPATH=$HOME/go
   # add the GOPATH/bin to PATH
   export PATH=$PATH:$(go env GOPATH)/bin
 #+end_src
+
+
+* nvm setup
+
+Depending on the application, we might wish to run a specific version of node.
+
+To get nvm, download
+
+#+begin_src shell
+  curl -o- https://raw.githubusercontent.com/nvim-sh/v0.39.2/install.sh | bash
+#+end_src
+
+Currently, I just need one version, so I'm using fedora modules to install the specific version I need.
+In the future, this might come in handy. The following will be appended to the .bashrc after running
+the nvm install script.
+
+#+begin_src emacs-lisp 
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+#+end_src
+
 
 ** .bash_aliases
 
@@ -604,3 +628,4 @@ Bunch of aliases used for alter egos.
 
   alias !P="PS1='# '"
 #+end_src
+

@@ -178,11 +178,11 @@ export STATIC=$HOME/Websites/admccartney/static
 export NEWSHORTCODES=$HOME/Websites/admccartney/layouts/shortcodes
 export NEWSOUNDS=$HOME/Websites/admccartney/static/sounds
 
-source "$HOME/.cargo/env"
+#source "$HOME/.cargo/env"
 
 # Remote server variable
-export REMOTE1=206.189.52.96
-. "$HOME/.cargo/env"
+#export REMOTE1=206.189.52.96
+#. "$HOME/.cargo/env"
 
 # use vim keybindings
 set -o vi
@@ -197,11 +197,11 @@ PS1="\[\033[s\033[0;0H\033[0;49m\033[K\033[1;33m\t\033[u\]<\u@\h \W>\$"
 export PS1='<\u@\h \W>$(__git_ps1 " (%s)")\$'
 
 # virtualenv wrapper
-export WORKON_HOME=$HOME/.virtualenvs
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-export VIRTUALENVWRAPPER_VIRTUALENV_ARGS=' -p /usr/bin/python3 '
-export PROJECT_HOME=$HOME/.virtualenvs/venvs
-source /usr/local/bin/virtualenvwrapper.sh
+#export WORKON_HOME=$HOME/.virtualenvs
+#export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+#export VIRTUALENVWRAPPER_VIRTUALENV_ARGS=' -p /usr/bin/python3 '
+#export PROJECT_HOME=$HOME/.virtualenvs/venvs
+#source /usr/local/bin/virtualenvwrapper.sh
 
 # source the cht.sh bashcompletion file
 if [ -f ~/.bash.d/cht.sh ] ; then
@@ -211,9 +211,12 @@ fi
 # swap the control and caps key
 swap_ctrl_caps
 
+export EDITOR=nvim
+export MANWIDTH=80
+
 # Gopath
 # add the go binary to path
 export PATH=$PATH:/usr/local/go/bin
-export GOPATH=$HOME/.local/go
+export GOPATH=$HOME/go
 # add the GOPATH/bin to PATH
 export PATH=$PATH:$(go env GOPATH)/bin

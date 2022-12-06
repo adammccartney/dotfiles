@@ -217,7 +217,7 @@
   :custom
   (doom-modeline-height 15)
   (doom-modeline-bar-width 6)
-  (doom-modeline-lsp t)
+  (doom-modeline-ls t)
   (doom-modeline-github nil)
   (doom-modeline-mu4e t)
   (doom-modeline-irc nil)
