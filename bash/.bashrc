@@ -220,3 +220,6 @@ export PATH=$PATH:/usr/local/go/bin
 export GOPATH=$HOME/go
 # add the GOPATH/bin to PATH
 export PATH=$PATH:$(go env GOPATH)/bin
+
+source <(kubectl completion bash)
+complete -o default -F __start_kubectl k

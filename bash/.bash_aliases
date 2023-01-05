@@ -1,3 +1,5 @@
+alias k=kubectl
+
 ## virtualenv alias
 #alias sv="source env/bin/activate"
 #
@@ -6,6 +8,8 @@
 
 ## frog virtual env alias (for Scores/rill)
 #alias frogsv="source ~/Scores/frog/env/bin/activate"
+
+#thingyfier
 
 # plot virtual env 
 alias plot="source ~/.virtualenvs/plot/bin/activate"
@@ -57,3 +61,9 @@ alias actenv="source venv/bin/activate"
 alias train="source $HOME/bin/train"
 
 alias !P="PS1='# '"
+
+alias vpnui=/opt/cisco/anyconnect/bin/vpnui
+
+alias slack="slack --enable-features=WebRTCPipewireCapturer"
+
+alias zoom="zoom --enable-features=WebRTCPipewireCapturer"

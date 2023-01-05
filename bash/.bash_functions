@@ -128,6 +128,18 @@ getmail () {
     mbsync -a
 }
 
+adworkon () {
+    VENV=$1
+    VENV_PATH=$HOME/.virtualenv/$VENV
+    if [ ! -d "$VENV_PATH" ]
+    then
+        echo "Directory $VENV_PATH DOES NOT exist."
+    else
+        source $VENV_PATH/bin/activate
+    fi
+
+    }
+
 function backup_home () {
       # WARNING: assumes that you are running from home!
       BACKUP_PATH=$1

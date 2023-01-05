@@ -1,0 +1,5 @@
+clang
+clang-devel
+clang-tools-extra
+cmake
+golang-bin

@@ -1,4 +1,52 @@
-* Literate config for a system
+* Config for a rocky system (server)
+
+** Grab a few essential git repositories
+
+#+begin_src python :tangle ~/dotfiles/bin/bin/bootstrap.py
+  #!/usr/bin/python3
+  import os
+  from pathlib import Path
+
+  home = os.environ["HOME"]
+  home_path = Path(home)
+  local_sources = f"{home}/.local/src"
+  lsrc_path = Path(local_sources)
+
+  repositories = {
+      # name: {url, version}
+      "dotfiles": "https://github.com/adammccartney/dotfiles.git",
+      "stow":  "https://github.com/aspiers/stow.git",
+      "neovim": "https://github.com/neovim/neovim.git",
+  }
+
+  for k,v in repositories.items():
+      if (k == "dotfiles"):
+          os.system(f"git clone {v} {home_path}/{k}")
+      os.system(f"git clone {v} {lsrc_path}/{k}")
+#+end_src
+
+** Bootstrapping tools
+
+#+begin_src conf :tangle ~/dotfiles/.config/rocky/manifests/bootstrap-tools
+  clang
+  clang-devel
+  clang-tools-extra
+  cmake
+  golang-bin
+#+end_src
+
+
+*** Stow for 
+
+*** cargo
+
+#+begin_src shell
+  
+#+end_src
+
+
+
+* Literate config for a debian system
 
 Here we're going to track packages that we need to bootstrap a system.
 Assumes that the base install of the system we are using is Debian/Bullseye
