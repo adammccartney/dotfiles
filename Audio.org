@@ -13,7 +13,7 @@ This dependency needs to be installed at the point when we're installing the man
 #+end_src
 
 This script can be run to set the cpu to performance mode.
-#+begin_src shell :tangle bin/setcpufreq.sh
+#+begin_src shell :tangle bin/bin/setcpufreq.sh
   #!/bin/sh
   set -e
   cpufreq-set -r -g performance
@@ -29,7 +29,7 @@ To make the changes to cpu settings permanent, this can be copied to '/etc/defau
 
 
 Set swappiness to 10
-#+begin_src shell :tangle bin/setswappiness.sh
+#+begin_src shell :tangle bin/bin/setswappiness.sh
   #!/bin/sh
   set -e
   echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
@@ -50,7 +50,7 @@ Set swappiness to 10
   @audio - memlock unlimited # maximum locked-in-memory address space (KB)
 #+end_src
 
-#+begin_src shell :tangle bin/setaudiolimits.sh
+#+begin_src shell :tangle bin/bin/setaudiolimits.sh
   #!/bin/sh
   set -e
   cat ~/dotfiles/etc/security/limits.d/audio.conf | tee /etc/security/limits.d/audio.conf

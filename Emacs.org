@@ -82,6 +82,16 @@ plonked in the .emacs.d directory to another location
         (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
 (load custom-file t)
 #+end_src
+
+
+
+* Ignore anything pulled in frome gnome settings
+#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+(define-key special-event-map [config-changed-event] 'ignore)
+#+end_src
+
+
+
 * Update Load Path 
 
 ** mu4e requires the following dependencies
@@ -227,7 +237,7 @@ Evil is using C-u for scrolling, so this needs to be rebound to another variable
 * Look and feel
 ** Theme 
 
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+#+begin_src emacs-lisp
   (use-package modus-themes
     :ensure t
     :config
