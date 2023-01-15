@@ -8,3 +8,17 @@ source ~/.mutt/account.murat
 # Macros for switching accounts
 macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.murat<enter><change-folder>!<enter>'
 macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.tuw.ac.at<enter><change-folder>!<enter>'
+
+# Editor
+set editor='nvim +/^$ "+setlocal fo+=w spell" +noh'
+set edit_headers
+set text_flowed
+set tmpdir="~/"
+
+# Contact management
+set alias_file="~/aliases"
+source $alias_file
+
+# mu search
+macro index <F8> "<shell-escape>mu find --clearlinks --format=links --linksdir=~/.mail/search " "mu find"
+macro index <F9> "<change-folder-readonly>~/.mail/search" "mu find results"

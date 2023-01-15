@@ -3,8 +3,14 @@ set realname="Adam McCartney"
 
 # Mail format
 set mbox_type="Maildir"
-set folder="~/.mail/murat/Inbox"
-set header_cache="~/.cache/mutt"
-set spoolfile="="
-set postponed="=drafts"
-set record="="
+set folder="~/.mail/murat"
+set spoolfile ="+Inbox"
+set record ="+Sent"
+set trash = "+Trash"
+set postponed = "+Drafts"
+
+# Sendmail config
+set sendmail="/usr/bin/msmtp"
+set use_from=yes
+set from=adam@mur.at
+set envelope_from=yes
