@@ -1,0 +1,10 @@
+# ID
+set realname="Adam McCartney"
+
+# Mail format
+set mbox_type="Maildir"
+set folder="~/.mail/tuw/Inbox"
+set header_cache="~/.cache/mutt"
+set spoolfile="="
+set postponed="=drafts"
+set record="="

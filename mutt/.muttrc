@@ -1,0 +1,10 @@
+# Folder hooks
+folder-hook 'account.murat' 'source ~/.mutt/account.murat'
+folder-hook 'account.tuw.ac.at' 'source ~/.mutt/account.tuw.ac.at'
+
+# Default account
+source ~/.mutt/account.murat
+
+# Macros for switching accounts
+macro index <f2> '<sync-mailbox><enter-command>source ~/.mutt/account.murat<enter><change-folder>!<enter>'
+macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.tuw.ac.at<enter><change-folder>!<enter>'

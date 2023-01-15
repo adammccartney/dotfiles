@@ -51,7 +51,7 @@ vnoremap > >gv " better indentation
 
 " Showing line numbers and length
 set number " show line numbers
-set tw=79  " width of documents (used by gd)
+set tw=80  " width of documents (used by gd)
 "set nowrap " don't automatically wrap on load
 "set fo-=t  " don't automatically wrap text when typing
 "set colorcolumn=80
@@ -163,7 +163,7 @@ if has("nvim")
     Plug 'Olical/conjure'
     Plug 'ray-x/go.nvim'
     Plug 'ray-x/guihua.lua', { 'do': 'cd lua/fzy && make'}
-    Plug 'github/copilot.vim'
+    "Plug 'github/copilot.vim'
     Plug 'mfussenegger/nvim-dap'
 endif
 
