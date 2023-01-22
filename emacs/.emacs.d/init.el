@@ -59,7 +59,7 @@
 
 (push "~/.emacs.d/lisp" load-path)  
 (require 'unannoy)
-(require 'ad-mail)
+;;(require 'ad-mail)
 (require 'adlisp)
 (require 'mu4e)
 
@@ -81,7 +81,6 @@
 (add-to-list 'auto-mode-alist '("[Mm]akefile" . makefile-gmake-mode))
 (add-to-list 'auto-mode-alist '("\\.mak$" . makefile-gmake-mode))
 (add-to-list 'auto-mode-alist '("\\.make$" . makefile-gmake-mode))
-
 
 (use-package all-the-icons
   :if (display-graphic-p))
@@ -710,4 +709,5 @@ GROUP BY id")))
   :ensure t
   :config
   (setq elfeed-feeds
-        '("https://nullprogram.com/feed/")))
+        '("https://nullprogram.com/feed/"
+          "https://drewdevault.com/blog/index.xml")))

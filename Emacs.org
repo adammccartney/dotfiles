@@ -105,7 +105,7 @@ libxapian-dev
 #+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
   (push "~/.emacs.d/lisp" load-path)  
   (require 'unannoy)
-  (require 'ad-mail)
+  ;;(require 'ad-mail)
   (require 'adlisp)
   (require 'mu4e)
 #+end_src
@@ -1441,5 +1441,6 @@ Chris Wellon's elfeed package
     :ensure t
     :config
     (setq elfeed-feeds
-          '("https://nullprogram.com/feed/")))
+          '("https://nullprogram.com/feed/"
+            "https://drewdevault.com/blog/index.xml")))
 #+end_src
