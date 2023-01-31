@@ -49,14 +49,14 @@ map <c-h> <c-w>h
 vnoremap < <gv " better indentation
 vnoremap > >gv " better indentation
 
-" Showing line numbers and length
+set laststatus=2 
+set encoding=utf-8
+set autoindent
+set magic
+set nowrap
+set ignorecase
 set number " show line numbers
 set tw=80  " width of documents (used by gd)
-"set nowrap " don't automatically wrap on load
-"set fo-=t  " don't automatically wrap text when typing
-"set colorcolumn=80
-"highlight ColorColumn ctermbg=233
-
 
 " Easier formatting of paragraphs
 vmap Q gq
@@ -173,11 +173,9 @@ call plug#end()
 " special config for any vim plugins that got installed
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
-
 " =============================================================================
 " extra config for vim plugins that have some neovim goodies
 set completeopt=menu,menuone,noselect
-
 
 " =============================================================================
 " color 
