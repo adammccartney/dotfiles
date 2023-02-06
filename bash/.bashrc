@@ -214,6 +214,16 @@ swap_ctrl_caps
 export EDITOR=nvim
 export MANWIDTH=80
 
+# add gpg key
+export GPG_TTY=$(tty)
+
+# Add raku to PATH, assumes a specific version of rakudo
+RAKUDO_STAR="$HOME/.local/src/rakudo/rakudo-star-2022.12/"
+if [ -d "$RAKUDO_STAR/bin"  ]; then
+    PATH="$RAKUDO_STAR/bin:$RAKUDO_STAR/share/perl6/site/bin:$PATH"
+    PATH="$RAKUDO_STAR/share/perl6/vendor/bin:$RAKUDO_STAR/share/perl6/core/bin:$PATH"
+fi
+
 # Gopath
 # add the go binary to path
 export PATH=$PATH:/usr/local/go/bin
