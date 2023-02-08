@@ -2,7 +2,9 @@
 
 ** Grab a few essential git repositories
 
-#+begin_src python :tangle ~/dotfiles/bin/bin/bootstrap.py
+
+Note, this needs to be reworked (include from file)
+#+begin_src python
   #!/usr/bin/python3
   import os
   from pathlib import Path
@@ -35,6 +37,14 @@
   golang-bin
 #+end_src
 
+*** Raku dependencies
+
+Fedora only!
+
+#+begin_src shell
+  yum groupinstall 'Development Tools'
+  yum install perl-ExtUtils-Command
+#+end_src
 
 *** Stow for 
 
