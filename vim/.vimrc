@@ -1,5 +1,9 @@
 " .vimrc
 
+if v:progname == 'vi'
+  set noloadplugins
+endif
+
 " indent recognized filetypes
 if has("autocmd")
     filetype indent plugin on
@@ -126,10 +130,7 @@ let g:typescript_compiler_options = ''
 call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-dispatch'
-Plug 'wilsaj/chuck.vim'
-Plug 'neovimhaskell/haskell-vim'
 Plug 'preservim/nerdtree'
-Plug 'supercollider/scvim'
 Plug 'leafgarland/typescript-vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -160,11 +161,13 @@ if has("nvim")
     Plug 'mfussenegger/nvim-lint'
     Plug 'folke/zen-mode.nvim'
     Plug 'EdenEast/nightfox.nvim'
-    Plug 'Olical/conjure'
+    " Plug 'Olical/conjure'
     Plug 'ray-x/go.nvim'
     Plug 'ray-x/guihua.lua', { 'do': 'cd lua/fzy && make'}
-    "Plug 'github/copilot.vim'
     Plug 'mfussenegger/nvim-dap'
+    Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
+    " optional for icon support
+    Plug 'nvim-tree/nvim-web-devicons'
 endif
 
 call plug#end()
@@ -298,17 +301,6 @@ set runtimepath+=/usr/share/lilypond/2.22.0/vim
 filetype on
 syntax on
 
-
-if has ('nvim')
-    " some setup for plugins
-    " nvim-cmp setup
-    set completeopt=menu,menuone,noselect   
-    " telescope setup
-    nnoremap <silent> ff <Cmd>Telescope find_files<CR>
-    nnoremap <silent> fg <Cmd>Telescope live_grep<CR>
-    nnoremap <silent> fb <Cmd>Telescope buffers<CR>
-    nnoremap <silent> fh <Cmd>Telescope help_tags<CR>
-endif
 
 " air-line
 let g:airline_powerline_fonts = 1

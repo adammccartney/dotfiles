@@ -49,7 +49,7 @@
       { name = 'vsnip' },
 
       -- For luasnip user.
-      -- { name = 'luasnip' },
+      { name = 'luasnip' },
 
       -- For ultisnips user.
       -- { name = 'ultisnips' },

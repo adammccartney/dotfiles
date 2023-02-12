@@ -37,6 +37,14 @@ require('go').setup()
   maps = {
     close_view = '<C-x>',
   }
-  })
+})
+
+  -- fzf-lua setup
+  vim.api.nvim_set_keymap('n', 'ff',
+  "<cmd>lua require('fzf-lua').files()<CR>",
+  { noremap = true, silent = true })
+  vim.api.nvim_set_keymap('n', 'fg',
+  "<cmd>lua require('fzf-lua').grep()<CR>",
+  { noremap = true, silent = true })
 
 EOF
