@@ -687,6 +687,24 @@ GROUP BY id")))
 
 (use-package ob-go)
 
+(use-package nasm-mode
+  :defer t
+  :mode ("\\.nasm$" "\\.asm$" "\\.s$")
+  :config
+  (add-hook 'nasm-mode-hook (lambda () (setf indent-tabs-mode t))))
+
+(use-package asm-mode
+  :defer t
+  :init
+  (add-hook 'asm-mode-hook (lambda () (setf indent-tabs-mode t
+                                            tab-always-indent t))))
+
+(use-package x86-lookup
+  :defer t
+  :init
+  (setq x86-lookup-pdf '"~/Documents/bookstaging/325383-sdm-vol-2abcd.pdf")
+  (global-set-key (kbd "C-h x") #'x86-lookup))
+
 (use-package yaml-mode
    :mode "\\.ya?ml\\'")
 
