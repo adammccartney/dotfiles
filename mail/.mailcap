@@ -1,0 +1,13 @@
+#.mailcap
+text/plain; colorize
+text/calendar; calendar
+message/delivery-status; colorize
+message/rfc822; colorize
+#text/html; pandoc -f html -t plain | colorize
+text/html; /usr/bin/w3m -I %{charset} -T text/html; coiousoutput;
+#text/*; bat -fP --file-name; "$AERC_FILENAME"
+#application/x-sh; bat -fP -l sh
+#image/*; catimg -w $(tput cols) -
+#subject,~Git(hub|lab); lolcat -f
+#from,thatguywhodoesnothardwraphismessages; fmt -w 72 | colorize
+
