@@ -93,12 +93,6 @@ nmap ga <Plug>(EasyAlign)
 "Syntax formatting
 "=======================================================
 
-" Lilypond 
-filetype off
-set runtimepath+=/usr/bin/lilypond
-filetype on
-
-
 " Javascript & Typescript
 " JSDocs
 let g:javascript_plugin_jsdoc=1
@@ -119,59 +113,9 @@ let g:typescript_indent_disable=1
 let g:typescript_compiler_binars = 'tsc'
 let g:typescript_compiler_options = ''
 
-
-
 "========================================================
 " Packages 
 "========================================================
-
-" Use vimplug to manage plugins 
-
-call plug#begin('~/.vim/plugged')
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-dispatch'
-Plug 'preservim/nerdtree'
-Plug 'leafgarland/typescript-vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'bfrg/vim-cpp-modern'
-Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'alx741/vim-hindent'
-Plug 'pangloss/vim-javascript'
-Plug 'digitaltoad/vim-pug'
-Plug 'jpalardy/vim-slime'
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'dbeniamine/cheat.sh-vim'
-Plug 'rust-lang/rust.vim'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'ryanoasis/vim-devicons'
-Plug 'vivien/vim-linux-coding-style'
-
-if has("nvim")
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    Plug 'nvim-lua/popup.nvim'
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'hrsh7th/cmp-nvim-lsp'
-    Plug 'hrsh7th/cmp-buffer'
-    Plug 'hrsh7th/nvim-cmp'
-    Plug 'mfussenegger/nvim-lint'
-    Plug 'folke/zen-mode.nvim'
-    Plug 'EdenEast/nightfox.nvim' 
-    " Plug 'Olical/conjure'
-    Plug 'ray-x/go.nvim'
-    Plug 'ray-x/guihua.lua', { 'do': 'cd lua/fzy && make'}
-    Plug 'mfussenegger/nvim-dap'
-    Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
-    " optional for icon support
-    Plug 'nvim-tree/nvim-web-devicons'
-endif
-
-call plug#end()
 
 " =============================================================================
 " special config for any vim plugins that got installed
@@ -190,7 +134,7 @@ if has('gui_running')
 elseif has('win32')
     colorscheme slate
 elseif has('nvim')
-    colorscheme nightfox 
+    colorscheme dayfox 
 else
     colorscheme ron 
 end 
@@ -207,99 +151,10 @@ elseif has("gui_win32")
     let &guifont="Lucida Console:h11"
 end
 
-" Supercollider
-" =============
-au BufEnter,BufWinEnter,BufNewFile,BufRead *.sc,*.scd set filetype=supercollider
-au Filetype supercollider packadd scvim
-let g:scFlash = 1
-
-" Haskell
-" ========
-let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
-let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
-let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
-let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
-let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-let g:haskell_backpack = 1                " to enable highlighting of backpack keywords 
-
-" hindent
-let g:hindent_on_save = 1
-let g:hindent_indent_size = 2
-let g:hindent_line_length = 100
-let g:hindent_command = "stack exec -- hindent"
-
-
-" Java
-" ====
-let g:syntastic_java_checkers = []
-let g:EclimFileTypeValidate = 0
-
 " Python 
 " ======
 let g:python_host_prog = '/usr/bin/python'
 let g:python3_host_prog = '/usr/bin/python3'
-
-
-" cht.sh: the most useful thing in the universe
-" =============================================
-" Vim command used to open new buffer
-let g:CheatSheetReaderCmd='new"'
-
-" Cheat sheet file type
-let g:CheatSheetFt='markdown'
-
-" Program used to retrieve cheat sheet with its arguments
-let g:CheatSheetUrlGetter='curl --silent'
-
-" Flag to add cookie file to the query
-let g:CheatSheetUrlGetterIdFlag='-b'
-
-" cheat sheet base url
-let g:CheatSheetBaseUrl='https://cht.sh'
-
-" cheat sheet settings do not include style settings neiter comments,
-" see other options below
-let g:CheatSheetUrlSettings='q'
-
-" cheat sheet pager
-let g:CheatPager='less -R'
-
-" pygmentize theme used for pager output, see :CheatPager :styles-demo
-let g:CheatSheetPagerStyle='rrt'
-
-" Show comments in answers by default
-" (setting this to 0 means giving ?Q to the server)
-let g:CheatSheetShowCommentsByDefault=1
-
-" Stay in origin buffer (set to 0 to keep focus on the cheat sheet buffer)
-let g:CheatSheetStayInOrigBuf=1
-
-" cheat sheet buffer name
-let g:CheatSheetBufferName="_cheat"
-
-" Default selection in normal mode (line for whole line, word for word under cursor)
-let g:CheatSheetDefaultSelection="line"
-
-" Default query mode
-" 0 => buffer
-" 1 => replace (do not use or you might loose some lines of code)
-" 2 => pager
-" 3 => paste after query
-" 4 => paste before query
-let g:CheatSheetDefaultMode=0
-
-" Path to cheat sheet cookie
-let g:CheatSheetIdPath=expand('~/.cht.sh/id')
-
-" Make plugin silent by  setting bellow variable to 1
-let g:CheatSheetSilent=0
-
-filetype off
-set runtimepath+=/usr/share/lilypond/2.22.0/vim
-filetype on
-syntax on
-
 
 " air-line
 let g:airline_powerline_fonts = 1

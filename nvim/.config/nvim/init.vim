@@ -47,4 +47,15 @@ require('go').setup()
   "<cmd>lua require('fzf-lua').grep()<CR>",
   { noremap = true, silent = true })
 
+  -- terraform setup 
+  vim.api.nvim_create_autocmd("BufWritePre", {
+    pattern = {"*.tf", "*tfvars"},
+    callback = function()
+      vim.lsp.buf.format()
+    end,
+    group = format_sync_grp,
+})
+
+
+
 EOF

@@ -33,19 +33,21 @@ local on_attach = function(client, bufnr)
 
 end
 
+
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local servers = { 'pyright', 'tsserver', 'vls' }
+local servers = { 'pyright', 'tsserver', 'terraformls', 'tflint', 'vls' }
 for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
+  nvim_lsp[lsp].setup({
     on_attach = on_attach,
+    capabilities = capabilities,
     flags = {
       debounce_text_changes = 150,
     }
-  }
-
-
-local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+  })
+end
 
 -- setup clangd independently
 require('lspconfig').clangd.setup {
@@ -103,4 +105,3 @@ nvim_lsp.gopls.setup{
       vim.lsp.buf.execute_command(action)
     end
   end
-end

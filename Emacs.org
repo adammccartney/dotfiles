@@ -963,7 +963,7 @@ This is useful for creating an imenu list of headings in a markdown document.
    #+end_src
 
 ** corfu
-#+begin_src emacs-lisp :tangle emacs/.emacs.d/init.el
+#+begin_src emacs-lisp 
   (use-package corfu
     :ensure t
     :custom

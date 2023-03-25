@@ -440,19 +440,6 @@ GROUP BY id")))
 
 (use-package yasnippet)
 
-(use-package corfu
-  :ensure t
-  :custom
-  (corfu-cycle t)       ;; Enable cylcing for 'corfu-next/previous
-  (corfu-auto t)        ;; Enable auto completion
-  (corfu-separator ?\s) ;; Orderless field seperator
-  (corfu-quit-at-boundary nil) ;; Never quit at completion boundary.
-  (corfu-echo-documentation t) ;; Show doumentation in the echo area
-
-  ;; Enable Corfu globally
-  :init
-  (global-corfu-mode))
-
 (use-package emacs
   :init
   ;; TAB cycle if there are only a few candidates
