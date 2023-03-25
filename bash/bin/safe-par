@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+#
+# wrapper for the par text formatter
+#
+# http://www.nicemice.net/par/par-doc.var
+#
+# Idea for this wrapper comes from Greg Hurrel (Wincent)
+# https://www.youtube.com/watch?v=6GvgtJEb6BQ&list=PLwJS-G75vM7kFO-yUkyNphxSIdbi_1NKX
+# 
+# This script attempts to avoid some of the documented hiccups surrounding
+# truncation. In short, if par is run with the `R` option, if the word is too
+# long, par will print an error message to `stdout` and exit
+#
+# If we're calling par from vim, we do not want this behaviour. There is an
+# option to stop this behaviour that is documented in the par man page.
+# Apparently it only manages to truncate the word, which is even less
+# of what we would like to happen.
+#
+# This script is a carbon copy of Greg Hurrel's, it sets up two temporary files 
+# BACKUP stores a copy of the original 
+# If par runs without any errors, it returns EXIT_SUCCESS to `stdout`, the
+# following wrapper sets up a check for that having happened. If par was
+# successful, then it simply goes ahead and outputs the reformatted text as it
+# appears in OUTPUT. Otherwise it outputs the backup (unmodified original).
+
+BACKUP=$(mktemp)
+OUTPUT=$(mktemp)
+
+tee "$BACKUP" | par "$@" > "$OUTPUT"
+
+if [ $? -eq 0 ]; then
+    cat "$OUTPUT"
+else
+    cat "$BACKUP"
+fi
+

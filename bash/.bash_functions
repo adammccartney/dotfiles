@@ -11,6 +11,41 @@ function swap_ctrl_caps () {
       fi
     }
 
+function json_to_env () {
+    # Converts json dict to an env file with key=value pairs.
+
+    # require jq binary
+    if ! command -v jq &> /dev/null
+       then
+           echo "Error: no jq, (you may be better off without it)"
+           return -1
+    fi
+    # if argc != 2 (more or less, but in crazy bash talk)
+    if [ -z "$1" ] || [  -z "$2" ]; then
+        echo "$_DOC"
+        return -1
+    fi
+    local FILENAME=$1
+    local ENVFILE=$2
+    cat $FILENAME | jq -r 'keys[] as $k | "export \($k)=\(.[$k])"' > $ENVFILE
+}
+
+function orgtomd () {
+    local _DOC="usage: orgtomd <input> <output>"
+    if ! command -v pandoc &> /dev/null
+    then
+        echo "Error: pandoc could not be found, please install."
+        return -1
+    fi
+    if [ -z "$1" ] || [  -z "$2" ]; then
+        echo "$_DOC"
+        return -1
+    fi
+    input=$1
+    output=$2
+    pandoc -w markdown -o $output -f org $input
+}
+
 # Functions
 
 ds () {

@@ -65,8 +65,8 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
   shopt -s histappend
 
   # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-  HISTSIZE=1000
-  HISTFILESIZE=2000
+  HISTSIZE=2000
+  HISTFILESIZE=4000
 
   # check the window size after each command and, if necessary,
   # update the values of LINES and COLUMNS.
@@ -192,7 +192,6 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
 
   [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-
   # set up environment variables for compiling from source in $HOME/.local
   export PATH=$HOME/.local/bin:$PATH
   export C_INCLUDE_PATH=$HOME/.local/include
@@ -262,6 +261,21 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
   # add gpg key
   export GPG_TTY=$(tty)
 
+#+end_src
+
+
+*** Sudo config
+#+begin_src shell :tangle ./bash/.bashrc
+export PATH=$PATH:/usr/sbin:/sbin
+#+end_src
+
+
+  
+*** Perl 6 anyone?
+
+That snazzy Dutch hacker thought it was a good idea...
+  
+  #+begin_src shell 
   # Add raku to PATH, assumes a specific version of rakudo
   RAKUDO_STAR="$HOME/.local/src/rakudo/rakudo-star-2022.12/"
   if [ -d "$RAKUDO_STAR/bin"  ]; then
@@ -271,7 +285,32 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
   #+end_src
   
 
+** fzf.bash
+As if it were installed from source ...
+
+#+begin_src shell :tangle bash/.fzf.bash
+  # Setup fzf
+# ---------
+if [[ ! "$PATH" == */home/adam/.local/src/fzf/bin* ]]; then
+  PATH="${PATH:+${PATH}:}/home/adam/.local/src/fzf/bin"
+fi
+
+# Auto-completion
+# ---------------
+[[ $- == *i* ]] && source "/home/adam/.local/src/fzf/shell/completion.bash" 2> /dev/null
+
+# Key bindings
+# ------------
+source "/home/adam/.local/src/fzf/shell/key-bindings.bash"
+
+#+end_src
+
+
 ** bash functions
+
+
+
+*** ctrlcap
 
 Swap the control and caps key (avoid emacs trench pinky)
 
@@ -291,6 +330,55 @@ Swap the control and caps key (avoid emacs trench pinky)
       }
 #+end_src
 
+*** json to env
+
+Convert json dict to environment variables
+
+#+begin_src shell :tangle ./bash/.bash_functions
+  function json_to_env () {
+      # Converts json dict to an env file with key=value pairs.
+
+      # require jq binary
+      if ! command -v jq &> /dev/null
+         then
+             echo "Error: no jq, (you may be better off without it)"
+             return -1
+      fi
+      # if argc != 2 (more or less, but in crazy bash talk)
+      if [ -z "$1" ] || [  -z "$2" ]; then
+          echo "$_DOC"
+          return -1
+      fi
+      local FILENAME=$1
+      local ENVFILE=$2
+      cat $FILENAME | jq -r 'keys[] as $k | "export \($k)=\(.[$k])"' > $ENVFILE
+  }
+#+end_src
+
+*** orgtomd
+
+Convert an org file to markdown with pandoc
+
+#+begin_src shell :tangle ./bash/.bash_functions
+  function orgtomd () {
+      local _DOC="usage: orgtomd <input> <output>"
+      if ! command -v pandoc &> /dev/null
+      then
+          echo "Error: pandoc could not be found, please install."
+          return -1
+      fi
+      if [ -z "$1" ] || [  -z "$2" ]; then
+          echo "$_DOC"
+          return -1
+      fi
+      input=$1
+      output=$2
+      pandoc -w markdown -o $output -f org $input
+  }
+#+end_src
+
+
+*** which
 
 Recommended which
 
@@ -300,6 +388,9 @@ Recommended which
   }
   export -f which
 #+end_src
+
+
+*** Resource utlization
 
 Some random testy functions
 

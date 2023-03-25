@@ -20,8 +20,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=2000
+HISTFILESIZE=4000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -147,7 +147,6 @@ fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-
 # set up environment variables for compiling from source in $HOME/.local
 export PATH=$HOME/.local/bin:$PATH
 export C_INCLUDE_PATH=$HOME/.local/include
@@ -217,12 +216,7 @@ export MANWIDTH=80
 # add gpg key
 export GPG_TTY=$(tty)
 
-# Add raku to PATH, assumes a specific version of rakudo
-RAKUDO_STAR="$HOME/.local/src/rakudo/rakudo-star-2022.12/"
-if [ -d "$RAKUDO_STAR/bin"  ]; then
-    PATH="$RAKUDO_STAR/bin:$RAKUDO_STAR/share/perl6/site/bin:$PATH"
-    PATH="$RAKUDO_STAR/share/perl6/vendor/bin:$RAKUDO_STAR/share/perl6/core/bin:$PATH"
-fi
+export PATH=$PATH:/usr/sbin:/sbin
 
 # Gopath
 # add the go binary to path
