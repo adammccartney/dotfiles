@@ -241,11 +241,11 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
   export PS1='<\u@\h \W>$(__git_ps1 " (%s)")\$'
 
   # virtualenv wrapper
-  #export WORKON_HOME=$HOME/.virtualenvs
-  #export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
-  #export VIRTUALENVWRAPPER_VIRTUALENV_ARGS=' -p /usr/bin/python3 '
-  #export PROJECT_HOME=$HOME/.virtualenvs/venvs
-  #source /usr/local/bin/virtualenvwrapper.sh
+  export WORKON_HOME=$HOME/.virtualenvs
+  export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+  export VIRTUALENVWRAPPER_VIRTUALENV_ARGS=' -p /usr/bin/python3 '
+  export PROJECT_HOME=$HOME/.virtualenvs/venvs
+  source $HOME/.local/bin/virtualenvwrapper.sh
 
   # source the cht.sh bashcompletion file
   if [ -f ~/.bash.d/cht.sh ] ; then
@@ -260,7 +260,6 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
 
   # add gpg key
   export GPG_TTY=$(tty)
-
 #+end_src
 
 
@@ -305,10 +304,7 @@ source "/home/adam/.local/src/fzf/shell/key-bindings.bash"
 
 #+end_src
 
-
 ** bash functions
-
-
 
 *** ctrlcap
 
@@ -329,6 +325,19 @@ Swap the control and caps key (avoid emacs trench pinky)
         fi
       }
 #+end_src
+
+*** fulltextsearch
+
+#+begin_src shell :tangle ./bash/.bash_functions
+  function ftsearch ()
+  {
+      # full text search, searches target for a term
+      local TERM="$1"
+      local TARGET="$2"
+      vim $(rg "$TERM" "$TARGET" | fzf | cut -d ":" -f 1)
+  }
+#+end_src
+
 
 *** json to env
 
@@ -464,9 +473,9 @@ Get the ip of a docker container, assumes that docker is running on your system 
 Creates a python3.8 virtualenvironment and plonks it in ~/.virtualenvs future me will just
 use virtual machines
 #+begin_src shell :tangle ./bash/.bash_functions
-  function make_py3.8venv () {
+  function mk_pyvenv () {
       NAME="$1"
-      #python3.8 -m venv "~/.virtualenvs/${NAME}"
+      python -m venv "~/.virtualenvs/${NAME}"
       echo "~/.virtualenvs/${NAME}"
   }
 #+end_src
@@ -565,14 +574,15 @@ Here are a couple of helpers for running with
 *** Pytest
 
 #+begin_src shell :tangle ./bash/.bash_functions
-    function pytestonchange () {
-        TESTS=$1
-        while inotifywait -q ${TESTS};
-        do
-            echo -e '\n\n';
-            pytest ${TESTS} -v;
-        done
-    }
+  function pytestonchange () {
+      local WATCH=$1
+      local TESTS=$2
+      while inotifywait -q ${WATCH};
+      do
+          echo -e '\n\n';
+          pytest ${TESTS} -v;
+      done
+  }
 #+end_src
 
 

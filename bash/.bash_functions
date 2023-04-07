@@ -11,6 +11,14 @@ function swap_ctrl_caps () {
       fi
     }
 
+function ftsearch ()
+{
+    # full text search, searches target for a term
+    local TERM="$1"
+    local TARGET="$2"
+    vim $(rg "$TERM" "$TARGET" | fzf | cut -d ":" -f 1)
+}
+
 function json_to_env () {
     # Converts json dict to an env file with key=value pairs.
 
@@ -89,9 +97,9 @@ function containerip () {
    sudo docker inspect −−format '{{ .NetworkSettings.IPAddress }}' "$@"
 }
 
-function make_py3.8venv () {
+function mk_pyvenv () {
     NAME="$1"
-    #python3.8 -m venv "~/.virtualenvs/${NAME}"
+    python -m venv "~/.virtualenvs/${NAME}"
     echo "~/.virtualenvs/${NAME}"
 }
 
@@ -151,8 +159,9 @@ function serve_html_docs () {
 }
 
 function pytestonchange () {
-    TESTS=$1
-    while inotifywait -q ${TESTS};
+    local WATCH=$1
+    local TESTS=$2
+    while inotifywait -q ${WATCH};
     do
         echo -e '\n\n';
         pytest ${TESTS} -v;
