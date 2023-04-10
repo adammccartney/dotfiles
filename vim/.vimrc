@@ -98,26 +98,6 @@ set runtimepath+=/usr/bin/lilypond
 filetype on
 
 
-" Javascript & Typescript
-" JSDocs
-let g:javascript_plugin_jsdoc=1
-"NGDocs
-let g:javascript_plugin_ngdoc=1
-" Flow
-let g:javascript_plugin_flow=1
-
-"augroup javascript_folding
-"    au!
-"    au FileType javascript setlocal foldmethod=syntax
-"augroup END
-
-" Typescript
-let g:typescript_indent_disable=1
-
-" Compiler
-let g:typescript_compiler_binars = 'tsc'
-let g:typescript_compiler_options = ''
-
 "========================================================
 " Packages 
 "========================================================
@@ -136,25 +116,27 @@ Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'alx741/vim-hindent'
-Plug 'pangloss/vim-javascript'
 Plug 'digitaltoad/vim-pug'
 Plug 'jpalardy/vim-slime'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'dbeniamine/cheat.sh-vim'
 Plug 'rust-lang/rust.vim'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'ryanoasis/vim-devicons'
 Plug 'vivien/vim-linux-coding-style'
+Plug 'pangloss/vim-javascript'
+Plug 'leafgarland/typescript-vim'
+Plug 'MaxMEllon/vim-jsx-pretty'
 
 if has("nvim")
-    Plug 'neovim/nvim-lspconfig'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-treesitter/playground'
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'hrsh7th/cmp-nvim-lua'
+    Plug 'neovim/nvim-lspconfig'
     Plug 'hrsh7th/cmp-buffer'
     Plug 'hrsh7th/nvim-cmp'
     Plug 'mfussenegger/nvim-lint'
@@ -212,6 +194,27 @@ let g:python3_host_prog = '/usr/bin/python3'
 
 autocmd FileType python compiler flake8
 
+
+" Javascript & Typescript
+" =======================
+" JSDocs
+let g:javascript_plugin_jsdoc=1
+"NGDocs
+let g:javascript_plugin_ngdoc=1
+" Flow
+let g:javascript_plugin_flow=1
+
+"augroup javascript_folding
+"    au!
+"    au FileType javascript setlocal foldmethod=syntax
+"augroup END
+
+" Typescript
+let g:typescript_indent_disable=1
+
+" Compiler
+let g:typescript_compiler_binars = 'tsc'
+let g:typescript_compiler_options = ''
 
 " air-line
 let g:airline_powerline_fonts = 1
