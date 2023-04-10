@@ -1,6 +1,19 @@
-local R = {}
+-- refactor.lua
+-- A module containing some handy functions for refactoring
+-- Maintainer: Adam McCartney <adam@mur.at>
 
-R.todo = function() print("another message") end
+local M = {}
+
+local ts_utils = require('nvim-treesitter.ts_utils')
+
+---- Extract the visually selected block contained in body, 
+---- place it in the newly created function called "name".
+--function M.extract_function(body, name)
+--    --buf = nvim_get_current_buf() 
+--    --start, end = nvim_buf_get_mark(buf)
+--    --lines = nvim_buf_get_lines(buf, start, end) 
+--    --nvim_command("echo", lines)
+--end
 
 
 -- Extract the visually selected block contained in body, 
@@ -20,11 +33,10 @@ local function get_visual_selection()
 end
 
 -- Assume that we select the function body visually in the open buffer.
-R.get_body = function ()
+M.get_body = function ()
     local text_table = get_visual_selection()
     print(text_table)
 end
-
 
 -- Copy the selection to an empty slot above the current function
 -- Find the current node using the tresitter api
@@ -37,4 +49,5 @@ end
 --
 -- Delete the selection 
 
-return R
+return M
+

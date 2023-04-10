@@ -16,7 +16,8 @@ repositories = {
 }
 
 releases = {
-        "rakudo": "https://rakudo.org/latest/star/src",
+        "lua-language-server":
+        "https://github.com/LuaLS/lua-language-server/releases/download/3.6.18/lua-language-server-3.6.18-linux-x64.tar.gz"
 }
 
 
@@ -55,7 +56,6 @@ def get_releases(releases):
             archive = archive.absolute()
             untar_release(archive)
             mv_contents(k) # assume the archive name contains key
-
 
 
 if __name__ == '__main__':
