@@ -10,7 +10,7 @@ esac
 
 # point to a populated terminfo database and explicitly set term
 export TERMINFO=/usr/share/terminfo
-export TERM=tmux-256color
+#export TERM=tmux-256color
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
