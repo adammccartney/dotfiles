@@ -58,6 +58,11 @@ require'lspconfig'.lua_ls.setup {
   },
 }
 
+-- setup ansible-language-server
+require('ansiblels')
+
+nvim_lsp.ansiblels.setup {}
+
 -- setup clangd independently
 require('lspconfig').clangd.setup {
     on_attach = on_attach,

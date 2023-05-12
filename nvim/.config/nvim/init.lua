@@ -19,6 +19,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 --enable plugin
 require('go').setup()
 
+
+--Fuzzy find for stuff
 -- fzf-lua setup
 vim.api.nvim_set_keymap(
     'n',
@@ -31,6 +33,13 @@ vim.api.nvim_set_keymap(
     'n',
     'fg',
     "<cmd>lua require('fzf-lua').grep()<CR>",
+    { noremap = true, silent = true }
+)
+
+vim.api.nvim_set_keymap(
+    'n',
+    'fk',
+    "<cmd>lua require('fzf-lua').()<CR>",
     { noremap = true, silent = true }
 )
 
