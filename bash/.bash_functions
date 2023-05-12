@@ -19,7 +19,24 @@ function ftsearch ()
     vim $(rg "$TERM" "$TARGET" | fzf | cut -d ":" -f 1)
 }
 
-function json_to_env () {
+function gitssh-work ()
+{
+    export GIT_SSH_COMMAND="ssh -i ~/.ssh/tuw_id_ed25519"
+    git config --global user.name "Adam McCartney"
+    git config --global user.email "adam.mccartney@tuwien.ac.at"
+    git config --global user.signingkey 174C3ECBC22F87A8207AC9FE31DF3F14F2A9C47F
+}
+
+function gitssh-default ()
+{
+    export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519"
+    git config --global user.name "Adam McCartney"
+    git config --global user.email "adam@mur.at"
+    git config --global user.signingkey C5BF27EE0290CDE5BC8A8801A5FCE0B0A42EFDA8
+}
+
+function json_to_env ()
+{
     # Converts json dict to an env file with key=value pairs.
 
     # require jq binary
@@ -188,16 +205,16 @@ function backup_home () {
       # WARNING: assumes that you are running from home!
       BACKUP_PATH=$1
       EXCLUDES_PATH=$2
-      rsync -raP  --exclude="/.*" --exclude-from=$EXCLUDES_PATH --include="/.ssh" --include="/.password-store" ./ $BACKUP_PATH
+      rsync -auv -r -P  --ignore-existing --exclude="/.*" --exclude-from=$EXCLUDES_PATH --include="/.ssh" --include="/.password-store" ./ $BACKUP_PATH
 }
 
 function backup () {
     export CURRENTDATE=`date +"%b%d%Y"`
-    export BACKUPTYPE="diza"
+    local BACKUPTYPE="$1"
 
-    if [ ! -d "/media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE/" ]; then
-        mkdir -p /media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE
-        export BACKUP_DIR="/media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE"
+    if [ ! -d "/run/media/adam/adb/backup/$BACKUPTYPE" ]; then
+        mkdir -p "/run/media/adam/adb/backup/$BACKUPTYPE"
+        export BACKUP_DIR="/run/media/adam/adb/backup/$BACKUPTYPE"
     fi
 
     EXCLUDES_LIST="$HOME/backup_excludes.txt"

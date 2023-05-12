@@ -67,3 +67,5 @@ alias vpnui=/opt/cisco/anyconnect/bin/vpnui
 alias slack="slack --enable-features=WebRTCPipewireCapturer"
 
 alias zoom="zoom --enable-features=WebRTCPipewireCapturer"
+
+alias ltucfg="source ~/dotfiles/bash/tu.aliases.bash"

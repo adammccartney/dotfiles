@@ -306,6 +306,8 @@ source "/home/adam/.local/src/fzf/shell/key-bindings.bash"
 
 ** bash functions
 
+
+
 *** ctrlcap
 
 Swap the control and caps key (avoid emacs trench pinky)
@@ -339,29 +341,57 @@ Swap the control and caps key (avoid emacs trench pinky)
 #+end_src
 
 
+*** Git related
+
+Tell git to use specific ssh key for work
+
+#+begin_src shell :tangle ./bash/.bash_functions
+  function gitssh-work ()
+  {
+      export GIT_SSH_COMMAND="ssh -i ~/.ssh/tuw_id_ed25519"
+      git config --global user.name "Adam McCartney"
+      git config --global user.email "adam.mccartney@tuwien.ac.at"
+      git config --global user.signingkey 174C3ECBC22F87A8207AC9FE31DF3F14F2A9C47F
+  }
+#+end_src
+
+
+#+begin_src shell :tangle ./bash/.bash_functions
+  function gitssh-default ()
+  {
+      export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519"
+      git config --global user.name "Adam McCartney"
+      git config --global user.email "adam@mur.at"
+      git config --global user.signingkey C5BF27EE0290CDE5BC8A8801A5FCE0B0A42EFDA8
+  }
+#+end_src
+
+
+
 *** json to env
 
 Convert json dict to environment variables
 
 #+begin_src shell :tangle ./bash/.bash_functions
-  function json_to_env () {
-      # Converts json dict to an env file with key=value pairs.
+    function json_to_env ()
+    {
+        # Converts json dict to an env file with key=value pairs.
 
-      # require jq binary
-      if ! command -v jq &> /dev/null
-         then
-             echo "Error: no jq, (you may be better off without it)"
-             return -1
-      fi
-      # if argc != 2 (more or less, but in crazy bash talk)
-      if [ -z "$1" ] || [  -z "$2" ]; then
-          echo "$_DOC"
-          return -1
-      fi
-      local FILENAME=$1
-      local ENVFILE=$2
-      cat $FILENAME | jq -r 'keys[] as $k | "export \($k)=\(.[$k])"' > $ENVFILE
-  }
+        # require jq binary
+        if ! command -v jq &> /dev/null
+           then
+               echo "Error: no jq, (you may be better off without it)"
+               return -1
+        fi
+        # if argc != 2 (more or less, but in crazy bash talk)
+        if [ -z "$1" ] || [  -z "$2" ]; then
+            echo "$_DOC"
+            return -1
+        fi
+        local FILENAME=$1
+        local ENVFILE=$2
+        cat $FILENAME | jq -r 'keys[] as $k | "export \($k)=\(.[$k])"' > $ENVFILE
+    }
 #+end_src
 
 *** orgtomd
@@ -627,6 +657,7 @@ The trick with rsync is to use relative paths for the files/directories to be ex
   /.android
   /.cache   
   /Code
+  /go/pkg
   /.local/src
   /.virtualenvs
   /snap
@@ -634,6 +665,7 @@ The trick with rsync is to use relative paths for the files/directories to be ex
   /node_modules
   /dotfiles
   /.config
+  /.conda
 #+end_src
 
 We want to copy everything in $HOME, excluding stuff that is anyway in version control, anything related to cache,
@@ -643,16 +675,16 @@ and any sort of temp or environment files.
         # WARNING: assumes that you are running from home!
         BACKUP_PATH=$1
         EXCLUDES_PATH=$2
-        rsync -raP  --exclude="/.*" --exclude-from=$EXCLUDES_PATH --include="/.ssh" --include="/.password-store" ./ $BACKUP_PATH
+        rsync -auv -r -P  --ignore-existing --exclude="/.*" --exclude-from=$EXCLUDES_PATH --include="/.ssh" --include="/.password-store" ./ $BACKUP_PATH
   }
 
   function backup () {
       export CURRENTDATE=`date +"%b%d%Y"`
-      export BACKUPTYPE="diza"
+      local BACKUPTYPE="$1"
 
-      if [ ! -d "/media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE/" ]; then
-          mkdir -p /media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE
-          export BACKUP_DIR="/media/adam/ADB/backup/$BACKUPTYPE/$CURRENTDATE"
+      if [ ! -d "/run/media/adam/adb/backup/$BACKUPTYPE" ]; then
+          mkdir -p "/run/media/adam/adb/backup/$BACKUPTYPE"
+          export BACKUP_DIR="/run/media/adam/adb/backup/$BACKUPTYPE"
       fi
 
       EXCLUDES_LIST="$HOME/backup_excludes.txt"
@@ -785,5 +817,7 @@ Bunch of aliases used for alter egos.
   alias slack="slack --enable-features=WebRTCPipewireCapturer"
 
   alias zoom="zoom --enable-features=WebRTCPipewireCapturer"
+
+  alias ltucfg="source ~/dotfiles/bash/tu.aliases.bash"
   #+end_src
 
