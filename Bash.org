@@ -32,9 +32,13 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
   if [ -d "$HOME/bin" ] ; then
       PATH="$HOME/bin:$PATH"
   fi
- 
+
   if [ -d "$HOME/.local/bin" ] ; then
       PATH="$HOME/.local/bin:$PATH"
+  fi
+
+  if [ -d "$HOME/.local/miniconda3/bin" ] ; then
+      PATH="$HOME/.local/miniconda3/bin:$PATH"
   fi
 #+end_src
 
@@ -269,6 +273,14 @@ export PATH=$PATH:/usr/sbin:/sbin
 #+end_src
 
 
+*** Conda setup
+Let conda take a whack at setting up the bash envionment
+#+begin_src shell :tangle ./bash/.bashrc
+  if command $HOME/.local/miniconda3/bin/conda &> /dev/null; then
+      $HOME/.local/miniconda3/bin/conda init bash
+  fi
+#+end_src
+
   
 *** Perl 6 anyone?
 
@@ -365,8 +377,6 @@ Tell git to use specific ssh key for work
       git config --global user.signingkey C5BF27EE0290CDE5BC8A8801A5FCE0B0A42EFDA8
   }
 #+end_src
-
-
 
 *** json to env
 

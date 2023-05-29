@@ -218,6 +218,10 @@ export GPG_TTY=$(tty)
 
 export PATH=$PATH:/usr/sbin:/sbin
 
+if command $HOME/.local/miniconda3/bin/conda &> /dev/null; then
+    $HOME/.local/miniconda3/bin/conda init bash
+fi
+
 # Gopath
 # add the go binary to path
 export PATH=$PATH:/usr/local/go/bin
