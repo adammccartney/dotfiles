@@ -142,7 +142,7 @@ if has("nvim")
     Plug 'mfussenegger/nvim-lint'
     Plug 'folke/zen-mode.nvim'
     Plug 'EdenEast/nightfox.nvim' 
-    " Plug 'Olical/conjure'
+    Plug 'Olical/conjure'
     Plug 'ray-x/go.nvim'
     Plug 'ray-x/guihua.lua', { 'do': 'cd lua/fzy && make'}
     Plug 'mfussenegger/nvim-dap'
@@ -259,3 +259,6 @@ if has('nvim')
     highlight! link TermCursor Cursor
     highlight! TermCursorNC guibg=red guifg=white ctermbg=1 ctermfg=15
 endif
+
+" FZF default command 
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
