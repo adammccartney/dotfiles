@@ -48,3 +48,13 @@ vim.api.nvim_create_user_command("Test", function()
     package.loaded.refactor = nil
     require('refactor').echo_visual()
 end, {})
+
+
+-- terraform setup 
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = {"*.tf", "*tfvars"},
+  callback = function()
+    vim.lsp.buf.format()
+  end,
+  group = format_sync_grp,
+})
