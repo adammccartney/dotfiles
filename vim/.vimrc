@@ -136,9 +136,11 @@ if has("nvim")
     Plug 'nvim-lua/plenary.nvim'
     Plug 'hrsh7th/cmp-nvim-lsp'
     Plug 'hrsh7th/cmp-nvim-lua'
-    Plug 'neovim/nvim-lspconfig'
     Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-path'
+    Plug 'hrsh7th/cmp-cmdline'
     Plug 'hrsh7th/nvim-cmp'
+    Plug 'neovim/nvim-lspconfig'
     Plug 'mfussenegger/nvim-lint'
     Plug 'folke/zen-mode.nvim'
     Plug 'EdenEast/nightfox.nvim' 
@@ -149,6 +151,7 @@ if has("nvim")
     Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
     " optional for icon support
     Plug 'nvim-tree/nvim-web-devicons'
+    Plug 'davidgranstrom/scnvim'
 endif
 
 call plug#end()
