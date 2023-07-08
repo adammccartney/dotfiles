@@ -61,7 +61,7 @@
 (require 'unannoy)
 ;;(require 'ad-mail)
 (require 'adlisp)
-(require 'mu4e)
+;;(require 'mu4e)
 
 (set-default-coding-systems 'utf-8)
 
@@ -146,9 +146,25 @@
             (lambda () (add-hook 'after-save-hook #'org-babel-tangle
                                  :append :local)))
 
+
+
 ;; todo-keywords
   (setq org-todo-keywords
         '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
+
+;; evaluate inline only
+  (setq org-export-babel-evaluate 'inline-only)
+
+;; use imagemagick to preview latex
+  (setq org-latex-create-formula-image-program 'imagemagick)
+
+  ;; set up tikz as one of the default packages for LaTeX
+  (setq org-latex-packges-alist
+        (quote (("" "color" t)
+                ("" "minted" t)
+                ("" "parskip" t)
+                ("" "tikz" t))))
+
 ;; org babel
 
   (org-babel-do-load-languages
@@ -161,7 +177,12 @@
      (go . t)
      (gnuplot . t)
      (dot . t)
-     (shell . t)))
+     (latex . t)
+     (shell . t)
+     ;;(jupyter . t)
+     ))
+
+  (setq ob-async-no-async-languages-alist '("jupyter-python")) 
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
 
@@ -189,6 +210,7 @@
 (add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
 (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
+(add-to-list 'org-structure-template-alist '("jpy" . "src jupyter-python"))
 (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
 
 (defun my/org-roam-node-list ()
@@ -662,7 +684,7 @@ GROUP BY id")))
   (setq geiser-default-implementation 'guile)
   (setq geiser-active-implementations '(guile))
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile)))
-  (setq geiser-guile-binary "/usr/bin/guile"))
+  (setq geiser-guile-binary "/usr/bin/guile3.0"))
 
 (use-package geiser-guile
   :straight t)
@@ -672,7 +694,7 @@ GROUP BY id")))
   :hook (cc-mode . lsp-deferred)
   :init
   (defun my/c-hook ()
-    (setf c-basic-offset 8)   ;; follow linux kernel style guide
+    (setf c-basic-offset 4)   
     (c-set-offset 'case-label '+)
     (c-set-offset 'access-label '/)
     (c-set-offset 'label '/))
@@ -710,6 +732,8 @@ GROUP BY id")))
 (use-package yaml-mode
    :mode "\\.ya?ml\\'")
 
+(use-package riscv-mode)
+
 (use-package dockerfile-mode
   :ensure t)
 
@@ -724,6 +748,16 @@ GROUP BY id")))
   :hook (prog-mode . smartparens-mode))
 
 (setq-default indent-tabs-mode nil)
+
+(use-package zmq)
+
+(use-package jupyter
+  :demand t
+  :after ob
+
+:config
+(add-to-list 'org-babel-load-languages '(jupyter . t))
+(org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
 
 (use-package elfeed
   :ensure t
