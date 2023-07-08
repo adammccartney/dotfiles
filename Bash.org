@@ -13,7 +13,7 @@ for ssh logins, install and configure the libpam-umask package.
 umask 022
 
 
-#+begin_src shell :tangle ./bash/.profile
+#+begin_src shell 
   # if running bash
   if [ -n "$BASH_VERSION" ]; then
       # include .bashrc if it exists
@@ -28,7 +28,7 @@ umask 022
 
 Set the PATH environment variable to include my ~$HOME/bin~ directory.
 
-#+begin_src shell :tangle ./bash/.profile
+n#+begin_src shell 
   if [ -d "$HOME/bin" ] ; then
       PATH="$HOME/bin:$PATH"
   fi
@@ -46,7 +46,7 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
 
 ** .bashrc
 
-#+begin_src shell :tangle ./bash/.bashrc
+#+begin_src shell 
    # ~/.bashrc: executed by bash(1) for non-login shells.
   # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
   # for examples
@@ -268,14 +268,14 @@ Set the PATH environment variable to include my ~$HOME/bin~ directory.
 
 
 *** Sudo config
-#+begin_src shell :tangle ./bash/.bashrc
+#+begin_src shell 
 export PATH=$PATH:/usr/sbin:/sbin
 #+end_src
 
 
 *** Conda setup
 Let conda take a whack at setting up the bash envionment
-#+begin_src shell :tangle ./bash/.bashrc
+#+begin_src shell 
   if command $HOME/.local/miniconda3/bin/conda &> /dev/null; then
       $HOME/.local/miniconda3/bin/conda init bash
   fi
@@ -299,7 +299,7 @@ That snazzy Dutch hacker thought it was a good idea...
 ** fzf.bash
 As if it were installed from source ...
 
-#+begin_src shell :tangle bash/.fzf.bash
+#+begin_src shell 
   # Setup fzf
 # ---------
 if [[ ! "$PATH" == */home/adam/.local/src/fzf/bin* ]]; then
@@ -324,7 +324,7 @@ source "/home/adam/.local/src/fzf/shell/key-bindings.bash"
 
 Swap the control and caps key (avoid emacs trench pinky)
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
 
     # ~/.bash_functions: collection of command line functions
     # useage: source via ~/.bashrc at runtime
@@ -342,7 +342,7 @@ Swap the control and caps key (avoid emacs trench pinky)
 
 *** fulltextsearch
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function ftsearch ()
   {
       # full text search, searches target for a term
@@ -357,7 +357,7 @@ Swap the control and caps key (avoid emacs trench pinky)
 
 Tell git to use specific ssh key for work
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function gitssh-work ()
   {
       export GIT_SSH_COMMAND="ssh -i ~/.ssh/tuw_id_ed25519"
@@ -368,7 +368,7 @@ Tell git to use specific ssh key for work
 #+end_src
 
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function gitssh-default ()
   {
       export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519"
@@ -382,7 +382,7 @@ Tell git to use specific ssh key for work
 
 Convert json dict to environment variables
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
     function json_to_env ()
     {
         # Converts json dict to an env file with key=value pairs.
@@ -408,7 +408,7 @@ Convert json dict to environment variables
 
 Convert an org file to markdown with pandoc
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function orgtomd () {
       local _DOC="usage: orgtomd <input> <output>"
       if ! command -v pandoc &> /dev/null
@@ -431,7 +431,7 @@ Convert an org file to markdown with pandoc
 
 Recommended which
 
-#+begin_src shell :tanngle ./bash/.bash_functions
+#+begin_src shell 
   which() {
       (alias; declare -f) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot $@
   }
@@ -443,7 +443,7 @@ Recommended which
 
 Some random testy functions
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   # Functions
 
   ds () {
@@ -460,7 +460,7 @@ Some random testy functions
 That time Bob Nystrom wrote a great book and we needed a tool to extract the binary of
 the cool language he developed.
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   extractLoxBin () {
       DISTDIR=/home/adam/.local/src/jlox/build/distributions
       TARGETDIR=${DISTDIR}
@@ -472,7 +472,7 @@ the cool language he developed.
 I think I used to use this for renaming files after cloning C projects,
 or any other time I needed to recursively rename files.
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function renameFilesRecursively () {
 
     SEARCH_PATH="$1"
@@ -491,7 +491,7 @@ or any other time I needed to recursively rename files.
 This is for spawning a new tmux namespace with a split configuration that is nice for
 your face.
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function tmux_ns () {
       SESNAME="$1"
       tmux new-session -s $SESNAME -d
@@ -503,7 +503,7 @@ your face.
 
 
 Get the ip of a docker container, assumes that docker is running on your system (poor you)
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function containerip () {
      sudo docker inspect −−format '{{ .NetworkSettings.IPAddress }}' "$@"
   }
@@ -512,7 +512,7 @@ Get the ip of a docker container, assumes that docker is running on your system 
 
 Creates a python3.8 virtualenvironment and plonks it in ~/.virtualenvs future me will just
 use virtual machines
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function mk_pyvenv () {
       NAME="$1"
       python -m venv "~/.virtualenvs/${NAME}"
@@ -522,7 +522,7 @@ use virtual machines
 
 
 Handy dump of all currently LISTENing sockets on a system (will run as sudo)
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   # list all ports currently listening
   get_listening_ports () {
       sudo lsof -i -P -n | grep LISTEN 
@@ -532,7 +532,7 @@ Handy dump of all currently LISTENing sockets on a system (will run as sudo)
 
 I think these might have been a bunch of functions that were useful for the System Programming for Linux Containers course.
 Or possibly the OSTEP book... can't remember.
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function installed {
       cmd=$(command -v "${1}")
 
@@ -563,7 +563,7 @@ Or possibly the OSTEP book... can't remember.
 Leverages a cool api to show the current weather in your terminal (I mean, hopefully there is no actual
 weather happening in your terminal) outside I mean, in the environment where you run the computer that
 houses your terminal.
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function weather { 
       curl -s --connect-timeout 3 -m 5 http://wttr.in/$1 
   }
@@ -571,7 +571,7 @@ houses your terminal.
 
 Elastic search (what and why and how and who is elastic search I hear you ask, I also have no idea,
 I think it's an index for someone who hasn't heard about C.
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   # Elastic search functions
   if [ -f ~/.elastic_fun ]; then
       . ~/.elastic_fun
@@ -583,7 +583,7 @@ I think it's an index for someone who hasn't heard about C.
 
 *** C projects
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function makeonchange () {
       while inotifywait -q . ; do echo -e '\n\n'; make; done
   }
@@ -597,7 +597,7 @@ I think it's an index for someone who hasn't heard about C.
 Here are a couple of helpers for running with 
 
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function make_html_onchange () {
       # Run from the 'project/docs' directory
       while inotifywait -q ./source ; do echo -e '\n\n'; make html; done
@@ -613,7 +613,7 @@ Here are a couple of helpers for running with
 
 *** Pytest
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   function pytestonchange () {
       local WATCH=$1
       local TESTS=$2
@@ -628,7 +628,7 @@ Here are a couple of helpers for running with
 
 Haul that mail truck in 
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   getmail () {
       mbsync -a
   }
@@ -640,7 +640,7 @@ Haul that mail truck in
 
 Assumes that you have a `~/.virtualenv` folder on your machine
 
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
   adworkon () {
       VENV=$1
       VENV_PATH=$HOME/.virtualenv/$VENV
@@ -680,7 +680,7 @@ The trick with rsync is to use relative paths for the files/directories to be ex
 
 We want to copy everything in $HOME, excluding stuff that is anyway in version control, anything related to cache,
 and any sort of temp or environment files.
-#+begin_src shell :tangle ./bash/.bash_functions
+#+begin_src shell 
     function backup_home () {
         # WARNING: assumes that you are running from home!
         BACKUP_PATH=$1
@@ -712,7 +712,7 @@ own misunderstaning of the various docs online the following [[https://go.dev/do
 seems to suggest the following solution as of August 2022. This bash config snippet
 has been used on a machine where the install site of the [[https://go.dev/doc/install][go binary]] is "/usr/local/go".
 
-#+begin_src shell :tangle ./bash/.bashrc
+#+begin_src shell 
   # Gopath
   # add the go binary to path
   export PATH=$PATH:/usr/local/go/bin
@@ -745,12 +745,12 @@ the nvm install script.
 * kubernetes specific
 
 Set up alias for kubectl
-#+begin_src shell :tangle ./bash/.bash_aliases
+#+begin_src shell 
     alias k=kubectl
 #+end_src
 
 Add autocomplete for kubectl, then make sure it can be used by the alias we just set up.
-#+begin_src shell :tangle ./bash/.bashrc
+#+begin_src shell 
   source <(kubectl completion bash)
   complete -o default -F __start_kubectl k
 #+end_src
@@ -759,7 +759,7 @@ Add autocomplete for kubectl, then make sure it can be used by the alias we just
 
 Bunch of aliases used for alter egos.
 
-#+begin_src shell :tangle ./bash/.bash_aliases
+#+begin_src shell 
   ## virtualenv alias
   #alias sv="source env/bin/activate"
   #
