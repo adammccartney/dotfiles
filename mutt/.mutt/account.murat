@@ -14,3 +14,4 @@ set sendmail="/usr/bin/msmtp"
 set use_from=yes
 set from=adam@mur.at
 set envelope_from=yes
+set signature="~/.mutt/signature.murat"

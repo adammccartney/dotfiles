@@ -3,14 +3,15 @@ set realname="Adam McCartney"
 
 # Mail format
 set mbox_type="Maildir"
-set folder="~/.mail/tuw/Inbox"
+set folder="~/.mail/tuw"
 set header_cache="~/.cache/mutt"
-set spoolfile="="
-set postponed="=drafts"
-set record="="
+set spoolfile="+Inbox"
+set postponed="+Drafts"
+set record="+Sent Items"
 
 # Sendmail config
 set sendmail="/usr/bin/msmtp"
 set use_from=yes
 set from=adam.mccartney@tuwien.ac.at
 set envelope_from=yes
+set signature="~/.mutt/signature.tuw"
