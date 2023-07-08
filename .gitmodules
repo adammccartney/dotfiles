@@ -1,0 +1,3 @@
+[submodule "vim-lilypond"]
+	path = vim-lilypond
+	url = https://github.com/sersorrel/vim-lilypond

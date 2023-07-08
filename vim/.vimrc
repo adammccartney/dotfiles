@@ -78,9 +78,9 @@ set expandtab
 
 " Disable stupid backup and swap files - they trigger too many events 
 " for file system watchers 
-set nobackup
-set nowritebackup
-set noswapfile
+"set nobackup
+"set nowritebackup
+"set noswapfile
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -96,6 +96,7 @@ nmap ga <Plug>(EasyAlign)
 filetype off
 set runtimepath+=/usr/bin/lilypond
 filetype on
+syntax on
 
 
 "========================================================
@@ -124,7 +125,7 @@ Plug 'rust-lang/rust.vim'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'ryanoasis/vim-devicons'
-Plug 'vivien/vim-linux-coding-style'
+"Plug 'vivien/vim-linux-coding-style'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
 Plug 'MaxMEllon/vim-jsx-pretty'
@@ -149,6 +150,7 @@ if has("nvim")
     Plug 'ray-x/guihua.lua', { 'do': 'cd lua/fzy && make'}
     Plug 'mfussenegger/nvim-dap'
     Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
+    Plug 'github/copilot.vim'
     " optional for icon support
     Plug 'nvim-tree/nvim-web-devicons'
     Plug 'davidgranstrom/scnvim'
