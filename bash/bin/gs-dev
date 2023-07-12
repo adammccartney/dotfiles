@@ -1,0 +1,56 @@
+#!/usr/bin/env bash 
+
+function load_aliases () 
+{
+    source "$HOME/dotfiles/bash/tu.aliases.bash"
+}
+
+function load_virtual_env () 
+{
+    local env_name=$1
+    conda activate "$env_name"
+}
+
+function start_grader_service () 
+{
+    load_virtual_env "migration"
+    cdlx
+    grader-service -f "$GRADER_SERVICE_CONIG_PATH"
+}
+
+function create_gs_dev_session () 
+{
+    # creates a new tmux sesssion with a window for each of the following:
+    local VENV=$1
+    load_aliases
+    ## 1. editor  
+    tmux new-session -s gs-dev -n editor -d
+    tmux send-keys -t gs-dev "conda activate $VENV" C-m
+    tmux send-keys -t gs-dev "ltucfg" C-m
+    tmux send-keys -t gs-dev "vim" C-m
+    # 2. database
+    tmux new-window -t gs-dev -n database
+    tmux send-keys -t gs-dev:2.1 'ltucfg' C-m
+    tmux send-keys -t gs-dev:2.1 'dbconnect' C-m
+    # 3. grader labextension 
+    tmux new-window -t gs-dev -n labext 
+    tmux send-keys -t gs-dev:3.1 "conda activate $VENV" C-m
+    tmux send-keys -t gs-dev:3.1 "ltucfg" C-m
+    tmux send-keys -t gs-dev:3.1 "cdlx" C-m
+    tmux send-keys -t gs-dev:3.1 "jlpm build" C-m
+    # 4. jupyter apps (2 panes - lab and grader-service)
+    tmux new-window -t gs-dev -n srv 
+    tmux split-window -v -t srv 
+    tmux send-keys -t gs-dev:4.1 "conda activate $VENV" C-m
+    tmux send-keys -t gs-dev:4.1 "ltucfg" C-m
+    tmux send-keys -t gs-dev:4.1 "cdgs" C-m 
+    tmux send-keys -t gs-dev:4.1 "jupyterhub -f $JUPYTERHUB_CONFIG_PATH" C-m
+    tmux send-keys -t gs-dev:4.2 "conda activate $VENV" C-m
+    tmux send-keys -t gs-dev:4.2 "ltucfg" C-m
+    tmux send-keys -t gs-dev:4.2 "cdlx" C-m
+    tmux send-keys -t gs-dev:4.2 "grader-service -f $GRADER_SERVICE_CONFIG_PATH" C-m
+    tmux select-window -t gs-dev:1 
+    tmux attach -t gs-dev
+}
+
+create_gs_dev_session $1
