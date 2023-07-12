@@ -10,7 +10,7 @@ if has("autocmd")
 endif
 
 " Rebind <Leader> key
-let mapleader=" " 
+let mapleader="\<Space>" 
 let maplocalleader=","
 
 " writch buffers in normal mode 
@@ -128,7 +128,6 @@ Plug 'ryanoasis/vim-devicons'
 "Plug 'vivien/vim-linux-coding-style'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
-Plug 'MaxMEllon/vim-jsx-pretty'
 
 if has("nvim")
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -143,6 +142,9 @@ if has("nvim")
     Plug 'hrsh7th/nvim-cmp'
     Plug 'neovim/nvim-lspconfig'
     Plug 'mfussenegger/nvim-lint'
+    Plug 'mfussenegger/nvim-dap'
+    Plug 'rcarriga/nvim-dap-ui'
+    Plug 'mxsdev/nvim-dap-vscode-js'
     Plug 'folke/zen-mode.nvim'
     Plug 'EdenEast/nightfox.nvim' 
     Plug 'Olical/conjure'
