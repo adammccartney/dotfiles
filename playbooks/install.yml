@@ -1,0 +1,10 @@
+# install.yml 
+# top level playbook that coordinates install tasks on new system 
+---
+- name: Configure new system 
+  hosts: all 
+  gather_facts: false 
+
+  roles:
+    - role: debuggers
+...

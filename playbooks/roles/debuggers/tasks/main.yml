@@ -1,0 +1,19 @@
+---
+- name: Ensure js-debug folder exists 
+  ansible.builtin.file:
+    path: ~/Applications/js-debug
+    state: directory
+    mode: 0755
+
+- name: Download vscode-js-debug 
+  ansible.builtin.unarchive:
+    src: https://github.com/microsoft/vscode-js-debug/archive/refs/tags/v1.80.0.tar.gz
+    dest: ~/Applications/js-debug 
+    remote_src: true
+
+
+# TODO: put these additional steps into tasks 
+# 1. cd ~/Applications/js-debug/vscode-js-debug-1.80.0
+# 2. npm install --legacy-peer-deps
+# 3. npx gulp vsDebugServerBundle
+# 4. mv dist out
