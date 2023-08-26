@@ -138,7 +138,9 @@
 ;; Org mode
 (use-package org 
   :defer t
-  :after (org-roam ob-go) 
+  :after (org-roam
+          ob-go
+          ob-typescript) 
   :custom
   (org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
   :config
@@ -174,6 +176,8 @@
      (C . t)
      (scheme . t)
      (ruby . t)
+     (js . t)
+     (typescript . t)
      (go . t)
      (gnuplot . t)
      (dot . t)
@@ -203,7 +207,8 @@
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("gnpl" . "src gnuplot"))
 (add-to-list 'org-structure-template-alist '("go" . "src go"))
-(add-to-list 'org-structure-template-alist '("js" . "src javascript"))
+(add-to-list 'org-structure-template-alist '("js" . "src js"))
+(add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
 (add-to-list 'org-structure-template-alist '("krc" . "src C"))
 (add-to-list 'org-structure-template-alist '("py" . "src python"))
 (add-to-list 'org-structure-template-alist '("rb" . "src ruby"))
@@ -211,6 +216,7 @@
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
 (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
 (add-to-list 'org-structure-template-alist '("jpy" . "src jupyter-python"))
+(add-to-list 'org-structure-template-alist '("doc" . "src docker-build"))
 (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
 
 (defun my/org-roam-node-list ()
@@ -651,6 +657,10 @@ GROUP BY id")))
  :ensure t
  :after python-mode)
 
+(use-package conda
+  :ensure t
+  :after python-mode)
+
 (use-package python-test
   :after python-mode)
 
@@ -710,6 +720,7 @@ GROUP BY id")))
   :hook (go-mode . lsp-deferred))
 
 (use-package ob-go)
+(use-package ob-typescript)
 
 (use-package nasm-mode
   :defer t
