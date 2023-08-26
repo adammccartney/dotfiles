@@ -72,3 +72,4 @@ alias ltucfg="source ~/dotfiles/bash/tu.aliases.bash"
 
 alias guile=$(which guile3.0)
 
+alias ls0="find . -maxdepth 1 -print0"

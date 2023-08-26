@@ -290,3 +290,85 @@ function create_pydev_repl_session ()
     tmux send-keys -t dev:1.2 "python3" C-m
     tmux attach -t dev
 }
+
+function lldev()
+{
+    # creates a new tmux sesssion with a window for each of the following:
+    ## 1. editor  
+    tmux new-session -s lldev -n editor -d
+    tmux split-window -h -t lldev 
+    tmux split-window -v -t lldev:1.1
+    tmux send-keys -t lldev:1.1 "cd $HOME/Code/lowlevel/cs61c/su23-proj3-starter" C-m
+    tmux send-keys -t lldev:1.1 "java -jar tools/logisim-evolution.jar" C-m
+    tmux send-keys -t lldev:1.2 "cd $HOME/Code/lowlevel/cs61c/su23-proj3-starter" C-m
+    tmux send-keys -t lldev:1.3 "cd $HOME/Code/lowlevel/cs61c/su23-proj3-starter" C-m
+    tmux send-keys -t lldev:1.3 "vim" C-m
+    tmux attach -t lldev
+}
+
+
+function watt()
+{
+    # creates a new tmux sesssion with a window for each of the following:
+    ## 1. editor  
+    tmux new-session -s watt -n editor -d
+    tmux split-window -h -t watt 
+#    tmux split-window -v -t watt:1.1
+    tmux send-keys -t watt:1.1 "cd $HOME/Code/watt" C-m
+    tmux send-keys -t watt:1.2 "cd $HOME/Code/watt" C-m
+    tmux send-keys -t watt:1.2 "vim" C-m
+    tmux attach -t watt
+}
+
+function k8s()
+{   
+
+    local CLUSTER=$1 
+    # Exit if no cluster is specified  
+    if [ -z "$CLUSTER" ]; then
+        echo "Error: No cluster specified."
+        return 1
+    fi
+
+    declare -A clusters
+    clusters[jaas]="/home/adam/k8s/clusters/jupyter_all/config.yaml"
+
+    local KUBECONFIG=${clusters[$CLUSTER]}
+
+    # Exit if no kubeconfig is found
+    if [ -z "$KUBECONFIG" ]; then
+        echo "Error: No kubeconfig found for cluster $CLUSTER."
+        return 1
+    fi
+
+    tmux new-session -s k8s -n k9s -d
+    tmux send-keys -t k8s:1.1 "export KUBECONFIG=$KUBECONFIG && k9s" C-m
+    tmux attach -t k8s
+}
+
+function wcd ()
+{
+    # courtesy of Efficient Linux At the Command Line (book)
+    # work cd - cd to one of a couple of frequently visited projects 
+    # accept a single argument and cd to the corresponding directory
+    case "$1" in 
+      grader-service)
+        cd $HOME/Code/tuw/datalab/grader_service/grader_service
+        ;;
+      labext) 
+        cd $HOME/Code/tuw/datalab/grader_service/labextension
+        ;;
+      lechm)
+        cd $HOME/Code/tuw/datalab/lechm
+        ;;
+    *)
+        # The supplied argument was not supported 
+        echo "wcd: unknown key '$1'"
+        return 1 
+    ;;
+    esac
+    # Print to show where we are 
+    pwd 
+}
+# set up tab completion for wcd 
+complete -W "grader-service labext lechm" wcd

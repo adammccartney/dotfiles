@@ -14,14 +14,14 @@ export TERMINFO=/usr/share/terminfo
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoreboth
+HISTCONTROL=ignoredups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=2000
-HISTFILESIZE=4000
+HISTSIZE=10000
+HISTFILESIZE=40000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -160,6 +160,7 @@ export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig
 # a library that is also installed on the system in a more holy manner.
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/:$HOME/.local/lib/
 
+
 # Set mail environment variable
 MAIL=/var/mail/adam && export MAIL
 
@@ -254,3 +255,8 @@ export NVM_DIR="$HOME/.nvm"
 
 
 export JYCONF="~/.local/src/tuw/datalab/gs_configs/jupyterhub_config.py"
+export PATH=$PATH:"$HOME/.local/src/idea-IU-231.8109.175/bin/"
+
+# set up cdpath 
+export CDPATH=$HOME:$HOME/Code:$HOME/.local/src:$HOME/go/src 
+complete -d $HOME/Code $HOME/.local/src $HOME/go/src
