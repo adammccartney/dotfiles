@@ -13,10 +13,15 @@ endif
 let mapleader="\<Space>" 
 let maplocalleader=","
 
-" writch buffers in normal mode 
+" switch buffers in normal mode 
 map <Leader>n :bn<cr>
 map <Leader>p :bp<cr>
 map <Leader>d :bp<cr>
+
+" switch tabs 
+map <LocalLeader>n :tabn<cr>
+map <LocalLeader>p :tabp<cr>
+
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -151,6 +156,7 @@ if has("nvim")
     Plug 'ray-x/go.nvim'
     Plug 'ray-x/guihua.lua', { 'do': 'cd lua/fzy && make'}
     Plug 'mfussenegger/nvim-dap'
+    Plug 'theHamsta/nvim-dap-virtual-text'
     Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
     Plug 'github/copilot.vim'
     " optional for icon support
@@ -269,3 +275,5 @@ endif
 
 " FZF default command 
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
+
+set list listchars=tab:▸\ ,trail:·,extends:»,precedes:«,nbsp:!
