@@ -1,9 +1,9 @@
-;; init.el --- -*- lexical-binding: t; -*-
+;; min.init.el --- -*- lexical-binding: t; -*-
 
 ;; The default is 800 kilobytes. Measured in bytes.
 (setq gc-cons-threshold (* 50 1000 1000))
 
-; Profile emacs startup
+;; ;; Profile emacs startup
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "*** Emacs loaded in %s with %d garbage collections."
@@ -12,61 +12,12 @@
                               (time-subtract after-init-time before-init-time)))
                      gcs-done)))
 
-;; bootstrap straight.el
-   (defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage)) 
 
-;; Emacs version >= 27
-(setq package-enable-at-startup nil)
 
-;; Use by default
-(straight-use-package 'use-package)
+;; Some global settings
 
-;; Saves typing `:straight t` after every use-package expression  
-(setq straight-use-package-by-default t)
-
-;; Clean up unused repos with `straight-remove-unused-repos'
-
-;; grab the right version of org
-(straight-use-package 'org)
-
-;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
-(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
-      url-history-file (expand-file-name "url/history" user-emacs-directory))
-
-;; Use no-littering to automatically set common paths to the new user-emacs-directory
-(use-package no-littering
-  :straight t)
-
-;; Keep customization settings in a temporary file (thanks Ambrevar!)
-(setq custom-file
-      (if (boundp 'server-socket-dir)
-          (expand-file-name "custom.el" server-socket-dir)
-        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
-(load custom-file t)
-
-(define-key special-event-map [config-changed-event] 'ignore)
-
-(push "~/.emacs.d/lisp" load-path)  
-(require 'unannoy)
-;;(require 'ad-mail)
-(require 'adlisp)
-;;(require 'mu4e)
-
-(set-default-coding-systems 'utf-8)
-
-(server-start)
-
+;; Movement, add new lines to end of file
+(setq next-line-add-newlines t)
 ;; Copy to system clipboard
 (setq x-select-enable-clipboard t)
 
@@ -77,7 +28,33 @@
 ;; Global line width
 (setq-default fill-column 80)
 
-;;; auto-mode-alist entries
+;; ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
+(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+      url-history-file (expand-file-name "url/history" user-emacs-directory))
+
+;; Use no-littering to automatically set common paths to the new user-emacs-directory
+(use-package no-littering
+  :ensure t)
+
+;; Keep customization settings in a temporary file (thanks Ambrevar!)
+(setq custom-file
+      (if (boundp 'server-socket-dir)
+          (expand-file-name "custom.el" server-socket-dir)
+        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+(load custom-file t)
+
+;; ignore anything pulled in from gnome
+(define-key special-event-map [config-changed-event] 'ignore)
+
+;; Custom lispy stuff
+(push "~/.emacs.d/lisp" load-path)  
+(require 'adlisp)
+(require 'unannoy) ;; handy stuff from Chris Wellons
+
+(set-default-coding-systems 'utf-8)
+(server-start)
+
+;; auto-mode-alist entries
 (add-to-list 'auto-mode-alist '("\\.mom$" . nroff-mode))
 (add-to-list 'auto-mode-alist '("[._]bash.*" . shell-script-mode))
 (add-to-list 'auto-mode-alist '("Cask" . emacs-lisp-mode))
@@ -85,58 +62,24 @@
 (add-to-list 'auto-mode-alist '("\\.mak$" . makefile-gmake-mode))
 (add-to-list 'auto-mode-alist '("\\.make$" . makefile-gmake-mode))
 
-(use-package all-the-icons
-  :if (display-graphic-p))
-
-;; You must run (all-the-icons-install-fonts) one time after installing
-;; this package
-(use-package minions
-  :hook (doom-modeline-mode . minions-mode))
-
-(use-package doom-modeline
-  :ensure t
-  :after eshell
-  :hook (after-init . doom-modeline-init)
-  :custom-face
-  (mode-line ((t (:height 0.85))))
-  (mode-line-intactive ((t (:height 0.85))))
-  :custom
-  (doom-modeline-height 15)
-  (doom-modeline-bar-width 6)
-  (doom-modeline-ls t)
-  (doom-modeline-github nil)
-  (doom-modeline-mu4e t)
-  (doom-modeline-irc nil)
-  (doom-modeline-persp-name nil)
-  (doom-modeline-buffer-file.name-style 'truncate-except-project)
-  (doom-modeline-major-mode-icon nil))
-
 ;; Calendar and planner notification stuff
 (appt-activate t)
 
-(use-package visual-fill-column
-  :config
-  (setq visual-fill-column-width 110
-        visual-fill-column-center-text t))
-
-(use-package all-the-icons-dired)
-
-(straight-use-package '(dired :type built-in))
-(use-package dired
-  :config
-  (progn
-    (add-hook 'dired-mode-hook #'toggle-truncate-lines)
-    (setf dired-listing-switches "-alhG"
-          dired-guess-shell-alist-user
-          '(("\\.pdf\\'" "evince")
-            ("\\(\\.ods\\|\\.xlsx?\\|\\.docx?\\|\\.csv\\)\\'" "libreoffice")
-            ("\\(\\.png\\|\\.jpe?g\\)\\'" "qiv")
-            ("\\.gif\\'" "animate")))))
-
 (global-set-key [remap list-buffers] 'ibuffer)
 
+
+;; Package repos
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+			 ("elpa" . "https://elpa.gnu.org/packages/")
+			 ("org" . "http://orgmode.org/elpa/")))
+
+;; Set up use-package
+(eval-when-compile
+  (require 'use-package))
+
 ;; Org mode
-(use-package org 
+(use-package org
+  :ensure t
   :defer t
   :after (org-roam
           ob-go
@@ -147,8 +90,6 @@
   (add-hook 'org-mode-hook
             (lambda () (add-hook 'after-save-hook #'org-babel-tangle
                                  :append :local)))
-
-
 
 ;; todo-keywords
   (setq org-todo-keywords
@@ -168,7 +109,6 @@
                 ("" "tikz" t))))
 
 ;; org babel
-
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
@@ -183,10 +123,7 @@
      (dot . t)
      (latex . t)
      (shell . t)
-     ;;(jupyter . t)
      ))
-
-  (setq ob-async-no-async-languages-alist '("jupyter-python")) 
 
   (push '("conf-unix" . conf-unix) org-src-lang-modes)
 
@@ -215,103 +152,102 @@
 (add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
 (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
-(add-to-list 'org-structure-template-alist '("jpy" . "src jupyter-python"))
 (add-to-list 'org-structure-template-alist '("doc" . "src docker-build"))
 (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
 
-(defun my/org-roam-node-list ()
-  "Return all nodes stored in the database as a list of `org-roam-node's."
-  (let ((rows (org-roam-db-query
-               "SELECT
-  id,
-  file,
-  filetitle,
-  \"level\",
-  todo,
-  pos,
-  priority ,
-  scheduled ,
-  deadline ,
-  title,
-  properties ,
-  olp,
-  atime,
-  mtime,
-  '(' || group_concat(tags, ' ') || ')' as tags,
-  aliases,
-  refs
-FROM
-  (
-  SELECT
-    id,
-    file,
-    filetitle,
-    \"level\",
-    todo,
-    pos,
-    priority ,
-    scheduled ,
-    deadline ,
-    title,
-    properties ,
-    olp,
-    atime,
-    mtime,
-    tags,
-    '(' || group_concat(aliases, ' ') || ')' as aliases,
-    refs
-  FROM
-    (
-    SELECT
-      nodes.id as id,
-      nodes.file as file,
-      nodes.\"level\" as \"level\",
-      nodes.todo as todo,
-      nodes.pos as pos,
-      nodes.priority as priority,
-      nodes.scheduled as scheduled,
-      nodes.deadline as deadline,
-      nodes.title as title,
-      nodes.properties as properties,
-      nodes.olp as olp,
-      files.atime as atime,
-      files.mtime as mtime,
-      files.title as filetitle,
-      tags.tag as tags,
-      aliases.alias as aliases,
-      '(' || group_concat(RTRIM (refs.\"type\", '\"') || ':' || LTRIM(refs.ref, '\"'), ' ') || ')' as refs
-    FROM nodes
-    LEFT JOIN files ON files.file = nodes.file
-    LEFT JOIN tags ON tags.node_id = nodes.id
-    LEFT JOIN aliases ON aliases.node_id = nodes.id
-    LEFT JOIN refs ON refs.node_id = nodes.id
-    GROUP BY nodes.id, tags.tag, aliases.alias )
-  GROUP BY id, tags )
-GROUP BY id")))
-    (cl-loop for row in rows
-             append (pcase-let* ((`(,id ,file ,file-title ,level ,todo ,pos ,priority ,scheduled ,deadline
-                                        ,title ,properties ,olp ,atime ,mtime ,tags ,aliases ,refs)
-                                  row)
-                                 (all-titles (cons title aliases)))
-                      (mapcar (lambda (temp-title)
-                                (org-roam-node-create :id id
-                                                      :file file
-                                                      :file-title file-title
-                                                      :file-atime atime
-                                                      :file-mtime mtime
-                                                      :level level
-                                                      :point pos
-                                                      :todo todo
-                                                      :priority priority
-                                                      :scheduled scheduled
-                                                      :deadline deadline
-                                                      :title temp-title
-                                                      :aliases aliases
-                                                      :properties properties
-                                                      :olp olp
-                                                      :tags tags
-                                                      :refs refs))
-                              all-titles)))))
+ (defun my/org-roam-node-list ()
+   "Return all nodes stored in the database as a list of `org-roam-node's."
+   (let ((rows (org-roam-db-query
+                "SELECT
+   id,
+   file,
+   filetitle,
+   \"level\",
+   todo,
+   pos,
+   priority ,
+   scheduled ,
+   deadline ,
+   title,
+   properties ,
+   olp,
+   atime,
+   mtime,
+   '(' || group_concat(tags, ' ') || ')' as tags,
+   aliases,
+   refs
+ FROM
+   (
+   SELECT
+     id,
+     file,
+     filetitle,
+     \"level\",
+     todo,
+     pos,
+     priority ,
+     scheduled ,
+     deadline ,
+     title,
+     properties ,
+     olp,
+     atime,
+     mtime,
+     tags,
+     '(' || group_concat(aliases, ' ') || ')' as aliases,
+     refs
+   FROM
+     (
+     SELECT
+       nodes.id as id,
+       nodes.file as file,
+       nodes.\"level\" as \"level\",
+       nodes.todo as todo,
+       nodes.pos as pos,
+       nodes.priority as priority,
+       nodes.scheduled as scheduled,
+       nodes.deadline as deadline,
+       nodes.title as title,
+       nodes.properties as properties,
+       nodes.olp as olp,
+       files.atime as atime,
+       files.mtime as mtime,
+       files.title as filetitle,
+       tags.tag as tags,
+       aliases.alias as aliases,
+       '(' || group_concat(RTRIM (refs.\"type\", '\"') || ':' || LTRIM(refs.ref, '\"'), ' ') || ')' as refs
+     FROM nodes
+     LEFT JOIN files ON files.file = nodes.file
+     LEFT JOIN tags ON tags.node_id = nodes.id
+     LEFT JOIN aliases ON aliases.node_id = nodes.id
+     LEFT JOIN refs ON refs.node_id = nodes.id
+     GROUP BY nodes.id, tags.tag, aliases.alias )
+   GROUP BY id, tags )
+ GROUP BY id")))
+     (cl-loop for row in rows
+              append (pcase-let* ((`(,id ,file ,file-title ,level ,todo ,pos ,priority ,scheduled ,deadline
+                                         ,title ,properties ,olp ,atime ,mtime ,tags ,aliases ,refs)
+                                   row)
+                                  (all-titles (cons title aliases)))
+                       (mapcar (lambda (temp-title)
+                                 (org-roam-node-create :id id
+                                                       :file file
+                                                       :file-title file-title
+                                                       :file-atime atime
+                                                       :file-mtime mtime
+                                                       :level level
+                                                       :point pos
+                                                       :todo todo
+                                                       :priority priority
+                                                       :scheduled scheduled
+                                                       :deadline deadline
+                                                       :title temp-title
+                                                       :aliases aliases
+                                                       :properties properties
+                                                       :olp olp
+                                                       :tags tags
+                                                       :refs refs))
+                               all-titles)))))
 
 (defun my/org-roam-filter-by-tag (tag-name)
   (lambda (node)
@@ -327,17 +263,15 @@ GROUP BY id")))
   (interactive)
   (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project")))
 
-
 (use-package org-roam
-  :demand t
-  :straight t
+  :ensure t
   :init 
   (setq org-roam-v2-ack t)
-  :custom
-  (org-roam-directory "~/Notes/org-roam/")
-  (org-roam-dailies-directory "journal/")
-  (org-roam-completion-everywhere t)
-  (org-roam-capture-templates
+  
+  (setq org-roam-directory "~/Notes/org-roam/")
+  (setq org-roam-dailies-directory "journal/")
+  (setq org-roam-completion-everywhere t)
+  (setq org-roam-capture-templates
    '(("d" "default" plain
       "%?"
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
@@ -353,7 +287,7 @@ GROUP BY id")))
       :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                          "#+title: ${title}\n#+filetags: Project\n")
       :unnarrowed t)))
-  (org-roam-dailies-capture-templates
+  (setq org-roam-dailies-capture-templates
    '(("d" "default" plain 
       "\n* Thanks\n\n %?\n\n* WorkingOn\n\n* WorkingTowards\n\n* Excited About\n\n* Woes\n\n* Ideas\n\n* Housekeeping\n\n* Family Planning\n\n* Thanks"
       :if-new (file+head "%<%Y-%m-%d>.org"
@@ -370,8 +304,7 @@ GROUP BY id")))
   (my/org-roam-refresh-agenda-list))
 
 (use-package org-roam-ui
-  :straight
-  (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+  :ensure t
   :after org-roam
   :hook (after-init . org-roam-ui-mode)
   :config
@@ -380,55 +313,22 @@ GROUP BY id")))
        org-roam-ui-update-on-save t
        org-roam-ui-open-on-start nil))
 
-;; center the screen
 
-(defun ad/org-present-start ()
-;; Tweak font sizes
-  (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
-                                     (header-line (:height 4.0) variable-pitch)
-                                     (org-document-title (:height 1.75) org-document-title)
-                                     (org-code (:height 1.55) org-code)
-                                     (org-verbatim (:height 1.55) org-verbatim)
-                                     (org-block (:height 1.25) org-block)
-                                     (org-block-begin-line (:height 0.7) org-block)))
-  ;; Center the presentation and wrap lines
-  (visual-fill-column-mode 1)
-  (visual-line-mode 1))
+;; UI stuff
+(use-package all-the-icons
+  :if (display-graphic-p)
+  :ensure t)
 
-(defun ad/org-present-end ()
-  (visual-fill-column-mode 0)
-  (visual-line-mode 0))
-  
-(use-package org-present
-  :config
-  (add-hook 'org-present-mode-hook 'ad/org-present-start)
-  (add-hook 'org-present-mode-quit-hook 'ad/org-present-end))
-
-(use-package org-tree-slide)
-
+;; Drawing
 (use-package graphviz-dot-mode
   :ensure t
   :config
   (setq graphviz-dot-indent-width 4))
 
-(use-package erc
-  :commands erc
-  :config
-  (setq
-   erc-server "irc.libera.chat"
-   erc-nick "amccart"
-   erc-user-full-name "Adam McCartney"
-   erc-track-shorten-start 8
-   erc-auto-join-channels '(("irc.libera.chat" "#emacs"))
-   erc-kill-buffer-on-part t
-   erc-auto-query 'bury
-   erc-fill-function 'erc-fill-static
-   erc-fill-static-center 20
-   erc-track-exclude '("#emacs")
-   erc-track-exclude-types '("JOIN" "NICK" "QUIT" "MODE" "AWAY")
-   erc-track-exclude-server-buffer t))
 
+;; Writing (markdown)
 (use-package markdown-mode
+  :ensure t
   :defer t
   :mode ("\\.md$" "\\.markdown$" "vimperator-.+\\.tmp$")
   :config
@@ -448,9 +348,29 @@ GROUP BY id")))
   :bind (("C-'" . imenu-list-smart-toggle))
   :config
   (setq imenu-list-focus-after-activation t
-      imenu-list-auto-resize nil))
+        imenu-list-auto-resize nil))
 
 (use-package pandoc-mode
+  :ensure t)
+
+
+;; Useability
+(use-package all-the-icons-dired
+  :ensure t)
+
+(use-package dired
+  :config
+  (progn
+    (add-hook 'dired-mode-hook #'toggle-truncate-lines)
+    (setf dired-listing-switches "-alhG"
+          dired-guess-shell-alist-user
+          '(("\\.pdf\\'" "evince")
+            ("\\(\\.ods\\|\\.xlsx?\\|\\.docx?\\|\\.csv\\)\\'" "libreoffice")
+            ("\\(\\.png\\|\\.jpe?g\\)\\'" "qiv")
+            ("\\.gif\\'" "animate")))))
+
+;; Completions
+(use-package helm
   :ensure t)
 
 (use-package vertico
@@ -461,6 +381,7 @@ GROUP BY id")))
   (vertico-mode))
 
 (use-package savehist
+  :ensure t
   :init
   (savehist-mode))
 
@@ -481,9 +402,21 @@ GROUP BY id")))
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(use-package yasnippet)
+(use-package corfu
+  :ensure t
+  :custom
+  (corfu-cycle t)       ;; Enable cylcing for 'corfu-next/previous
+  (corfu-auto t)        ;; Enable auto completion
+  (corfu-separator ?\s) ;; Orderless field seperator
+  (corfu-quit-at-boundary nil) ;; Never quit at completion boundary.
+  (corfu-echo-documentation t) ;; Show doumentation in the echo area
+
+  ;; Enable Corfu globally
+  :init
+  (global-corfu-mode))
 
 (use-package emacs
+  :ensure t
   :init
   ;; TAB cycle if there are only a few candidates
   (setq completion-cycle-threshold 3)
@@ -511,90 +444,9 @@ GROUP BY id")))
 (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 
-(use-package hydra
-  :ensure t)
+;; tree-sitter setup
 
-(global-set-key
- (kbd "C-M-o")
-  (defhydra hydra-window ()
-    "window"
-    ("h" windmove-left)
-    ("j" windmove-down)
-    ("k" windmove-up)
-    ("l" windmove-right)
-    ("v" (lambda ()
-      (interactive)
-      (split-window-right)
-      (windmove-right))
-      "vert")
-    ("x" (lambda ()
-           (interactive)
-           (split-window-below)
-           (windmove-down))
-       "horz")
-    ("o" delete-other-windows "one" :color blue)
-    ("a" ace-window "ace")
-    ("s" ace-swap "swap")
-    ("d" ace-delete-window "ace-one" :color blue)
-    ("b" ido-switch-buffer "buf")
-    ("m" headlong-bookmark "buf")
-    ("q" nil "cancel")))
-
-(use-package dap-mode
-  :ensure t
-  :after (lsp-mode)
-  :functions dap-hydra/nil
-  :bind (:map lsp-mode-map
-         ("<f5>" . dap-debug)
-         ("M-<f5>" . dap-hydra))
-  :hook ((dap-mode . dap-ui-mode)
-    (dap-session-created . (lambda (&_rest) (dap-hydra)))
-    (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
-
-(require 'dap-gdb-lldb)
-(require 'dap-python)
-
-(use-package lsp-treemacs
-  :after (lsp-mode treemacs)
-  :ensure t
-  :commands lsp-treemacs-errors-list
-  :bind (:map lsp-mode-map
-         ("M-9" . lsp-treemacs-errors-list)))
-
-(use-package treemacs
-  :ensure t
-  :commands (treemacs)
-  :after (lsp-mode))
-
-(use-package treemacs-evil)
-
-(use-package treemacs-projectile)
-
-(use-package lsp-mode 
-  :init 
-  (setq lsp-keymap-prefix "C-c l")
-  :hook ((python-mode . lsp)
-         (c-mode . lsp)
-         ((typescript-mode js2-mode web-mode) . lsp)
-         (docker-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
-
-(use-package lsp-ui
-  :after lsp
-  :hook (lsp-mode . lsp-ui-mode)
-  :config
-  (setq lsp-ui-sideline-enable t)
-  (lsp-ui-doc-show))
-
-;;(use-package lsp-ivy)
-
-(use-package which-key
-  :init (which-key-mode)
-  :diminish which-key-mode
-  :config
- (setq which-key-idle-delay 1))
-
+;; lsp
 (use-package eglot
   :ensure t
   :hook
@@ -602,94 +454,94 @@ GROUP BY id")))
   :config
   (setq eglot-autoshutdown t))
 
-(use-package lsp-pyright
-  :after lsp-mode
-  :custom
-  (lsp-pyright-auto-import-completions nil)
-  (lsp-pyright-typechecking-mode "off")
-  :ensure t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp))))
 
 (use-package magit
-  :straight t
+  :ensure t
   :init (if (not (boundp 'project-switch-commands)) 
         (setq project-switch-commands nil))
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-(defun efs/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
+;; Tree-sitter 
+(setq treesit-language-source-alist
+   '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+     (cmake "https://github.com/uyha/tree-sitter-cmake")
+     (css "https://github.com/tree-sitter/tree-sitter-css")
+     (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+     (go "https://github.com/tree-sitter/tree-sitter-go")
+     (html "https://github.com/tree-sitter/tree-sitter-html")
+     (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+     (json "https://github.com/tree-sitter/tree-sitter-json")
+     (make "https://github.com/alemuller/tree-sitter-make")
+     (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+     (python "https://github.com/tree-sitter/tree-sitter-python")
+     (toml "https://github.com/tree-sitter/tree-sitter-toml")
+     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+     (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-;;(use-package lsp-pyright
-;;  :straight t 
-;;  :hook (python-mode . (lambda ()
-;;                          (require 'lsp-pyright)
-;;                          (lsp)))) ;; or lsp-deferred
+;; This expression will fetch and install the grammars listed above
+;;(mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 
-(use-package gnuplot-mode)
-(use-package gnuplot)
+(setq major-mode-remap-alist
+ '((yaml-mode . yaml-ts-mode)
+   (bash-mode . bash-ts-mode)
+   (js2-mode . js-ts-mode)
+   (typescript-mode . typescript-ts-mode)
+   (json-mode . json-ts-mode)
+   (css-mode . css-ts-mode)
+   (python-mode . python-ts-mode)))
 
-(use-package web-mode
-  :mode "(\\.\\(html?\\|ejs\\|tsx|jsx\\)\\'"
-  :config
-  (setq-default web-mode-code-indent-ofset 2)
-  (setq-default web-mode-markup-indent-offset 2)
-  (setq-default web-mode-attribute-indent-offset 2))
+;; parenthesis stuff
 
-(require 'cl-lib)
-
-(use-package slime
-  :init 
-  (setq inferior-lisp-program "/usr/local/bin/sbcl"))
-
-(use-package python-mode
-  :mode "\\.py\\'"
-  :hook (python-mode . lsp-deferred)
-  :init
-  (setq python-shell-interpreter "python3")
-  :config
-  (setq python-indent-level 4))
-
-(use-package pyvenv
- :ensure t
- :after python-mode)
-
-(use-package conda
+(use-package paren
   :ensure t
-  :after python-mode)
+  :config (show-paren-mode))
 
-(use-package python-test
-  :after python-mode)
-
-(use-package typescript-mode
-  :mode "\\.ts\\'"
-  :hook (typescript-mode . lsp-deferred)
+(use-package rainbow-delimiters
+  :ensure t
+  :defer t
+  :init
+  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode)
   :config
-  (setq typescript-indent-level 2))
-  
-(defun dw/set-js-indentation ()
-  (setq js-indent-level 2)
-  (setq evil-shift-width js-indent-level)
-  (setq-default tab-width 2))
+  (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4")
+  (setf rainbow-delimiters-max-face-count 1)
+  (set-face-attribute 'rainbow-delimiters-unmatched-face nil
+                      :foreground 'unspecified
+                      :inherit 'error)
+  (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4"))
 
-(use-package js2-mode
-  :mode "\\.jsx?\\'"
+(use-package rainbow-mode
+  :ensure t
+  :defer t
+  :hook (org-mode
+         emacs-lisp-mode
+         web-mode
+         typescript-mode
+         js2-mode))
+
+(use-package browse-url
+  :ensure t
+  :defer t
+  :init
+  (setf url-cache-directory (locate-user-emacs-file "local/url"))
   :config
-  ;; Use js2-mode for Node scripts
-  (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
+  (when (executable-find "firefox")
+    (setf browse-url-browser-function #'browse-url-firefox)))
 
-  ;; Don't use built-in syntax checking
-  (setq js2-mode-show-strict-warnings nil)
+;; lsp with eglot
+(use-package eglot
+  :ensure t
+  :hook
+  (python-ts-mode-hook . eglot-ensure)
+  :config
+  (setq eglot-autoshutdown t))
 
-  ;; Set up proper indentation in JavaScript and JSON files
-  (add-hook 'js2-mode-hook #'dw/set-js-indentation)
-  (add-hook 'json-mode-hook #'dw/set-js-indentation))
+;; geiser is pretty cool, in fairness
 
 (use-package geiser
-  :straight t
+  :ensure t
   :config
   (setq geiser-default-implementation 'guile)
   (setq geiser-active-implementations '(guile))
@@ -697,9 +549,11 @@ GROUP BY id")))
   (setq geiser-guile-binary "/usr/bin/guile3.0"))
 
 (use-package geiser-guile
-  :straight t)
+  :ensure t)
 
+;; ensure some c related goodness
 (use-package cc-mode
+  :ensure t
   :defer t
   :hook (cc-mode . lsp-deferred)
   :init
@@ -716,59 +570,47 @@ GROUP BY id")))
     (add-to-list 'c-default-style '(c-mode . "k&r"))
     (add-to-list 'c-default-style '(c++-mode . "k&r"))))
 
-(use-package go-mode
-  :hook (go-mode . lsp-deferred))
 
-(use-package ob-go)
-(use-package ob-typescript)
-
+;; asm related packages
 (use-package nasm-mode
+  :ensure t
   :defer t
   :mode ("\\.nasm$" "\\.asm$" "\\.s$")
   :config
   (add-hook 'nasm-mode-hook (lambda () (setf indent-tabs-mode t))))
 
 (use-package asm-mode
+  :ensure t
   :defer t
   :init
   (add-hook 'asm-mode-hook (lambda () (setf indent-tabs-mode t
                                             tab-always-indent t))))
 
 (use-package x86-lookup
+  :ensure t
   :defer t
   :init
   (setq x86-lookup-pdf '"~/Documents/bookstaging/325383-sdm-vol-2abcd.pdf")
   (global-set-key (kbd "C-h x") #'x86-lookup))
 
-(use-package yaml-mode
-   :mode "\\.ya?ml\\'")
-
-(use-package riscv-mode)
-
 (use-package dockerfile-mode
   :ensure t)
 
-(setq gdb-many-windows t)
-
-(use-package flycheck
-  :defer t
-  :hook
-  (eglot . flycheck-mode))
-
 (use-package smartparens
+  :ensure t
   :hook (prog-mode . smartparens-mode))
 
-(setq-default indent-tabs-mode nil)
-
-(use-package zmq)
-
-(use-package jupyter
-  :demand t
-  :after ob
-
-:config
-(add-to-list 'org-babel-load-languages '(jupyter . t))
-(org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+ 
+(use-package eshell
+  :ensure t
+  :defer t
+  :bind ([f1] . eshell-as)
+  :init
+  (setf eshell-directory-name (locate-user-emacs-file "local/eshell"))
+  :config
+  (add-hook 'eshell-mode-hook ; Bad, eshell, bad!
+            (lambda ()
+              (define-key eshell-mode-map (kbd "<f1>") #'quit-window))))
 
 (use-package elfeed
   :ensure t
