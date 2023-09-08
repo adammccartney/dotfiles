@@ -133,6 +133,7 @@ Plug 'ryanoasis/vim-devicons'
 "Plug 'vivien/vim-linux-coding-style'
 Plug 'pangloss/vim-javascript'
 Plug 'leafgarland/typescript-vim'
+Plug 'uarun/vim-protobuf'
 
 if has("nvim")
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -158,7 +159,6 @@ if has("nvim")
     Plug 'mfussenegger/nvim-dap'
     Plug 'theHamsta/nvim-dap-virtual-text'
     Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
-    Plug 'github/copilot.vim'
     " optional for icon support
     Plug 'nvim-tree/nvim-web-devicons'
     Plug 'davidgranstrom/scnvim'
