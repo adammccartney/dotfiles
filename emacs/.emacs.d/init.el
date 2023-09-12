@@ -28,6 +28,8 @@
 ;; Global line width
 (setq-default fill-column 80)
 
+(load-theme 'modus-operandi)
+
 ;; ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
       url-history-file (expand-file-name "url/history" user-emacs-directory))
@@ -76,84 +78,6 @@
 ;; Set up use-package
 (eval-when-compile
   (require 'use-package))
-
-;; Org mode
-(use-package org
-  :ensure t
-  :defer t
-  :after (org-roam
-          ob-go
-          ob-typescript) 
-  :custom
-  (org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
-  :config
-  (add-hook 'org-mode-hook
-            (lambda () (add-hook 'after-save-hook #'org-babel-tangle
-                                 :append :local)))
-
-;; todo-keywords
-  (setq org-todo-keywords
-        '((sequence "TODO" "IN-PROGRESS" "WAITING" "DONE")))
-
-;; evaluate inline only
-  (setq org-export-babel-evaluate 'inline-only)
-
-;; use imagemagick to preview latex
-  (setq org-latex-create-formula-image-program 'imagemagick)
-
-  ;; set up tikz as one of the default packages for LaTeX
-  (setq org-latex-packges-alist
-        (quote (("" "color" t)
-                ("" "minted" t)
-                ("" "parskip" t)
-                ("" "tikz" t))))
-
-;; org babel
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (python . t)
-     (C . t)
-     (scheme . t)
-     (ruby . t)
-     (js . t)
-     (typescript . t)
-     (go . t)
-     (gnuplot . t)
-     (dot . t)
-     (latex . t)
-     (shell . t)
-     ))
-
-  (push '("conf-unix" . conf-unix) org-src-lang-modes)
-
-  (setq org-refile-targets '((nil :maxlevel . 1)
-                         (org-agenda-files :maxlevel . 1)))
-
-  ;; Capture templates
-  (setq org-capture-templates
-        '(("w" "Work Todo" entry (file+headline "~/Documents/org/Planner-mdw2022.org" "Tasks")
-           "* TODO %?\n %i\n %a")
-          ("h" "Home Todo" entry (file+headline "~/Documents/org/Planner-home2022.org" "Tasks")
-           "* TODO %?\n %i\n %a")))
-  (setq org-startup-folded "overview"))
-
-(require 'org-tempo)
-(add-to-list 'org-structure-template-alist '("asm" . "src asm"))
-(add-to-list 'org-structure-template-alist '("dot" . "src dot"))
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("gnpl" . "src gnuplot"))
-(add-to-list 'org-structure-template-alist '("go" . "src go"))
-(add-to-list 'org-structure-template-alist '("js" . "src js"))
-(add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
-(add-to-list 'org-structure-template-alist '("krc" . "src C"))
-(add-to-list 'org-structure-template-alist '("py" . "src python"))
-(add-to-list 'org-structure-template-alist '("rb" . "src ruby"))
-(add-to-list 'org-structure-template-alist '("scm" . "src scheme"))
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("sql" . "src sql"))
-(add-to-list 'org-structure-template-alist '("doc" . "src docker-build"))
-(add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
 
  (defun my/org-roam-node-list ()
    "Return all nodes stored in the database as a list of `org-roam-node's."
@@ -314,6 +238,9 @@
        org-roam-ui-open-on-start nil))
 
 
+;; Load custom org config after org-roam
+(require 'ad-org)
+
 ;; UI stuff
 (use-package all-the-icons
   :if (display-graphic-p)
@@ -324,7 +251,6 @@
   :ensure t
   :config
   (setq graphviz-dot-indent-width 4))
-
 
 ;; Writing (markdown)
 (use-package markdown-mode
@@ -349,10 +275,6 @@
   :config
   (setq imenu-list-focus-after-activation t
         imenu-list-auto-resize nil))
-
-(use-package pandoc-mode
-  :ensure t)
-
 
 ;; Useability
 (use-package all-the-icons-dired
