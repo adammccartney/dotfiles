@@ -13,12 +13,12 @@ endif
 let mapleader="\<Space>" 
 let maplocalleader=","
 
-" switch buffers in normal mode 
+" switch buffers in normal mode
 map <Leader>n :bn<cr>
 map <Leader>p :bp<cr>
 map <Leader>d :bp<cr>
 
-" switch tabs 
+" switch tabs
 map <LocalLeader>n :tabn<cr>
 map <LocalLeader>p :tabp<cr>
 
@@ -37,11 +37,11 @@ autocmd! bufwritepost .vimrc source %
 set pastetoggle=<F2>
 set clipboard=unnamed
 
-" Mouse and backspace 
+" Mouse and backspace
 set mouse=a " on Debian press ALT and click
 set bs=2    " make backspace behave like normal againf
 
-" mouse for traditional vim 
+" mouse for traditional vim
 if !has('nvim')
     set ttymouse=xterm2
     set mouse=a
@@ -57,7 +57,7 @@ map <c-h> <c-w>h
 vnoremap < <gv " better indentation
 vnoremap > >gv " better indentation
 
-set laststatus=2 
+set laststatus=2
 set encoding=utf-8
 set autoindent
 set magic
@@ -70,7 +70,7 @@ set tw=80  " width of documents (used by gd)
 vmap Q gq
 nmap Q gqap
 
-" Useful settings 
+" Useful settings
 set history=700
 set undolevels=700
 
@@ -83,9 +83,9 @@ set expandtab
 
 " Disable stupid backup and swap files - they trigger too many events 
 " for file system watchers 
-"set nobackup
-"set nowritebackup
-"set noswapfile
+set nobackup
+set nowritebackup
+set noswapfile
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
@@ -107,6 +107,7 @@ syntax on
 "========================================================
 " Packages 
 "========================================================
+
 
 " Use vimplug to manage plugins 
 
@@ -152,7 +153,7 @@ if has("nvim")
     Plug 'rcarriga/nvim-dap-ui'
     Plug 'mxsdev/nvim-dap-vscode-js'
     Plug 'folke/zen-mode.nvim'
-    Plug 'EdenEast/nightfox.nvim' 
+    Plug 'EdenEast/nightfox.nvim'
     Plug 'Olical/conjure'
     Plug 'ray-x/go.nvim'
     Plug 'ray-x/guihua.lua', { 'do': 'cd lua/fzy && make'}
@@ -162,6 +163,9 @@ if has("nvim")
     " optional for icon support
     Plug 'nvim-tree/nvim-web-devicons'
     Plug 'davidgranstrom/scnvim'
+
+    " unmanaged
+    Plug '~/Code/plugins/nvim-rinse'
 endif
 
 call plug#end()
@@ -175,7 +179,7 @@ let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 set completeopt=menu,menuone,noselect
 
 " =============================================================================
-" color 
+" color
 syntax on
 if has('gui_running')
     set guicurser+=a:blinkon0
@@ -183,10 +187,10 @@ if has('gui_running')
 elseif has('win32')
     colorscheme slate
 elseif has('nvim')
-    colorscheme nightfox 
+    colorscheme desert
 else
-    colorscheme ron 
-end 
+    colorscheme ron
+end
 if &term =~ "256color" || &term =~"xterm"
     let &t_SI = "\<Esc>[6 q"
     let &t_EU = "\<Esc>[2 q"
@@ -200,7 +204,7 @@ elseif has("gui_win32")
     let &guifont="Lucida Console:h11"
 end
 
-" Python 
+" Python
 " ======
 let g:python_host_prog = '/usr/bin/python'
 let g:python3_host_prog = '/usr/bin/python3'
@@ -249,7 +253,7 @@ let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
-" airline symbols                                                                                                                              
+" airline symbols
 let g:airline_left_sep = ''
 let g:airline_left_alt_sep = ''
 let g:airline_right_sep = ''
@@ -277,3 +281,9 @@ endif
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
 
 set list listchars=tab:▸\ ,trail:·,extends:»,precedes:«,nbsp:!
+
+" Insert footers for mail
+nnoremap ,jmail :-1read $HOME/.vim/snippets/mails/jaas.mail.template<CR>2j
+" Insert a k8s deployment yaml
+nnoremap ,akd :-1read $HOME/.vim/snippets/k8s/deployment.yaml<CR>
+nnoremap ,akpv :-1read $HOME/.vim/snippets/k8s/pv.yaml<CR>

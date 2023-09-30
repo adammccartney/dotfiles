@@ -10,20 +10,13 @@ if has("autocmd")
 endif
 
 " Rebind <Leader> key
-let mapleader=" " 
+let mapleader=" "
 let maplocalleader=","
 
-" writch buffers in normal mode 
+" writch buffers in normal mode
 map <Leader>n :bn<cr>
 map <Leader>p :bp<cr>
 map <Leader>d :bp<cr>
-
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" vim-slime
-let g:slime_target = "tmux"
-let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 
 " Atuomatic reloading of .vimrc
 autocmd! bufwritepost .vimrc source %
@@ -32,16 +25,15 @@ autocmd! bufwritepost .vimrc source %
 set pastetoggle=<F2>
 set clipboard=unnamed
 
-" Mouse and backspace 
+" Mouse and backspace
 set mouse=a " on Debian press ALT and click
 set bs=2    " make backspace behave like normal againf
 
-" mouse for traditional vim 
+" mouse for traditional vim
 if !has('nvim')
     set ttymouse=xterm2
     set mouse=a
 endif
-
 
 " bind Ctrl+<movement> keys to move around the windows
 map <c-j> <c-w>j
@@ -53,7 +45,7 @@ map <c-h> <c-w>h
 vnoremap < <gv " better indentation
 vnoremap > >gv " better indentation
 
-set laststatus=2 
+set laststatus=2
 set encoding=utf-8
 set autoindent
 set magic
@@ -66,7 +58,7 @@ set tw=80  " width of documents (used by gd)
 vmap Q gq
 nmap Q gqap
 
-" Useful settings 
+" Useful settings
 set history=700
 set undolevels=700
 
@@ -83,12 +75,6 @@ set nobackup
 set nowritebackup
 set noswapfile
 
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
-
 "=======================================================
 "Syntax formatting
 "=======================================================
@@ -101,32 +87,12 @@ let g:javascript_plugin_ngdoc=1
 " Flow
 let g:javascript_plugin_flow=1
 
-"augroup javascript_folding
-"    au!
-"    au FileType javascript setlocal foldmethod=syntax
-"augroup END
-
-" Typescript
-let g:typescript_indent_disable=1
-
-" Compiler
-let g:typescript_compiler_binars = 'tsc'
-let g:typescript_compiler_options = ''
-
-"========================================================
-" Packages 
-"========================================================
-
-" =============================================================================
-" special config for any vim plugins that got installed
-let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
-
 " =============================================================================
 " extra config for vim plugins that have some neovim goodies
 set completeopt=menu,menuone,noselect
 
 " =============================================================================
-" color 
+" color
 syntax on
 if has('gui_running')
     set guicurser+=a:blinkon0
@@ -134,10 +100,10 @@ if has('gui_running')
 elseif has('win32')
     colorscheme slate
 elseif has('nvim')
-    colorscheme dayfox 
+    colorscheme desert
 else
-    colorscheme ron 
-end 
+    colorscheme ron
+end
 if &term =~ "256color" || &term =~"xterm"
     let &t_SI = "\<Esc>[6 q"
     let &t_EU = "\<Esc>[2 q"
@@ -151,52 +117,7 @@ elseif has("gui_win32")
     let &guifont="Lucida Console:h11"
 end
 
-" Python 
+" Python
 " ======
 let g:python_host_prog = '/usr/bin/python'
 let g:python3_host_prog = '/usr/bin/python3'
-
-" air-line
-let g:airline_powerline_fonts = 1
-
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
-" airline symbols                                                                                                                              
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
-
-let g:WebDevIconsUnicodeDecorateFolderNodes = 1
-let g:WebDevIconsUnicodeDecorateFolderNodeDefaultSymbol = ''
-
-let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
-let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['nerdtree'] = ''
-
-
-" nvim-terminal
-" allows us to use escape key in terminal mode
-if has('nvim')
-    tnoremap <Esc> <C-\><C-n>
-    tnoremap <C-v><Esc> <Esc>
-    highlight! link TermCursor Cursor
-    highlight! TermCursorNC guibg=red guifg=white ctermbg=1 ctermfg=15
-endif

@@ -18,7 +18,7 @@ local on_attach = function()
     vim.keymap.set('n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', {buffer = true, silent = true })
     vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { buffer = true, silent = true })
     vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.declaration()<CR>', { buffer = true, silent = true })
-    vim.keymap.set('n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', { buffer = true, silent = true })
+    vim.keymap.set('n', '<c-[>', '<cmd>lua vim.lsp.buf.rename()<CR>', { buffer = true, silent = true })
 end
 
 
