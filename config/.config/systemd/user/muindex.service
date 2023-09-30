@@ -1,0 +1,9 @@
+[Unit]
+Description=mu index: service to sync the mail dirs with the db
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/mu index
+
+[Install]
+WantedBy=default.target

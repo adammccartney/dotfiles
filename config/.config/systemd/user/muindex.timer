@@ -1,0 +1,10 @@
+[Unit]
+Description=mu index timer
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=60m
+Unit=muindex.service
+
+[Install]
+WantedBy=timers.target
