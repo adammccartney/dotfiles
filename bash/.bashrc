@@ -158,11 +158,11 @@ export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig
 # files installed in the home directory.
 # WARNING: may cause issues if an officially installed package is looking for
 # a library that is also installed on the system in a more holy manner.
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/:$HOME/.local/lib/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 
 
 # Set mail environment variable
-MAIL=/var/mail/adam && export MAIL
+MAIL=/var/mail/admccartn && export MAIL
 
 # set realtime
 export SOUND_CARD_IRQ=169
@@ -186,7 +186,7 @@ export NEWSOUNDS=$HOME/Websites/admccartney/static/sounds
 
 # use vim keybindings
 set -o vi
-[ -f "/home/adam/.ghcup/env" ] && source "/home/adam/.ghcup/env" # ghcup-env
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
 # git tools
 . ~/git-completion.bash
@@ -235,14 +235,14 @@ complete -o default -F __start_kubectl k
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/adam/.local/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/amccartn/.local/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/adam/.local/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/adam/.local/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/amccartn/.local/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/amccartn/.local/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/adam/.local/miniconda3/bin:$PATH"
+        export PATH="/home/amccartn/.local/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -258,5 +258,10 @@ export JYCONF="~/.local/src/tuw/datalab/gs_configs/jupyterhub_config.py"
 export PATH=$PATH:"$HOME/.local/src/idea-IU-231.8109.175/bin/"
 
 # set up cdpath 
-export CDPATH=$HOME:$HOME/Code:$HOME/.local/src:$HOME/go/src 
+export CDPATH=$HOME:$HOME/Code:$HOME/.local/src:$HOME/go/src
 complete -d $HOME/Code $HOME/.local/src $HOME/go/src
+
+# set up protoc for protobuf
+export PATH="$PATH:/usr/local/protobuf/bin"
+export TRAIN="$HOME/Code/trainlog/docs/training23.md"
+export MAILDIR="$HOME/.mail"
