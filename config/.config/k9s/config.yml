@@ -15,21 +15,24 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: default
+  currentContext: Default
   currentCluster: default
   clusters:
     default:
       namespace:
-        active: all
+        active: jupyterhub-staging
         lockFavorites: false
         favorites:
+        - jupyterhub-hub
+        - jupyterhub-staging
+        - binderhub
         - all
         - jupyterhub-climers23s
         - jupyterhub-jaas20
         - monitoring
         - default
       view:
-        active: service
+        active: pods
       featureGates:
         nodeShell: false
       shellPod:
