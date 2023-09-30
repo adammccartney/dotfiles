@@ -522,7 +522,6 @@
   :ensure t
   :hook (prog-mode . smartparens-mode))
 
- 
 (use-package eshell
   :ensure t
   :defer t
@@ -540,3 +539,10 @@
   (setq elfeed-feeds
         '("https://nullprogram.com/feed/"
           "https://drewdevault.com/blog/index.xml")))
+
+;; gdb setup
+(setq gdb-many-windows t)
+
+; EasyPG for encrypting files
+(require 'epa-file)
+(epa-file-enable)
