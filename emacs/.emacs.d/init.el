@@ -191,7 +191,6 @@
   :ensure t
   :init 
   (setq org-roam-v2-ack t)
-  
   (setq org-roam-directory "~/Notes/org-roam/")
   (setq org-roam-dailies-directory "journal/")
   (setq org-roam-completion-everywhere t)
@@ -216,7 +215,17 @@
       "\n* Thanks\n\n %?\n\n* WorkingOn\n\n* WorkingTowards\n\n* Excited About\n\n* Woes\n\n* Ideas\n\n* Housekeeping\n\n* Family Planning\n\n* Thanks"
       :if-new (file+head "%<%Y-%m-%d>.org"
                          "#+title: %<%Y-%m-%d>\n")
-      :unnarrowed t)))
+      :unnarrowed t)
+     ("a" "autobiography" plain
+      "\n* Event\n\n* Analysis\n\n** Event\n\n** On Experience"
+    :if-new (file+head "%<%Y-%m-%d>-autobiography.org"
+                       "#+title: %<%Y-%m-%d>-autobiography\n")
+    :unarrowed t)
+   ("f" "future writing" plain
+    "\n* OneThing\n\n* Learning\n\n** Habits\n\n** Social\n\n** Family\n\n** Career"
+    :if-new (file+head "%<%Y-%m-%d>-future-writing.org"
+                       "#+title: %<%Y-%m-%d>-future-writing\n")
+    :unarrowed t)))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n c" . org-roam-dailies-capture-today)

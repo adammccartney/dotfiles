@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+import os
+import subprocess
+
+from pathlib import Path
+
+def main():
+    files = findfiles()
+    remove_old(files)
+    encrypt(files)
+
+
+def findfiles():
+    "Get any org files existing in the directory"
+    home = os.environ["HOME"]
+    cmd = f"find {home}/Notes/org-roam/journal -type f -name '*.org'"
+    proc = subprocess.run(cmd, capture_output=True, shell=True)
+    raw = proc.stdout
+    files = raw.decode("utf-8").split("\n")
+    result = [f for f in files if f != '']
+    return result
+
+
+def remove_old(files):
+    for f in files:
+        encrypted = f"{f}.gpg"
+        Path(encrypted).unlink(missing_ok=True)
+
+
+def encrypt(files):
+    for f in files:
+        cmd = f"gpg --encrypt-files --recipient adam@mur.at {f}"
+        subprocess.run(cmd, shell=True)
+
+
+if __name__ == '__main__':
+    main()
