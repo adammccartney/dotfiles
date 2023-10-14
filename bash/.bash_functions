@@ -372,3 +372,17 @@ function wcd ()
 }
 # set up tab completion for wcd 
 complete -W "grader-service labext lechm" wcd
+
+function hmg () {
+    # hub memory guarantees
+    # sum all guaranteed memory for pods running in the jupyterhub-hub namespaces
+        paste <(k get pods -n jupyterhub-hub -o wide |\
+                                    awk '{print $1}' |\
+                                           grep "\-" |\
+ sed 's/^/kubectl describe pod -n jupyterhub-hub /') |\
+                                                bash |\
+                                  grep MEM_GUARANTEE |\
+                   awk '{ sum+=$2 } END { print sum }'
+}
+
+
