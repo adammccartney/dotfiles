@@ -58,7 +58,7 @@ autoload -U colors
 colors
 
 # [username@hostname dir] $
-PROMPT='%F{blue}%B%C%f %b%#%F{yellow}%B>%b%f'
+PROMPT='%F{blue}%B%C%f %F{yellow}%#%b%f '
 
 # Git setup (right prompt)
 autoload -Uz vcs_info
@@ -71,8 +71,6 @@ zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' stagedstr "%F{green}◼%f"
 zstyle ':vcs_info:*' unstagedstr "%F{red}◼%f"
-#zstyle ':vcs_info:*'
-#zstyle ':vcs_info:*'
 zstyle ':vcs_info:git:*' formats '(%b%m%c%u)'
 zstyle ':vcs_info:git:*' actionformats '(%b|%a%m%c%u)'
 
