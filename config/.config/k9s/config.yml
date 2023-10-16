@@ -15,12 +15,12 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: Default
+  currentContext: default
   currentCluster: default
   clusters:
     default:
       namespace:
-        active: jupyterhub-staging
+        active: all
         lockFavorites: false
         favorites:
         - jupyterhub-hub
@@ -32,7 +32,7 @@ k9s:
         - monitoring
         - default
       view:
-        active: pods
+        active: batch/v1/cronjobs
       featureGates:
         nodeShell: false
       shellPod:
