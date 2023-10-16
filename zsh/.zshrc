@@ -82,6 +82,11 @@ RPROMPT='${vcs_info_msg_0_} %~'
 
 # pull in other files
 source $HOME/.zsh/aliases
+source $HOME/.zsh/functions
+source $HOME/.zsh/vars
+
+
+source <(kubectl completion zsh)
 
 # End profiling (uncomment when necessary)
 #
