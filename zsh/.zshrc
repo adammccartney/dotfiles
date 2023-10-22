@@ -69,8 +69,8 @@ zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 
 zstyle ':vcs_info:*' enable git
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' stagedstr "%F{green}◼%f"
-zstyle ':vcs_info:*' unstagedstr "%F{red}◼%f"
+zstyle ':vcs_info:*' stagedstr "%F{green}◆%f"
+zstyle ':vcs_info:*' unstagedstr "%F{red}◆%f"
 zstyle ':vcs_info:git:*' formats '(%b%m%c%u)'
 zstyle ':vcs_info:git:*' actionformats '(%b|%a%m%c%u)'
 
@@ -84,6 +84,7 @@ RPROMPT='${vcs_info_msg_0_} %~'
 source $HOME/.zsh/aliases
 source $HOME/.zsh/functions
 source $HOME/.zsh/vars
+source $HOME/.zsh/fzf
 
 
 source <(kubectl completion zsh)
@@ -100,3 +101,19 @@ source <(kubectl completion zsh)
 
 # zprof
 #zprof > /tmp/foo
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/amccartn/.local/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/amccartn/.local/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/amccartn/.local/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/amccartn/.local/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
