@@ -13,7 +13,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term gnome-terminal
+set $term foot
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -22,7 +22,7 @@ set $menu dmenu_path | dmenu | xargs swaymsg exec --
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /usr/share/backgrounds/default.png fill
+output * bg $HOME/Pictures/backgrounds/mf_il.jpg fill
 #
 # Example configuration:
 #
@@ -37,12 +37,12 @@ output eDP-1     pos 1920 0
 ### Idle configuration
 #
 # Example configuration:
-#
-# exec swayidle -w \
-#          timeout 300 'swaylock -f -c 000000' \
-#          timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
-#          before-sleep 'swaylock -f -c 000000'
-#
+
+exec swayidle -w \
+         timeout 300 'swaylock -f -c 000000' \
+         timeout 600 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' \
+         before-sleep 'swaylock -f -c 000000'
+
 # This will lock your screen after 300 seconds of inactivity, then turn off
 # your displays after another 300 seconds, and turn your screens back on when
 # resumed. It will also lock your screen before your computer goes to sleep.
@@ -221,11 +221,12 @@ bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
     }
     bindsym $mod+r mode "resize"
 
-    # setup workspaces 
-    exec swaymsg "workspace 1; exec gnome-terminal --command tmux"
-    exec swaymsg "workspace 2; exec firefox"
+    # start a foot server
+    exec /bin/foot --server --term=xterm
+    # setup workspaces
     exec swaymsg "workspace 3; exec emacs"
-    exec swaymsg "workspace 1"
+    exec swaymsg "workspace 2; exec firefox"
+    exec swaymsg "workspace 1; exec /bin/footclient --command tmux"
 
     #
     # Status Bar:
@@ -244,6 +245,8 @@ bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
             inactive_workspace #32323200 #32323200 #5c5c5c
         }
     }
+
+}
 
 
     include /etc/sway/config.d/*
