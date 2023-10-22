@@ -45,7 +45,7 @@ case "$TERM" in
 esac
 
 # Custom prompt that displays the time in upper left corner
-# along with a shortened path name on the left hand side, 
+# along with a shortened path name on the left hand side,
 # i.e. it only displays the name of the topmost path dir
 
 PS1="\[\033[s\033[0;0H\033[0;49m\033[K\033[1;33m\t\033[u\]<\u@\h \W>\$"
@@ -158,7 +158,7 @@ export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig
 # files installed in the home directory.
 # WARNING: may cause issues if an officially installed package is looking for
 # a library that is also installed on the system in a more holy manner.
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+export LD_LIBRARY_PATH=$HOME/.local/lib:/usr/local/lib
 
 
 # Set mail environment variable
@@ -265,3 +265,12 @@ complete -d $HOME/Code $HOME/.local/src $HOME/go/src
 export PATH="$PATH:/usr/local/protobuf/bin"
 export TRAIN="$HOME/Code/trainlog/docs/training23.md"
 export MAILDIR="$HOME/.mail"
+
+# Colored man pages
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;32m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;31m'

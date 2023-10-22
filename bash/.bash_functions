@@ -11,24 +11,21 @@ function swap_ctrl_caps () {
       fi
     }
 
-function ftsearch ()
-{
+function ftsearch () {
     # full text search, searches target for a term
     local TERM="$1"
     local TARGET="$2"
     vim $(rg "$TERM" "$TARGET" | fzf | cut -d ":" -f 1)
 }
 
-function gitssh-work ()
-{
+function gitssh-work () {
     export GIT_SSH_COMMAND="ssh -i ~/.ssh/tuw_id_ed25519"
     git config --global user.name "Adam McCartney"
     git config --global user.email "adam.mccartney@tuwien.ac.at"
     git config --global user.signingkey 174C3ECBC22F87A8207AC9FE31DF3F14F2A9C47F
 }
 
-function gitssh-default ()
-{
+function gitssh-default () {
     export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519"
     git config --global user.name "Adam McCartney"
     git config --global user.email "adam@mur.at"
@@ -351,7 +348,7 @@ function wcd ()
     # courtesy of Efficient Linux At the Command Line (book)
     # work cd - cd to one of a couple of frequently visited projects 
     # accept a single argument and cd to the corresponding directory
-    case "$1" in 
+    case "$1" in
       grader-service)
         cd $HOME/Code/tuw/datalab/grader_service/grader_service
         ;;
@@ -368,10 +365,10 @@ function wcd ()
     ;;
     esac
     # Print to show where we are 
-    pwd 
+    pwd
 }
 # set up tab completion for wcd 
-complete -W "grader-service labext lechm" wcd
+# complete -W "grader-service labext lechm" wcd
 
 function hmg () {
     # hub memory guarantees
