@@ -20,8 +20,9 @@ HISTCONTROL=ignoredups
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=10000
-HISTFILESIZE=40000
+HISTSIZE=100000
+HISTFILESIZE="$HISTSIZE"
+HISTFILE="$HOME/.history"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -184,8 +185,8 @@ export NEWSOUNDS=$HOME/Websites/admccartney/static/sounds
 #export REMOTE1=206.189.52.96
 #. "$HOME/.cargo/env"
 
-# use vim keybindings
-set -o vi
+# use emacs keybindings
+set -o emacs
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
 # git tools
