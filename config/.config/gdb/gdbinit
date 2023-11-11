@@ -1,2 +1,2 @@
 add-auto-load-safe-path /home/amccartn/Code/algorithms/src/algorithms/sorting/vitosfamily/.gdbinit
-
+add-auto-load-safe-path /home/adam/Code/cscratch/proc

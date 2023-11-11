@@ -152,7 +152,7 @@ fi
 export PATH=$HOME/.local/bin:$PATH
 export C_INCLUDE_PATH=$HOME/.local/include
 export CPLUS_INCLUDE_PATH=$HOME/.local/include
-export LIBRARY_PATH=$HOME/.local/lib
+export LD_LIBRARY_PATH=$HOME/.local/lib
 export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig
 
 # This tells the run time linker where to find

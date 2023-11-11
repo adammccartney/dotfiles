@@ -78,3 +78,7 @@ export CDPATH=$HOME:$HOME/Code:$HOME/.local/src:$HOME/go/src
 export PATH="$PATH:/usr/local/protobuf/bin"
 export TRAIN="$HOME/Code/trainlog/docs/training23.md"
 export MAILDIR="$HOME/.mail"
+
+export PLAN9=/home/adam/.local/src/plan9
+export PATH=$PATH:$PLAN9/bin
+

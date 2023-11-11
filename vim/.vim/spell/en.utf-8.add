@@ -112,3 +112,7 @@ labextension
 jupyterhub
 nbgrader
 Jupyterhubs
+pid
+uid
+strace
+pids
