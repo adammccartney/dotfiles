@@ -27,3 +27,5 @@ Music/bak
 .nvm
 google-chrome
 .m2
+nvm
+go/pkg/

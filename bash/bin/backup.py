@@ -33,10 +33,10 @@ def getargs():
     parser = argparse.ArgumentParser(description=__doc__)
     user = os.environ["USER"]
     home = os.environ["HOME"]
-    parser.add_argument("--old-home", required=True,
+    parser.add_argument("--old-home", required=False,
                         help="Root of old filesystem (source to copy)",
                         default=f"{home}")
-    parser.add_argument("--new-home", required=True,
+    parser.add_argument("--new-home", required=False,
                         help="Root of new filesystem (destination for copy)",
                         default=f"/run/media/{user}/adb/backup/home/{user}")
     parser.add_argument("--excludes-file", required=True,
