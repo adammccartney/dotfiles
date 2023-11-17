@@ -51,7 +51,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   group = format_sync_grp,
 })
 
--- scnvim setup 
+-- scnvim setup
 --
 local scnvim = require 'scnvim'
 local map = scnvim.map
@@ -85,9 +85,9 @@ scnvim.setup {
   },
 }
 
--- Conjure guile setup 
-vim.cmd([[ 
-let g:conjure#filetype#scheme = "conjure.client.guile.socket" 
+-- Conjure guile setup
+vim.cmd([[
+let g:conjure#filetype#scheme = "conjure.client.guile.socket"
 ]])
 vim.g['conjure#extract#tree_sitter#enabled'] = true
 

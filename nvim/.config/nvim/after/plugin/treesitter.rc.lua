@@ -20,6 +20,8 @@ require'nvim-treesitter.configs'.setup {
         "c",
         "lua"
         },
+
+    ignore_install = { "supercolider" },
     }
 
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()

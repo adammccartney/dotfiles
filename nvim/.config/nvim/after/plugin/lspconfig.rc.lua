@@ -36,7 +36,7 @@ for _, lsp in ipairs(servers) do
   })
 end
 
--- setting up lua 
+-- setting up lua
 local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
