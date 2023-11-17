@@ -78,3 +78,5 @@ export CDPATH=$HOME:$HOME/Code:$HOME/.local/src:$HOME/go/src
 export PATH="$PATH:/usr/local/protobuf/bin"
 export TRAIN="$HOME/Code/trainlog/docs/training23.md"
 export MAILDIR="$HOME/.mail"
+
+export PATH="$PATH:$HOME/Applications/CLion-2023.2.2/clion-2023.2.2/bin"
