@@ -338,6 +338,17 @@
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
+(use-package company
+  :ensure t
+  :init
+  (company-global-mode)
+  :config
+  (setq company-minimum-prefix-length 2)
+  (setq company-idle-delay
+        (lambda () (if (company-in-string-or-comment) nil 0.3)))
+  (setq company-global-modes '(not org-mode))
+  (setq company-selection-wrap-around t))
+   
 (use-package emacs
   :ensure t
   :init
