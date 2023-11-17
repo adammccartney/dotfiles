@@ -157,7 +157,7 @@ if [ -f ~/.elastic_fun ]; then
 fi
 
 function makeonchange () {
-    while inotifywait -q . ; do echo -e '\n\n'; make; done
+    while notifywait -q . ; do echo -e '\n\n'; make; done
 }
 
 function make_html_onchange () {
@@ -382,4 +382,39 @@ function hmg () {
                    awk '{ sum+=$2 } END { print sum }'
 }
 
+function syncnotes() {
+        #local OUTPUT="$HOME/Code/tuw/datalab/apps/shed/projects/homecopy/docs/design.md"
+        local OUTPUT="$1"
+        if [ -z ${OUTPUT} ]; then
+            echo "No output specified"
+            return 1
+        fi
+        #local INPUT="$HOME/Notes/org-roam/20231024112616-jaas_rsync_home.org"
+        local INPUT="$2"
+        if [ -z ${INPUT} ]; then
+            echo "No input file specfied"
+            return 1
+        fi
 
+        orgtomd $INPUT $OUTPUT
+        while inotifywait -q ${INPUT};
+        do
+            echo -e '\n\n';
+            orgtomd ${INPUT} ${OUTPUT};
+        done
+}
+
+function pcomm () {
+    # find the pid of a command
+    # TODO: fix race condition (pid folder can disappear)
+    local comm=$1
+    if [ -z ${comm} ]; then
+        echo "--error--- usage: pcomm <command>"
+        return 1
+    fi
+    paste <(ls -1 /proc/ |grep -E "[[:digit:]]"|\
+         sed 's/\(^.*\)/cat \/proc\/\1\/stat/' |\
+                                          bash |\
+                           awk '{print $1 $2}' | grep ${comm})
+
+}
