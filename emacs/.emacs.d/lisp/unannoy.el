@@ -18,9 +18,9 @@
       ring-bell-function (lambda ()))
 
 ;; GUIs are for newbs
-(menu-bar-mode -1)
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+;;(menu-bar-mode -1)
+;;(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+;;(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 
 ;; Too distracting
 (blink-cursor-mode -1)
@@ -67,3 +67,7 @@
       scroll-preserve-screen-position t)
 
 (provide 'unannoy)
+
+
+
+

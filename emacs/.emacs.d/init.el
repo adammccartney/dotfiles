@@ -75,6 +75,11 @@
 			 ("elpa" . "https://elpa.gnu.org/packages/")
 			 ("org" . "http://orgmode.org/elpa/")))
 
+;; Install and load `quelpa-use-package'.
+(package-install 'quelpa-use-package)
+(require 'quelpa-use-package)
+
+
 ;; Set up use-package
 (eval-when-compile
   (require 'use-package))
@@ -333,19 +338,6 @@
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(use-package corfu
-  :ensure t
-  :custom
-  (corfu-cycle t)       ;; Enable cylcing for 'corfu-next/previous
-  (corfu-auto t)        ;; Enable auto completion
-  (corfu-separator ?\s) ;; Orderless field seperator
-  (corfu-quit-at-boundary nil) ;; Never quit at completion boundary.
-  (corfu-echo-documentation t) ;; Show doumentation in the echo area
-
-  ;; Enable Corfu globally
-  :init
-  (global-corfu-mode))
-
 (use-package emacs
   :ensure t
   :init
@@ -406,6 +398,7 @@
      (make "https://github.com/alemuller/tree-sitter-make")
      (markdown "https://github.com/ikatyang/tree-sitter-markdown")
      (python "https://github.com/tree-sitter/tree-sitter-python")
+     (supercollider "https://github.com/madskjeldgaard/tree-sitter-supercollider")
      (toml "https://github.com/tree-sitter/tree-sitter-toml")
      (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
      (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
@@ -527,9 +520,8 @@
 (use-package dockerfile-mode
   :ensure t)
 
-(use-package smartparens
-  :ensure t
-  :hook (prog-mode . smartparens-mode))
+(use-package paredit
+  :ensure t)
 
 (use-package eshell
   :ensure t
@@ -555,3 +547,12 @@
 ; EasyPG for encrypting files
 (require 'epa-file)
 (epa-file-enable)
+
+
+;; Supercollider support
+(add-to-list 'load-path "~/.local/src/supercollider/scel/el")
+(require 'sclang)
+
+;; matrix
+(use-package ement
+  :quelpa (ement :fetcher github :repo "alphapapa/ement.el"))
