@@ -555,3 +555,16 @@
 ; EasyPG for encrypting files
 (require 'epa-file)
 (epa-file-enable)
+
+
+; Tramp for tramping
+(tramp-set-completion-function
+ "ssh" (append (tramp-get-completion-function "ssh")
+               (mapcar (lambda (file) `(tramp-parse-sconfig ,file))
+                       (directory-files
+                        "~/.ssh/"
+                        'full directory-files-no-dot-files-regexp))))
+
+
+(customize-set-variable 'tramp-default-method "ssh")
+
