@@ -79,4 +79,12 @@ export PATH="$PATH:/usr/local/protobuf/bin"
 export TRAIN="$HOME/Code/trainlog/docs/training23.md"
 export MAILDIR="$HOME/.mail"
 
+# add clion to path
 export PATH="$PATH:$HOME/Applications/CLion-2023.2.2/clion-2023.2.2/bin"
+
+# add lua-language-server/bin
+export PATH="$PATH:$HOME/.local/src/lua-language-server/bin"
+
+if [ -d "$HOME/.cargo" ]; then
+    export PATH="$PATH:$HOME/.cargo/bin"
+fi
