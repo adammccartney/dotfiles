@@ -556,3 +556,15 @@
 ;; matrix
 (use-package ement
   :quelpa (ement :fetcher github :repo "alphapapa/ement.el"))
+
+; Tramp for tramping
+(tramp-set-completion-function
+ "ssh" (append (tramp-get-completion-function "ssh")
+               (mapcar (lambda (file) `(tramp-parse-sconfig ,file))
+                       (directory-files
+                        "~/.ssh/"
+                        'full directory-files-no-dot-files-regexp))))
+
+
+(customize-set-variable 'tramp-default-method "ssh")
+
