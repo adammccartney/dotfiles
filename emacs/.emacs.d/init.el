@@ -52,6 +52,8 @@
 (push "~/.emacs.d/lisp" load-path)  
 (require 'adlisp)
 (require 'unannoy) ;; handy stuff from Chris Wellons
+(require 'faust-mode) ;; from rukano
+(setq auto-mode-alist (cons '("\\.dsp$" . faust-mode) auto-mode-alist))
 
 (set-default-coding-systems 'utf-8)
 (server-start)
@@ -305,9 +307,39 @@
             ("\\(\\.png\\|\\.jpe?g\\)\\'" "qiv")
             ("\\.gif\\'" "animate")))))
 
+;; Window management
+(winner-mode)
+(global-set-key (kbd "M-o") 'other-window)
+
 ;; Completions
 (use-package helm
-  :ensure t)
+  :ensure t
+  :init
+  ;; a good chunk of the following config is from
+  ;; http://tuhdo.github.io/helm-intro.html
+  ;; default "C-x c" is close to quit "C-x C-c"
+  ;; "C-h"
+  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-unset-key (kbd "C-x c"))
+  (global-set-key (kbd "M-x") 'helm-M-x)
+  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+  (global-set-key (kbd "C-x b") 'helm-mini)
+  (global-set-key (kbd "C-x C-f") 'helm-find-files)
+  
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t))
+
+  (setq helm-autoresize-max-height 0)
+  (setq helm-autoresize-min-height 20)
+  (setq helm-M-x-fuzzy-match t)
+  (setq helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t)
+    
+  :config
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+  (define-key helm-map (kbd "C-z") 'helm-select-action)
+  (helm-autoresize-mode 1))
+
 
 (use-package vertico
   :ensure t
@@ -340,9 +372,8 @@
 
 (use-package company
   :ensure t
-  :init
-  (company-global-mode)
   :config
+  (setq company-global-mode t)
   (setq company-minimum-prefix-length 2)
   (setq company-idle-delay
         (lambda () (if (company-in-string-or-comment) nil 0.3)))
