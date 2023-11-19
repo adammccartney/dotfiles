@@ -610,3 +610,11 @@
 
 (customize-set-variable 'tramp-default-method "ssh")
 
+(use-package slime
+  :ensure t
+  :init 
+  (setq inferior-lisp-program "/usr/bin/sbcl")
+  :config
+  (add-hook 'slime-load-hook
+            (lambda ()
+              (define-key slime-prefix-map (kbd "M-h") 'slime-documentation-lookup))))
