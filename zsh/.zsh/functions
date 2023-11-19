@@ -157,7 +157,7 @@ if [ -f ~/.elastic_fun ]; then
 fi
 
 function makeonchange () {
-    while notifywait -q . ; do echo -e '\n\n'; make; done
+    while inotifywait -q . ; do echo -e '\n\n'; make; done
 }
 
 function make_html_onchange () {
