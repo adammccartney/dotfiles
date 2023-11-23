@@ -36,6 +36,7 @@ setopt PRINT_EXIT_VALUE        # [default] for non-zero exit status
 #
 fpath=($HOME/.zsh/completions $fpath)
 
+
 # The following lines were added by compinstall
 
 zstyle ':completion:*' completer _expand _complete _ignored _approximate
@@ -85,9 +86,6 @@ source $HOME/.zsh/aliases
 source $HOME/.zsh/functions
 source $HOME/.zsh/vars
 source $HOME/.zsh/fzf
-
-
-source <(kubectl completion zsh)
 
 # End profiling (uncomment when necessary)
 #

@@ -1,5 +1,6 @@
-# ~/.bash_functions: collection of command line functions
-  # useage: source via ~/.bashrc at runtime
+#!/usr/bin/zsh
+# ~/.zsh/functions: collection of command line functions
+# usage: source via ~/.zshrc at runtime
 
 function swap_ctrl_caps () {
       XKBOPTIONS="ctrl:swapcaps"
@@ -304,6 +305,46 @@ function lldev()
 }
 
 
+
+function joauthdev()
+{
+    # if outside network, assume vpn is running
+    # creates a new tmux sesssion with a window for each of the following:
+    local VENV=$1
+    local GS_SRC="$HOME/Code/tuw/datalab/grader_service.git/oauth"
+    local JS_SRC="$HOME/.local/src/jupyterhub/jupyterhub.git/3.x"
+    local DEPLOY_SRC="$HOME/Code/tuw/datalab/config-management/jaas-k8s-jupyterhubs.git/jaas32"
+    local KUBECONFIG_PROD="$HOME/infrastructure/k8s/clusters/jupyter_all/rke2.yaml"
+    local KUBECONFIG_STAGING="$HOME/infrastructure/k8s/clusters/jaas-staging/staging/config.yaml"
+    local KUBECONFIG_TESTING="$HOME/infrastructure/k8s/clusters/jaas-staging/testing/config.yaml"
+    load_aliases
+    tmux new-session -s joauth -n scratch -d
+    # 1. gs-src
+    tmux new-window -t joauth -n gs-src
+    tmux send-keys -t joauth "cd ${GS_SRC}"
+    tmux send-keys -t joauth "conda activate $VENV" C-m
+    tmux send-keys -t joauth "ltucfg" C-m
+    tmux send-keys -t joauth "vim" C-m
+    # 2. jupyter-src
+    tmux new-window -t joauth -n js-src
+    tmux send-keys -t joauth "cd ${JS_SRC}"
+    tmux send-keys -t joauth "conda activate $VENV" C-m
+    tmux send-keys -t joauth "ltucfg" C-m
+    tmux send-keys -t joauth "vim" C-m
+    # 3. deploy-src
+    tmux new-window -t joauth -n deploy-src
+    tmux send-keys -t joauth "cd ${DEPLOY_SRC}"
+    # 4. k8s
+    tmux new-window -t joauth -n k8s
+    tmux send-keys -t joauth "cd ${HOME}" C-m
+    tmux send-keys -t joauth "kcmp" C-m
+    tmux send-keys -t joauth "export KUBECONFIG_PROD=${KUBECONFIG_PROD}" C-m
+    tmux send-keys -t joauth "export KUBECONFIG_STAGING=${KUBECONFIG_STAGING}" C-m
+    tmux send-keys -t joauth "export KUBECONFIG_TESTING=${KUBECONFIG_TESTING}" C-m
+    tmux attach -t joauth
+}
+
+
 function watt()
 {
     # creates a new tmux sesssion with a window for each of the following:
@@ -417,4 +458,18 @@ function pcomm () {
                                           bash |\
                            awk '{print $1 $2}' | grep ${comm})
 
+}
+
+function kcmp () {
+    # kubectl shell completion note: this is a workaround because it
+    # seems to not activate when called at startup
+    if command /usr/bin/kubectl &> /dev/null; then
+        source <(kubectl completion zsh)
+        if [ "$SHELL" = "/usr/bin/zsh" ]; then
+            source <(kubectl completion zsh)
+        fi
+        if [ "$SHELL" = "/usr/bin/bash" ]; then
+            source <(kubectl completion bash)
+        fi
+    fi
 }
