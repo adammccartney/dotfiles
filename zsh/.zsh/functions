@@ -279,9 +279,9 @@ function create_pydev_repl_session ()
 {
     # creates a new tmux sesssion with a window for each of the following:
     local VENV=$1
-    ## 1. editor  
+    ## 1. editor
     tmux new-session -s dev -n editor -d
-    tmux split-window -hf -t dev 
+    tmux split-window -hf -t dev
     tmux send-keys -t dev:1.1 "conda activate $VENV" C-m
     tmux send-keys -t dev:1.1 "vim" C-m
     tmux send-keys -t dev:1.2 "conda activate $VENV" C-m
@@ -321,19 +321,19 @@ function joauthdev()
     tmux new-session -s joauth -n scratch -d
     # 1. gs-src
     tmux new-window -t joauth -n gs-src
-    tmux send-keys -t joauth "cd ${GS_SRC}"
+    tmux send-keys -t joauth "cd ${GS_SRC}" C-m
     tmux send-keys -t joauth "conda activate $VENV" C-m
     tmux send-keys -t joauth "ltucfg" C-m
     tmux send-keys -t joauth "vim" C-m
     # 2. jupyter-src
     tmux new-window -t joauth -n js-src
-    tmux send-keys -t joauth "cd ${JS_SRC}"
+    tmux send-keys -t joauth "cd ${JS_SRC}" C-m
     tmux send-keys -t joauth "conda activate $VENV" C-m
     tmux send-keys -t joauth "ltucfg" C-m
     tmux send-keys -t joauth "vim" C-m
     # 3. deploy-src
     tmux new-window -t joauth -n deploy-src
-    tmux send-keys -t joauth "cd ${DEPLOY_SRC}"
+    tmux send-keys -t joauth "cd ${DEPLOY_SRC}" C-m
     # 4. k8s
     tmux new-window -t joauth -n k8s
     tmux send-keys -t joauth "cd ${HOME}" C-m
