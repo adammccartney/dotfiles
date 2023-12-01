@@ -340,7 +340,6 @@
   (define-key helm-map (kbd "C-z") 'helm-select-action)
   (helm-autoresize-mode 1))
 
-
 (use-package vertico
   :ensure t
   :custom
@@ -606,9 +605,11 @@
                        (directory-files
                         "~/.ssh/"
                         'full directory-files-no-dot-files-regexp))))
-
-
 (customize-set-variable 'tramp-default-method "ssh")
+;;(setq debug-on-error t
+;;      debug-on-signal t)
+(customize-set-variable 'tramp-debug-to-file t)
+(setq tramp-verbose 6)
 
 (use-package slime
   :ensure t
@@ -618,3 +619,16 @@
   (add-hook 'slime-load-hook
             (lambda ()
               (define-key slime-prefix-map (kbd "M-h") 'slime-documentation-lookup))))
+
+;; Writing
+(setq dictionary-server "localhost")
+;; mandatory, as the dictionary misbehaves!
+(setq switch-to-buffer-obey-display-actions t)
+(add-to-list 'display-buffer-alist
+   '("^\\*Dictionary\\*" display-buffer-in-side-window
+     (side . left)
+     (window-width . 50)))
+
+;; close to ispell lookup
+(global-set-key (kbd "M-§") #'dictionary-lookup-definition)
+

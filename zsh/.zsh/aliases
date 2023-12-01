@@ -78,6 +78,7 @@ alias mk="minikube kubectl --"
 
 alias clion="clion.sh"
 alias idea="idea.sh"
+alias pycharm="pycharm.sh"
 
 alias rg="rg --hidden --glob '!.git'"
 alias bup="bkhome-wrapper.sh"

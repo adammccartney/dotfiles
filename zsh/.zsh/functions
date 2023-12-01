@@ -316,7 +316,7 @@ function joauthdev()
     local DEPLOY_SRC="$HOME/Code/tuw/datalab/config-management/jaas-k8s-jupyterhubs.git/jaas32"
     local KUBECONFIG_PROD="$HOME/infrastructure/k8s/clusters/jupyter_all/rke2.yaml"
     local KUBECONFIG_STAGING="$HOME/infrastructure/k8s/clusters/jaas-staging/staging/config.yaml"
-    local KUBECONFIG_TESTING="$HOME/infrastructure/k8s/clusters/jaas-staging/testing/config.yaml"
+    local KUBECONFIG_TESTING="$HOME/infrastructure/k8s/clusters/jaas-staging/testing/jaas-test/config.yaml"
     load_aliases
     tmux new-session -s joauth -n scratch -d
     # 1. gs-src
@@ -472,4 +472,14 @@ function kcmp () {
             source <(kubectl completion bash)
         fi
     fi
+}
+
+function selekc () {
+    # select a kubeconfig file from available options and set the selected
+    # version as the KUBECONFIG environment variable
+    pmsg_create -cm 1 /aq
+    selekc.cli "/aq"
+    KCPATH=$(pmsg_receive /aq | head -1)
+    export KUBECONFIG=${KCPATH}
+    pmsg_unlink /aq
 }

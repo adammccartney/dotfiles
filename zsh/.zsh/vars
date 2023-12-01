@@ -79,7 +79,8 @@ export TRAIN="$HOME/Code/trainlog/docs/training23.md"
 export MAILDIR="$HOME/.mail"
 
 # add clion & idea to path
-export PATH="$PATH:$HOME/Applications/CLion-2023.2.2/clion-2023.2.2/bin:$HOME/Applications/idea-IU-231.8109.175/bin"
+export PATH="$PATH:$HOME/Applications/CLion-2023.2.2/clion-2023.2.2/bin:$HOME/Applications/idea-IU-231.8109.175/bin:$HOME/Applications/pycharm-2023.2.5/bin"
+
 
 # add lua-language-server/bin
 export PATH="$PATH:$HOME/.local/src/lua-language-server/bin"
