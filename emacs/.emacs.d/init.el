@@ -418,6 +418,12 @@
   :config
   (setq eglot-autoshutdown t))
 
+;;(use-package lsp-mode
+;;  :ensure t
+;;  :init
+;;  (setq lsp-keymap-prefix "C-c l")
+;;  :commands lsp)
+
 
 (use-package magit
   :ensure t
@@ -615,6 +621,8 @@
   :ensure t
   :init 
   (setq inferior-lisp-program "/usr/bin/sbcl")
+  (setq slime-lisp-implementations
+        '((sbcl ("sbcl" "--core" "sbcl.core-for-slime"))))
   :config
   (add-hook 'slime-load-hook
             (lambda ()
@@ -631,4 +639,21 @@
 
 ;; close to ispell lookup
 (global-set-key (kbd "M-§") #'dictionary-lookup-definition)
+
+
+(add-to-list 'Info-directory-list "/usr/share/info")
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 9df1a35 (Add a few hacks for lispy things)
 

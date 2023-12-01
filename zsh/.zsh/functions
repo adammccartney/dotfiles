@@ -464,7 +464,6 @@ function kcmp () {
     # kubectl shell completion note: this is a workaround because it
     # seems to not activate when called at startup
     if command /usr/bin/kubectl &> /dev/null; then
-        source <(kubectl completion zsh)
         if [ "$SHELL" = "/usr/bin/zsh" ]; then
             source <(kubectl completion zsh)
         fi
