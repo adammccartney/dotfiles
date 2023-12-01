@@ -644,16 +644,3 @@
 (add-to-list 'Info-directory-list "/usr/share/info")
 
 
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 9df1a35 (Add a few hacks for lispy things)
-
