@@ -621,12 +621,14 @@
   :ensure t
   :init 
   (setq inferior-lisp-program "/usr/bin/sbcl")
-  (setq slime-lisp-implementations
-        '((sbcl ("sbcl" "--core" "sbcl.core-for-slime"))))
+;;  (setq slime-lisp-implementations
+;;        (let ((core-file (format "%s" (substitute-in-file-name "$HOME/.cache/emacs/sbcl.core-for-slime"))))
+;;        '((sbcl ("sbcl" "--core" core-file)))))
   :config
   (add-hook 'slime-load-hook
             (lambda ()
               (define-key slime-prefix-map (kbd "M-h") 'slime-documentation-lookup))))
+
 
 ;; Writing
 (setq dictionary-server "localhost")
@@ -642,5 +644,4 @@
 
 
 (add-to-list 'Info-directory-list "/usr/share/info")
-
 

@@ -42,6 +42,7 @@
      (dot . t)
      (latex . t)
      (shell . t)
+     (lisp . t)
      ))
 
 (push '("conf-unix" . conf-unix) org-src-lang-modes)
@@ -74,6 +75,7 @@
 (add-to-list 'org-structure-template-alist '("sql" . "src sql"))
 (add-to-list 'org-structure-template-alist '("doc" . "src docker-build"))
 (add-to-list 'org-structure-template-alist '("yml" . "src yaml"))
+(add-to-list 'org-structure-template-alist '("lisp" . "src lisp"))
 
 (provide 'ad-org)
 
