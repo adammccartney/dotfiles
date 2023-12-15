@@ -51,6 +51,7 @@
 ;; Custom lispy stuff
 (push "~/.emacs.d/lisp" load-path)  
 (require 'adlisp)
+(require 'ad-sqlite)
 (require 'unannoy) ;; handy stuff from Chris Wellons
 (require 'faust-mode) ;; from rukano
 (setq auto-mode-alist (cons '("\\.dsp$" . faust-mode) auto-mode-alist))
@@ -253,7 +254,6 @@
        org-roam-ui-update-on-save t
        org-roam-ui-open-on-start nil))
 
-
 ;; Load custom org config after org-roam
 (require 'ad-org)
 
@@ -392,6 +392,9 @@
   ;; Enable indentation+completion using the TAB key.
   ;; completion-at-point is often bound to M-TAB
   (setq tab-always-indent 'complete))
+
+(use-package which-key
+  :ensure t)
 
 (use-package dabbrev
   :ensure t
@@ -640,20 +643,8 @@
 ;; close to ispell lookup
 (global-set-key (kbd "M-§") #'dictionary-lookup-definition)
 
-
 (add-to-list 'Info-directory-list "/usr/share/info")
 
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 9df1a35 (Add a few hacks for lispy things)
-
+(use-package nix-mode
+  ;; https://github.com/NixOS/nix-mode
+  :mode "\\.nix\\'")

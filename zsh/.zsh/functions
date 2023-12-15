@@ -315,6 +315,7 @@ function joauthdev()
     local JS_SRC="$HOME/.local/src/jupyterhub/jupyterhub.git/3.x"
     local DEPLOY_SRC="$HOME/Code/tuw/datalab/config-management/jaas-k8s-jupyterhubs.git/jaas32"
     local KUBECONFIG_PROD="$HOME/infrastructure/k8s/clusters/jupyter_all/rke2.yaml"
+    local KUBECONFIG_PROD_NEW="$HOME/infrastructure/k8s/clusters/jaas-production/jaas/config.yaml"
     local KUBECONFIG_STAGING="$HOME/infrastructure/k8s/clusters/jaas-staging/staging/config.yaml"
     local KUBECONFIG_TESTING="$HOME/infrastructure/k8s/clusters/jaas-staging/testing/jaas-test/config.yaml"
     load_aliases
@@ -481,4 +482,13 @@ function selekc () {
     KCPATH=$(pmsg_receive /aq | head -1)
     export KUBECONFIG=${KCPATH}
     pmsg_unlink /aq
+}
+
+function k8s_getallimgs () {
+    # Get all images in a specific namespaces
+    ns=$1
+    kubectl get pods -n ${ns} -o jsonpath="{.items[*].spec['initContainers', 'containers'][*].image}" |\
+    tr -s '[[:space:]]' '\n' |\
+    sort |\
+    uniq -c
 }
