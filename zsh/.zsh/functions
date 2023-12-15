@@ -158,7 +158,8 @@ if [ -f ~/.elastic_fun ]; then
 fi
 
 function makeonchange () {
-    while inotifywait -q . ; do echo -e '\n\n'; make; done
+    watch=$1
+    while inotifywait -q ${watch}; do echo -e '\n\n'; make; done
 }
 
 function make_html_onchange () {
