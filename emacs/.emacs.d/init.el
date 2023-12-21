@@ -520,7 +520,7 @@
   (setq geiser-default-implementation 'guile)
   (setq geiser-active-implementations '(guile))
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile)))
-  (setq geiser-guile-binary "/usr/bin/guile3.0"))
+  (setq geiser-guile-binary "~/.guix-profile/bin/guile"))
 
 (use-package geiser-guile
   :ensure t)
@@ -598,10 +598,6 @@
 (require 'epa-file)
 (epa-file-enable)
 
-
-;; Supercollider support
-(add-to-list 'load-path "~/.local/src/supercollider/scel/el")
-(require 'sclang)
 
 ;; matrix
 (use-package ement
