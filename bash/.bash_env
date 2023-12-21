@@ -1,0 +1,84 @@
+#!/usr/bin/sh
+# .bash_env: setup for extra environment variables
+
+# point to a populated terminfo database and explicitly set term
+export TERMINFO=/usr/share/terminfo
+
+# set up environment variables for compiling from source in $HOME/.local
+export PATH=$HOME/.local/bin:$PATH
+export C_INCLUDE_PATH=$HOME/.local/include
+export CPLUS_INCLUDE_PATH=$HOME/.local/include
+export LD_LIBRARY_PATH=$HOME/.local/lib
+export PKG_CONFIG_PATH=$HOME/.local/lib/pkgconfig
+
+# This tells the run time linker where to find
+# files installed in the home directory.
+# WARNING: may cause issues if an officially installed package is looking for
+# a library that is also installed on the system in a more holy manner.
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
+
+# Set mail environment variable
+MAIL=/var/mail/admccartn && export MAIL
+
+# set realtime
+export SOUND_CARD_IRQ=169
+
+export PATH=$PATH:/sbin:/opt/ghc/bin:/opt/riscv/bin
+
+# temp variable for rehashing blog
+export OLDPOSTS=/media/websites/content/music
+export CONTENT=$HOME/Websites/admccartney/content
+export STATIC=$HOME/Websites/admccartney/static
+export NEWSHORTCODES=$HOME/Websites/admccartney/layouts/shortcodes
+export NEWSOUNDS=$HOME/Websites/admccartney/static/sounds
+
+#source "$HOME/.cargo/env"
+
+# Remote server variable
+#export REMOTE1=206.189.52.96
+#. "$HOME/.cargo/env"
+
+
+# virtualenv wrapper
+export WORKON_HOME=$HOME/.virtualenvs
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export VIRTUALENVWRAPPER_VIRTUALENV_ARGS=' -p /usr/bin/python3 '
+export PROJECT_HOME=$HOME/.virtualenvs/venvs
+source $HOME/.local/bin/virtualenvwrapper.sh
+
+
+export EDITOR=vim
+export MANWIDTH=80
+
+# add gpg key
+export GPG_TTY=$(tty)
+export PATH=$PATH:/usr/sbin:/sbin
+
+
+# Gopath
+# add the go binary to path
+export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/go
+# add the GOPATH/bin to PATH
+export PATH=$PATH:$(go env GOPATH)/bin
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+
+export JYCONF="~/.local/src/tuw/datalab/gs_configs/jupyterhub_config.py"
+export PATH=$PATH:"$HOME/.local/src/idea-IU-231.8109.175/bin/"
+
+# set up cdpath
+export CDPATH=$HOME:$HOME/Code:$HOME/.local/src:$HOME/go/src
+complete -d $HOME/Code $HOME/.local/src $HOME/go/src
+
+# set up protoc for protobuf
+export PATH="$PATH:/usr/local/protobuf/bin"
+export TRAIN="$HOME/Code/trainlog/docs/training23.md"
+export MAILDIR="$HOME/.mail"
+
+# guix stuff
+export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
+export PATH=$PATH:$HOME/.guix-profile/bin

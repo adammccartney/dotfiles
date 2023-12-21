@@ -14,6 +14,8 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-if [ -d "$HOME/.local/miniconda3/bin" ] ; then
-    PATH="$HOME/.local/miniconda3/bin:$PATH"
+
+if [ -d "$HOME/.guix-profile" ]; then
+    GUIX_PROFILE="/home/amccartn/.guix-profile"
+     . "$GUIX_PROFILE/etc/profile"
 fi

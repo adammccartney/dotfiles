@@ -1,3 +1,4 @@
+#!/usr/bin/bash
 # ~/.bash_functions: collection of command line functions
   # useage: source via ~/.bashrc at runtime
 
@@ -11,24 +12,21 @@ function swap_ctrl_caps () {
       fi
     }
 
-function ftsearch ()
-{
+function ftsearch () {
     # full text search, searches target for a term
     local TERM="$1"
     local TARGET="$2"
     vim $(rg "$TERM" "$TARGET" | fzf | cut -d ":" -f 1)
 }
 
-function gitssh-work ()
-{
+function gitssh-work () {
     export GIT_SSH_COMMAND="ssh -i ~/.ssh/tuw_id_ed25519"
     git config --global user.name "Adam McCartney"
     git config --global user.email "adam.mccartney@tuwien.ac.at"
     git config --global user.signingkey 174C3ECBC22F87A8207AC9FE31DF3F14F2A9C47F
 }
 
-function gitssh-default ()
-{
+function gitssh-default () {
     export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519"
     git config --global user.name "Adam McCartney"
     git config --global user.email "adam@mur.at"
@@ -232,12 +230,12 @@ function load_aliases ()
 function load_virtual_env () 
 {
     local env_name=$1
-    conda activate "$env_name"
+    workon "$env_name"
 }
 
 function start_grader_service () 
 {
-    load_virtual_env "migration"
+    load_virtual_env "jh3.0"
     cdlx
     grader-service -f "$GRADER_SERVICE_CONIG_PATH"
 }
@@ -249,7 +247,7 @@ function create_gs_dev_session ()
     load_aliases
     ## 1. editor  
     tmux new-session -s gs-dev -n editor -d
-    tmux send-keys -t gs-dev "conda activate $VENV" C-m
+    tmux send-keys -t gs-dev "workon $VENV" C-m
     tmux send-keys -t gs-dev "ltucfg" C-m
     tmux send-keys -t gs-dev "vim" C-m
     # 2. database
@@ -258,18 +256,18 @@ function create_gs_dev_session ()
     tmux send-keys -t gs-dev:2.1 'dbconnect' C-m
     # 3. grader labextension 
     tmux new-window -t gs-dev -n labext 
-    tmux send-keys -t gs-dev:3.1 "conda activate $VENV" C-m
+    tmux send-keys -t gs-dev:3.1 "workon $VENV" C-m
     tmux send-keys -t gs-dev:3.1 "ltucfg" C-m
     tmux send-keys -t gs-dev:3.1 "cdlx" C-m
     tmux send-keys -t gs-dev:3.1 "jlpm build" C-m
     # 4. jupyter apps (2 panes - lab and grader-service)
     tmux new-window -t gs-dev -n srv 
     tmux split-window -v -t srv 
-    tmux send-keys -t gs-dev:4.1 "conda activate $VENV" C-m
+    tmux send-keys -t gs-dev:4.1 "workon $VENV" C-m
     tmux send-keys -t gs-dev:4.1 "ltucfg" C-m
     tmux send-keys -t gs-dev:4.1 "cdgs" C-m 
     tmux send-keys -t gs-dev:4.1 "jupyterhub -f $JUPYTERHUB_CONFIG_PATH" C-m
-    tmux send-keys -t gs-dev:4.2 "conda activate $VENV" C-m
+    tmux send-keys -t gs-dev:4.2 "workon $VENV" C-m
     tmux send-keys -t gs-dev:4.2 "ltucfg" C-m
     tmux send-keys -t gs-dev:4.2 "cdlx" C-m
     tmux send-keys -t gs-dev:4.2 "grader-service -f $GRADER_SERVICE_CONFIG_PATH" C-m
@@ -277,24 +275,22 @@ function create_gs_dev_session ()
     tmux attach -t gs-dev
 }
 
-function create_pydev_repl_session ()
-{
+function create_pydev_repl_session () {
     # creates a new tmux sesssion with a window for each of the following:
     local VENV=$1
-    ## 1. editor  
+    ## 1. editor
     tmux new-session -s dev -n editor -d
-    tmux split-window -hf -t dev 
-    tmux send-keys -t dev:1.1 "conda activate $VENV" C-m
+    tmux split-window -hf -t dev
+    tmux send-keys -t dev:1.1 "workon $VENV" C-m
     tmux send-keys -t dev:1.1 "vim" C-m
-    tmux send-keys -t dev:1.2 "conda activate $VENV" C-m
+    tmux send-keys -t dev:1.2 "workon $VENV" C-m
     tmux send-keys -t dev:1.2 "python3" C-m
     tmux attach -t dev
 }
 
-function lldev()
-{
+function lldev() {
     # creates a new tmux sesssion with a window for each of the following:
-    ## 1. editor  
+    ## 1. editor
     tmux new-session -s lldev -n editor -d
     tmux split-window -h -t lldev 
     tmux split-window -v -t lldev:1.1
@@ -304,6 +300,48 @@ function lldev()
     tmux send-keys -t lldev:1.3 "cd $HOME/Code/lowlevel/cs61c/su23-proj3-starter" C-m
     tmux send-keys -t lldev:1.3 "vim" C-m
     tmux attach -t lldev
+}
+
+
+
+function joauthdev()
+{
+    # if outside network, assume vpn is running
+    # creates a new tmux sesssion with a window for each of the following:
+    local VENV=$1
+    local GS_SRC="$HOME/Code/tuw/datalab/grader_service.git/oauth"
+    local JS_SRC="$HOME/.local/src/jupyterhub/jupyterhub.git/3.x"
+    local DEPLOY_SRC="$HOME/Code/tuw/datalab/config-management/jaas-k8s-jupyterhubs.git/jaas32"
+    local KUBECONFIG_PROD="$HOME/infrastructure/k8s/clusters/jupyter_all/rke2.yaml"
+    local KUBECONFIG_PROD_NEW="$HOME/infrastructure/k8s/clusters/jaas-production/jaas/config.yaml"
+    local KUBECONFIG_STAGING="$HOME/infrastructure/k8s/clusters/jaas-staging/staging/config.yaml"
+    local KUBECONFIG_TESTING="$HOME/infrastructure/k8s/clusters/jaas-staging/testing/jaas-test/config.yaml"
+    load_aliases
+    tmux new-session -s joauth -n scratch -d
+    # 1. gs-src
+    tmux new-window -t joauth -n gs-src
+    tmux send-keys -t joauth "cd ${GS_SRC}" C-m
+    tmux send-keys -t joauth "workon $VENV" C-m
+    tmux send-keys -t joauth "ltucfg" C-m
+    tmux send-keys -t joauth "vim" C-m
+    # 2. jupyter-src
+    tmux new-window -t joauth -n js-src
+    tmux send-keys -t joauth "cd ${JS_SRC}" C-m
+    tmux send-keys -t joauth "workon $VENV" C-m
+    tmux send-keys -t joauth "ltucfg" C-m
+    tmux send-keys -t joauth "vim" C-m
+    # 3. deploy-src
+    tmux new-window -t joauth -n deploy-src
+    tmux send-keys -t joauth "cd ${DEPLOY_SRC}" C-m
+    # 4. k8s
+    tmux new-window -t joauth -n k8s
+    tmux send-keys -t joauth "cd ${HOME}" C-m
+    tmux send-keys -t joauth "kcmp" C-m
+    tmux send-keys -t joauth "export KUBECONFIG_PROD=${KUBECONFIG_PROD}" C-m
+    tmux send-keys -t joauth "export KUBECONFIG_PROD_NEW=${KUBECONFIG_PROD_NEW}" C-m
+    tmux send-keys -t joauth "export KUBECONFIG_STAGING=${KUBECONFIG_STAGING}" C-m
+    tmux send-keys -t joauth "export KUBECONFIG_TESTING=${KUBECONFIG_TESTING}" C-m
+    tmux attach -t joauth
 }
 
 
@@ -346,12 +384,11 @@ function k8s()
     tmux attach -t k8s
 }
 
-function wcd ()
-{
+function wcd () {
     # courtesy of Efficient Linux At the Command Line (book)
     # work cd - cd to one of a couple of frequently visited projects 
     # accept a single argument and cd to the corresponding directory
-    case "$1" in 
+    case "$1" in
       grader-service)
         cd $HOME/Code/tuw/datalab/grader_service/grader_service
         ;;
@@ -364,13 +401,13 @@ function wcd ()
     *)
         # The supplied argument was not supported 
         echo "wcd: unknown key '$1'"
-        return 1 
+        return 1
     ;;
     esac
-    # Print to show where we are 
-    pwd 
+    # Print to show where we are
+    pwd
 }
-# set up tab completion for wcd 
+# set up tab completion for wcd
 complete -W "grader-service labext lechm" wcd
 
 function hmg () {
@@ -385,4 +422,71 @@ function hmg () {
                    awk '{ sum+=$2 } END { print sum }'
 }
 
+function syncnotes() {
+        #local OUTPUT="$HOME/Code/tuw/datalab/apps/shed/projects/homecopy/docs/design.md"
+        local OUTPUT="$1"
+        if [ -z ${OUTPUT} ]; then
+            echo "No output specified"
+            return 1
+        fi
+        #local INPUT="$HOME/Notes/org-roam/20231024112616-jaas_rsync_home.org"
+        local INPUT="$2"
+        if [ -z ${INPUT} ]; then
+            echo "No input file specfied"
+            return 1
+        fi
 
+        orgtomd $INPUT $OUTPUT
+        while inotifywait -q ${INPUT};
+        do
+            echo -e '\n\n';
+            orgtomd ${INPUT} ${OUTPUT};
+        done
+}
+
+function pcomm () {
+    # find the pid of a command
+    # TODO: fix race condition (pid folder can disappear)
+    local comm=$1
+    if [ -z ${comm} ]; then
+        echo "--error--- usage: pcomm <command>"
+        return 1
+    fi
+    paste <(ls -1 /proc/ |grep -E "[[:digit:]]"|\
+         sed 's/\(^.*\)/cat \/proc\/\1\/stat/' |\
+                                          bash |\
+                           awk '{print $1 $2}' | grep ${comm})
+
+}
+
+function kcmp () {
+    # kubectl shell completion note: this is a workaround because it
+    # seems to not activate when called at startup
+    if command /usr/bin/kubectl &> /dev/null; then
+        if [ "$SHELL" = "/usr/bin/zsh" ]; then
+            source <(kubectl completion zsh)
+        fi
+        if [ "$SHELL" = "/usr/bin/bash" ]; then
+            source <(kubectl completion bash)
+        fi
+    fi
+}
+
+function selekc () {
+    # select a kubeconfig file from available options and set the selected
+    # version as the KUBECONFIG environment variable
+    pmsg_create -cm 1 /aq
+    selekc.cli "/aq"
+    KCPATH=$(pmsg_receive /aq | head -1)
+    export KUBECONFIG=${KCPATH}
+    pmsg_unlink /aq
+}
+
+function k8s_getallimgs () {
+    # Get all images in a specific namespaces
+    ns=$1
+    kubectl get pods -n ${ns} -o jsonpath="{.items[*].spec['initContainers', 'containers'][*].image}" |\
+    tr -s '[[:space:]]' '\n' |\
+    sort |\
+    uniq -c
+}
