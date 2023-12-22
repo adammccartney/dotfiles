@@ -340,6 +340,9 @@
   (define-key helm-map (kbd "C-z") 'helm-select-action)
   (helm-autoresize-mode 1))
 
+(use-package helm-pass
+  :ensure t)
+
 (use-package vertico
   :ensure t
   :custom
@@ -646,3 +649,6 @@
 (use-package nix-mode
   ;; https://github.com/NixOS/nix-mode
   :mode "\\.nix\\'")
+
+(use-package pg
+  :ensure t)
