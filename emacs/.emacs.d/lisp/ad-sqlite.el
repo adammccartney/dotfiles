@@ -16,6 +16,5 @@
          (sqlite-execute db q)))
       (_ (error "Invalid query format"))))
   )
-
   
 (provide 'ad-sqlite)
