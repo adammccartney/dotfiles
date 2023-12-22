@@ -19,3 +19,7 @@ if [ -d "$HOME/.guix-profile" ]; then
     GUIX_PROFILE="/home/amccartn/.guix-profile"
      . "$GUIX_PROFILE/etc/profile"
 fi
+
+if [ -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
+    . $HOME/.local/bin/virtualenvwrapper.sh
+fi

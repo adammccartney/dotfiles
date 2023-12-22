@@ -26,6 +26,14 @@ function set_git_branch () {
     fi
 }
 
+function set_virtual_env () {
+    if test -z ${VIRTUAL_ENV}; then
+        PYTHON_VIRTUAL_ENV=""
+    else
+        PYTHON_VIRTUAL_ENV="${WHITE}[`basename \"$VIRTUAL_ENV\"`]${NO_COLOR} "
+    fi
+}
+
 function set_bash_prompt () {
 
     if is_git_repository; then
@@ -40,7 +48,10 @@ function set_bash_prompt () {
         BRANCH=''
     fi
 
+    set_virtual_env
+
     PS1=""
+    PS1+="${PYTHON_VIRTUAL_ENV}"
     # set up user and host
     PS1+="${BLUE}\u@\h${BLUE} "
     # set up working directory
