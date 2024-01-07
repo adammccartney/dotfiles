@@ -20,3 +20,4 @@ alias guile=$(which guile)
 alias ls0="find . -maxdepth 1 -print0"
 
 alias mk="minikube kubectl --"
+alias bup=bkhome-wrapper.sh

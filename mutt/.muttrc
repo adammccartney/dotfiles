@@ -12,7 +12,7 @@ macro index <f3> '<sync-mailbox><enter-command>source ~/.mutt/account.tuw.ac.at<
 macro index <f4> '<sync-mailbox><enter-command>source ~/.mutt/account.datalab<enter><change-folder>!<enter>'
 
 # Editor
-set editor='nvim +/^$ "+setlocal fo+=w spell" +noh'
+set editor='vim +/^$ "+setlocal fo+=w spell" +noh'
 set edit_headers
 set text_flowed
 set tmpdir="~/"

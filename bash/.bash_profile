@@ -16,7 +16,7 @@ fi
 
 
 if [ -d "$HOME/.guix-profile" ]; then
-    GUIX_PROFILE="/home/amccartn/.guix-profile"
+    GUIX_PROFILE="$HOME/.guix-profile"
      . "$GUIX_PROFILE/etc/profile"
 fi
 
