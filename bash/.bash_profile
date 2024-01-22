@@ -14,7 +14,6 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-
 if [ -d "$HOME/.guix-profile" ]; then
     GUIX_PROFILE="$HOME/.guix-profile"
      . "$GUIX_PROFILE/etc/profile"

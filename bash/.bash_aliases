@@ -21,3 +21,5 @@ alias ls0="find . -maxdepth 1 -print0"
 
 alias mk="minikube kubectl --"
 alias bup=bkhome-wrapper.sh
+alias wgu="sudo wg-quick up wg0"
+alias wgd="sudo wg-quick down wg0"

@@ -240,7 +240,8 @@ function start_grader_service ()
     grader-service -f "$GRADER_SERVICE_CONIG_PATH"
 }
 
-function create_gs_dev_session () 
+
+function create_gs_dev_session ()
 {
     # creates a new tmux sesssion with a window for each of the following:
     local VENV=$1
@@ -302,7 +303,49 @@ function lldev() {
     tmux attach -t lldev
 }
 
+function export_kubectl_files () {
 
+    SESSION=$1
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_PROD=${KUBECONFIG_PROD}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_PROD_NEW=${KUBECONFIG_PROD_NEW}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_STAGING=${KUBECONFIG_STAGING}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_TESTING=${KUBECONFIG_TESTING}" C-m
+}
+
+function activate_venv () {
+    if [ ! -z "$VENV" ]; then
+        tmux send-keys -t "$SESSION" "workon $VENV" C-m
+    fi 
+}
+
+function k8s_minimal () {
+    # minimal setup for k8s work for datalab
+    VENV=$1
+    OS_AZIMUTH="$HOME/Code/tuw/datalab/infrastructure/os-azimuth"
+    JAAS_K8S_DEPLOY="$HOME/Code/tuw/datalab/config-management/jaas-k8s-jupyterhubs.git"
+    JAAS_K8S_CLUSTER="$HOME/Code/tuw/datalab/config-management/jaas-k8s-cluster.git"
+    KUBECONFIG_PROD="$HOME/infrastructure/k8s/clusters/jupyter_all/rke2.yaml"
+    KUBECONFIG_PROD_NEW="$HOME/infrastructure/k8s/clusters/jaas-production/jaas/config.yaml"
+    KUBECONFIG_STAGING="$HOME/infrastructure/k8s/clusters/jaas-staging/staging/config.yaml"
+    KUBECONFIG_TESTING="$HOME/infrastructure/k8s/clusters/jaas-staging/testing/jaas-test/config.yaml"
+    local SESSION=k8smin
+    load_aliases
+    tmux new-session -s "$SESSION" -n scratch -d
+    # 1. jaas k8s cluster
+    tmux new-window -t "$SESSION" -n cluster
+    tmux send-keys -t "$SESSION" "cd ${JAAS_K8S_CLUSTER}" C-m
+    activate_venv
+    export_kubectl_files
+    # 2. jaas k8s jupyterhubs 
+    tmux new-window -t "$SESSION" -n deploy
+    tmux send-keys -t "$SESSION" "cd ${JAAS_K8S_DEPLOY}" C-m
+    activate_venv
+    export_kubectl_files
+    # 3. os azimuth
+    tmux new-window -t "$SESSION" -n azimuth
+    tmux send-keys -t "$SESSION" "cd ${OS_AZIMUTH}" C-m
+    tmux attach -t "$SESSION"
+}
 
 function joauthdev()
 {

@@ -97,8 +97,11 @@ if command $HOME/.local/miniconda3/bin/conda &> /dev/null; then
     $HOME/.local/miniconda3/bin/conda init bash
 fi
 
-source <(kubectl completion bash)
-complete -o default -F __start_kubectl k
+# idempotent kubectl setup
+if command kubectl &> /dev/null; then
+    source <(kubectl completion bash)
+    complete -o default -F __start_kubectl k
+fi
 
 # Automatically added by the Guix install script.
 if [ -n "$GUIX_ENVIRONMENT" ]; then
