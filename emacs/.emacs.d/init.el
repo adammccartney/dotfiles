@@ -652,3 +652,6 @@
 
 (use-package pg
   :ensure t)
+
+(use-package projectile
+  :ensure t)
