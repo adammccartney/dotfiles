@@ -45,19 +45,19 @@
 
 (load-theme 'leuven-dark)
 
-;; ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
+;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
 
 ;; Use no-littering to automatically set common paths to the new user-emacs-directory
 (use-package no-littering
-  :ensure t)
-
-;;;; Keep customization settings in a temporary file (thanks Ambrevar!)
-;;(setq custom-file
-;;      (if (boundp 'server-socket-dir)
-;;          (expand-file-name "custom.el" server-socket-dir)
-;;        (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
-;;(load custom-file t)
+  :ensure t
+  :config
+  ;; Keep customization settings in a temporary file (thanks Ambrevar!)
+  (setq custom-file
+        (if (boundp 'server-socket-dir)
+            (expand-file-name "custom.el" server-socket-dir)
+          (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
+  (load custom-file t))
 
 ;; ignore anything pulled in from gnome
 (define-key special-event-map [config-changed-event] 'ignore)
@@ -445,7 +445,7 @@
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package project)
-(use-package ede)
+
 
 ;; Tree-sitter 
 (setq treesit-language-source-alist
