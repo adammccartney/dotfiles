@@ -8,6 +8,7 @@
   #:use-module (gnu packages)
   #:use-module (gnu services)
   #:use-module (guix gexp)
+  #:use-module (gnu home services dotfiles)
   #:use-module (gnu home services shells))
 
 (home-environment
@@ -28,22 +29,7 @@
   ;; services, run 'guix home search KEYWORD' in a terminal.
   (services
    (list
-     (service home-bash-service-type
-                  (home-bash-configuration
-                   (aliases '(("!P" . "PS1='\\''# '\\''")
-                              ("bup" . "bkhome-wrapper.sh")
-                              ("guile" . "/home/amccartn/.guix-profile/bin/guile")
-                              ("k" . "kubectl")
-                              ("ls" . "ls --color=auto")
-                              ("ls0" . "find . -maxdepth 1 -print0")
-                              ("ltucfg" . "source ~/dotfiles/bash/tu.aliases.bash")
-                              ("mk" . "minikube kubectl --")
-                              ("slack" . "slack --enable-features=WebRTCPipewireCapturer")
-                              ("train" . "source /home/amccartn/bin/train")
-                              ("vpnui" . "/opt/cisco/anyconnect/bin/vpnui")
-                              ("wgd" . "sudo wg-quick down wg0")
-                              ("wgu" . "sudo wg-quick up wg0")
-                              ("zoom" . "zoom --enable-features=WebRTCPipewireCapturer")))
-                   (bashrc (list (local-file "./.bashrc" "bashrc")))
-                   (bash-profile (list (local-file "./.bash_profile"
-                                                   "bash_profile"))))))))
+    (service home-dotfiles-service-type
+             (home-dotfiles-configuration
+              (directories (list "emacs" "vim" "nvim" "bash" "git" "tmux")))))))
+

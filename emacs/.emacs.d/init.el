@@ -59,6 +59,9 @@
           (expand-file-name (format "emacs-custom-%s.el" (user-uid)) temporary-file-directory)))
   (load custom-file t))
 
+;; Set the right directory to store the native comp cache
+(add-to-list 'native-comp-eln-load-path (expand-file-name "eln-cache/" user-emacs-directory))
+
 ;; ignore anything pulled in from gnome
 (define-key special-event-map [config-changed-event] 'ignore)
 
