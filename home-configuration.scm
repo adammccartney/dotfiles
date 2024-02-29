@@ -16,6 +16,7 @@
   ;; Home profile, under ~/.guix-home/profile.
   (packages (specifications->packages (list "guile-ics"
                                             "guile-readline"
+                                            "guile-colorized"
                                             "emacs"
                                             "haunt"
                                             "emacs-geiser-guile"
