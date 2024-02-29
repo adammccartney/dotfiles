@@ -91,7 +91,6 @@
 (global-set-key [remap list-buffers] 'ibuffer)
 
 
-
  (defun my/org-roam-node-list ()
    "Return all nodes stored in the database as a list of `org-roam-node's."
    (let ((rows (org-roam-db-query
@@ -426,6 +425,12 @@
 (use-package go-mode
   :ensure t)
 
+;; BUG: emacs pics up the PATH in a funny way, sometimes gopath is absent,
+;; run these two lines if it's acting up.
+;;(setenv "PATH" (concat (getenv "PATH") ":/home/amccartn/go/bin"))
+;;(setenv "PATH" (concat (getenv "PATH") ":/usr/local/go/bin"))
+
+
 (use-package python-mode
   :ensure t)
 
@@ -434,6 +439,7 @@
   :ensure t
   :hook (((c-mode c++-mode) . eglot-ensure)       
          (python-mode . eglot-ensure)
+         (rust-mode . eglot-ensure)
          (lua-mode . eglot-ensure)
          (go-mode . eglot-ensure))
   :config
@@ -449,6 +455,13 @@
 
 (use-package project)
 
+(use-package yasnippet
+  :hook (prog-mode . yas-minor-mode)
+  :init
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  :config
+  (yas-reload-all))
+
 
 ;; Tree-sitter 
 (setq treesit-language-source-alist
@@ -463,6 +476,7 @@
      (make "https://github.com/alemuller/tree-sitter-make")
      (markdown "https://github.com/ikatyang/tree-sitter-markdown")
      (python "https://github.com/tree-sitter/tree-sitter-python")
+     (rust "https://github.com/tree-sitter/tree-sitter-rust")
      (supercollider "https://github.com/madskjeldgaard/tree-sitter-supercollider")
      (toml "https://github.com/tree-sitter/tree-sitter-toml")
      (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
@@ -522,15 +536,13 @@
 ;; geiser is pretty cool, in fairness
 
 (use-package geiser
-  :ensure t
   :config
   (setq geiser-default-implementation 'guile)
   (setq geiser-active-implementations '(guile))
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile)))
   (setq geiser-guile-binary "~/.guix-profile/bin/guile"))
 
-(use-package geiser-guile
-  :ensure t)
+(use-package geiser-guile)
 
 ;; ensure some c related goodness
 (use-package cc-mode
@@ -573,6 +585,12 @@
   :init
   (setq x86-lookup-pdf '"~/Documents/bookstaging/325383-sdm-vol-2abcd.pdf")
   (global-set-key (kbd "C-h x") #'x86-lookup))
+
+;; Rust
+(use-package rust-mode
+  :ensure t
+  :init
+  (setq rust-mode-treeqsitter-derive t))
 
 (use-package dockerfile-mode
   :ensure t)
