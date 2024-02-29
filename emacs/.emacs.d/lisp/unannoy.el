@@ -14,9 +14,18 @@
   (set-horizontal-scroll-bar-mode nil))
 
 ;; Do sensible clipboard things, please
-(setf select-enable-clipboard nil
+(setf backup-inhibited t
+      autosave-default nil
+      auto-save-list-file-prefix (locate-user-emacs-file "local/saves")
+      inhibit-startup-message t
+      initial-scratch-message nil
+      wdired-allow-tochange-permissions t
+      echo-keystrokes 0.1
+      select-enable-clipboard nil
       select-enable-primary t
       mouse-drag-copy-region t
+      large-file-warning-threshold 536870911
+      gc-cons-threshold (* 1024 1024 32)
       mouse-yank-at-point t)
 
 ;; Lexical binding by default. Must be delayed since Emacs sets this
