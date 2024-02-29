@@ -23,3 +23,4 @@ alias mk="minikube kubectl --"
 alias bup=bkhome-wrapper.sh
 alias wgu="sudo wg-quick up wg0"
 alias wgd="sudo wg-quick down wg0"
+alias rkddocow="cp -v ~/Notes/org-roam/20240208111112-rke2_24s.org /home/amccartn/Code/tuw/datalab/k8s-clusters/jaas_rke2_24s/docs/design-doc.org"

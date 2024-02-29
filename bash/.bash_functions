@@ -306,8 +306,10 @@ function lldev() {
 function export_kubectl_files () {
 
     SESSION=$1
-    tmux send-keys -t "$SESSION" "export KUBECONFIG_PROD=${KUBECONFIG_PROD}" C-m
-    tmux send-keys -t "$SESSION" "export KUBECONFIG_PROD_NEW=${KUBECONFIG_PROD_NEW}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_RKE2=${KUBECONFIG_JAAS_RKE2}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_RKE2_NEW=${KUBECONFIG_JAAS_RKE2_NEW}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_NEW=${KUBECONFIG_JAAS_NEW}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_PROD_NEW=${KUBECONFIG_JAAS_PROD_NEW}" C-m
     tmux send-keys -t "$SESSION" "export KUBECONFIG_STAGING=${KUBECONFIG_STAGING}" C-m
     tmux send-keys -t "$SESSION" "export KUBECONFIG_TESTING=${KUBECONFIG_TESTING}" C-m
 }
@@ -323,9 +325,11 @@ function k8s_minimal () {
     VENV=$1
     OS_AZIMUTH="$HOME/Code/tuw/datalab/infrastructure/os-azimuth"
     JAAS_K8S_DEPLOY="$HOME/Code/tuw/datalab/config-management/jaas-k8s-jupyterhubs.git"
-    JAAS_K8S_CLUSTER="$HOME/Code/tuw/datalab/config-management/jaas-k8s-cluster.git"
-    KUBECONFIG_PROD="$HOME/infrastructure/k8s/clusters/jupyter_all/rke2.yaml"
-    KUBECONFIG_PROD_NEW="$HOME/infrastructure/k8s/clusters/jaas-production/jaas/config.yaml"
+    JAAS_K8S_CLUSTER="$HOME/Code/tuw/datalab/k8s-clusters"
+    KUBECONFIG_JAAS_RKE2="$HOME/infrastructure/k8s/clusters/jupyter_all/rke2.yaml"
+    KUBECONFIG_JAAS_RKE2_NEW="$HOME/infrastructure/k8s/clusters/jaas-rke2-24s/rke2.yaml"
+    KUBECONFIG_JAAS_NEW="$HOME/infrastructure/k8s/clusters/jaas/config.yaml"
+    KUBECONFIG_JAAS_PROD_NEW="$HOME/infrastructure/k8s/clusters/jaas-prod/config.yaml"
     KUBECONFIG_STAGING="$HOME/infrastructure/k8s/clusters/jaas-staging/staging/config.yaml"
     KUBECONFIG_TESTING="$HOME/infrastructure/k8s/clusters/jaas-staging/testing/jaas-test/config.yaml"
     local SESSION=k8smin
@@ -532,4 +536,27 @@ function k8s_getallimgs () {
     tr -s '[[:space:]]' '\n' |\
     sort |\
     uniq -c
+}
+
+function guix-alias-realpath () {
+    # Get the realpath of an aliased command
+    # This is useful for getting into the guix store to find stuff
+    local COMMAND=$1
+    if [ -z ${COMMAND} ]; then
+        echo "--error--- usage: ${FUNCNAME} <command>"
+        return 1
+    else
+        realpath $(type ${COMMAND} |awk '{print $5}' |tr -d "'\`")
+    fi
+}
+
+function guix-alias-storeloc () {
+    # goto the storelocation of the alias of a specific program
+    local COMMAND=$1
+    if [ -z ${COMMAND} ]; then
+        echo "--error--- usage: ${FUNCNAME} <command>"
+        return 1
+    else
+        cd $(dirname $(dirname $(alias-realpath ${COMMAND})))
+    fi
 }
