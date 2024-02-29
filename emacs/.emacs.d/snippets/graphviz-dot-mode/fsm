@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: directed acyclic graph in dot
+# key: dag
+# --
+digraph finite_state_machine {
+    rankdir=LR;
+    size="8,5"
+
+    // 定义节点形状和样式
+    node [shape = circle];
+
+    // 定义状态和转移
+    S0 [label="State A"];
+    S1 [label="State B"];
+    S2 [label="State C"];
+
+    S0 -> S1 [label="action1"];
+    S1 -> S2 [label="action2"];
+    S2 -> S0 [label="action3"];
+}

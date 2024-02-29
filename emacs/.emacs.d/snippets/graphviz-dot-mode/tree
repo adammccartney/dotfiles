@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: tree
+# key: tree
+# --
+digraph tree {
+    rankdir=LR;
+    node [shape=record];
+    struct1 [label="<f0> allTags|<f1> python |<f2> music|<f3> lisp"];
+
+    struct2 [label="<f0> pythonTags|<f1> pyprof |<f2> pymusic| <f3> pyfun "];
+    struct3 [label="/path/to/pyprof.html"];
+
+    struct1:f1 -> struct2:f0;
+    struct2:f1 -> struct3;
+}
