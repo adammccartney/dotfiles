@@ -43,7 +43,7 @@
 ;; Global line width
 (setq-default fill-column 80)
 
-(load-theme 'leuven-dark)
+
 
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs/"))
@@ -65,17 +65,29 @@
 ;; ignore anything pulled in from gnome
 (define-key special-event-map [config-changed-event] 'ignore)
 
+
 ;; Custom lispy stuff
 (push "~/.emacs.d/lisp" load-path)  
 (require 'adlisp)
+(require 'ad-display)
 (require 'ad-sqlite)
 (require 'ad-pg)
 (require 'unannoy) ;; handy stuff from Chris Wellons
 (require 'faust-mode) ;; from rukano
 (setq auto-mode-alist (cons '("\\.dsp$" . faust-mode) auto-mode-alist))
 
+;; themes
+(use-package ef-themes
+  :ensure t)
+(load-theme 'ef-maris-dark)
+
+(use-package fontaine
+  :ensure t)
+
 (set-default-coding-systems 'utf-8)
 (server-start)
+
+
 
 ;; auto-mode-alist entries
 (add-to-list 'auto-mode-alist '("\\.mom$" . nroff-mode))

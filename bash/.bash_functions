@@ -308,10 +308,9 @@ function export_kubectl_files () {
     SESSION=$1
     tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_RKE2=${KUBECONFIG_JAAS_RKE2}" C-m
     tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_RKE2_NEW=${KUBECONFIG_JAAS_RKE2_NEW}" C-m
-    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_NEW=${KUBECONFIG_JAAS_NEW}" C-m
-    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_PROD_NEW=${KUBECONFIG_JAAS_PROD_NEW}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_PROD=${KUBECONFIG_JAAS_PROD_NEW}" C-m
     tmux send-keys -t "$SESSION" "export KUBECONFIG_STAGING=${KUBECONFIG_STAGING}" C-m
-    tmux send-keys -t "$SESSION" "export KUBECONFIG_TESTING=${KUBECONFIG_TESTING}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_TEST=${KUBECONFIG_TEST}" C-m
 }
 
 function activate_venv () {
@@ -328,10 +327,9 @@ function k8s_minimal () {
     JAAS_K8S_CLUSTER="$HOME/Code/tuw/datalab/k8s-clusters"
     KUBECONFIG_JAAS_RKE2="$HOME/infrastructure/k8s/clusters/jupyter_all/rke2.yaml"
     KUBECONFIG_JAAS_RKE2_NEW="$HOME/infrastructure/k8s/clusters/jaas-rke2-24s/rke2.yaml"
-    KUBECONFIG_JAAS_NEW="$HOME/infrastructure/k8s/clusters/jaas/config.yaml"
-    KUBECONFIG_JAAS_PROD_NEW="$HOME/infrastructure/k8s/clusters/jaas-prod/config.yaml"
+    KUBECONFIG_JAAS_PROD="$HOME/infrastructure/k8s/clusters/jaas-prod/config.yaml"
     KUBECONFIG_STAGING="$HOME/infrastructure/k8s/clusters/jaas-staging/staging/config.yaml"
-    KUBECONFIG_TESTING="$HOME/infrastructure/k8s/clusters/jaas-staging/testing/jaas-test/config.yaml"
+    KUBECONFIG_TEST="$HOME/infrastructure/k8s/clusters/jaas-test/config.yaml"
     local SESSION=k8smin
     load_aliases
     tmux new-session -s "$SESSION" -n scratch -d
@@ -558,5 +556,17 @@ function guix-alias-storeloc () {
         return 1
     else
         cd $(dirname $(dirname $(alias-realpath ${COMMAND})))
+    fi
+}
+
+function find_org () {
+    # copy the architecture decision record for datalab gitops
+    local PATTERN=$1
+    local ORG_DIR="${HOME}/Notes/org-roam/"
+    if [ -z ${PATTERN} ]; then
+        echo "--error-- usage: ${FUNCNAME} [PATTERN]"
+        return 1
+    else
+        find $ORG_DIR -type f -name "$PATTERN"
     fi
 }
