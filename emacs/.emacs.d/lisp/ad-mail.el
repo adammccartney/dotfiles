@@ -20,6 +20,13 @@
         ((and fname (string-match "\\.pdf$" fname)) "~/Documents/email-attachments")
         (t "~/Downloads/email-attachments")))) ;; everything else
 
+;; use msmtp to send mail
+(setq sendmail-program "/usr/bin/msmtp"
+      send-mail-function 'message-send-mail-with-sendmail
+      message-sendmail-f-is-evil t
+      message-sendmail-extra-arguments '("--read-envelope-from")
+      message-send-mail-function 'message-send-mail-with-sendmail)
+
 
 ;; Make sure that moving a message (like to Trash) causes the
 ;; message to get a new file name.  This helps to avoid the
@@ -34,9 +41,9 @@
             :vars '(
                     (user-full-name . "Adam McCartney")
                     (user-mail-address . "adam@mur.at")
-                    (smtpmail-smtp-server . "smtp.mur.at")
-                    (smtpmail-smtp-service . 465)
-                    (smtpmail-stream-type . starttls)
+                    ;;(smtpmail-smtp-server . "smtp.mur.at")
+                    ;;(smtpmail-smtp-service . 465)
+                    ;;(smtpmail-stream-type . starttls)
                     (mu4e-sent-folder . "/murat/Sent")
                     (mu4e-trash-folder . "/murat/Trash")
                     (mu4e-drafts-folder . "/murat/Drafts")
@@ -45,7 +52,7 @@
                     (mu4e-compose-signature .
                                             (concat
                                                 "Adam McCartney | https://admccartney.mur.at \n"
-                                                "Markhofgasse 11-17/2/6 1030 Vienna\n"))))
+                                                "/\n"))))
             ,(make-mu4e-context
             :name "tuw"
             :match-func (lambda (msg) (when msg
@@ -53,9 +60,9 @@
             :vars '(
                     (user-full-name . "Adam McCartney")
                     (user-mail-address . "adam.mccartney@tuwien.ac.at")
-                    (smtpmail-smtp-server . "mail.intern.tuwien.ac.at")
-                    (smtpmail-smtp-service . 587)
-                    (smtpmail-stream-type . starttls)
+                    ;;(smtpmail-smtp-server . "mail.intern.tuwien.ac.at")
+                    ;;(smtpmail-smtp-service . 587)
+                    ;;(smtpmail-stream-type . starttls)
                     (mu4e-send-folder . "/tuw/Sent Items")
                     (mu4e-trash-folder . "/tuw/Deleted Items")
                     (mu4e-junk-folder . "/tuw/Junk Email")
@@ -64,8 +71,9 @@
                     (mu4e-sent-message-behavior . sent)
                     (mu4e-compose-signature .
                                             (concat
-                                                "Adam McCartney\n"
-                                                "//------------\n"))))
+                                             "Adam McCartney - Technische Universität Wien, Service Unit of High Performance Computing, E020-04\n"
+                                             "A-1040 Wien, Operngasse 11/E020 (DF0532)  -   Tel: +43 664 605883001\n"
+                                             "//-----------------------------------------------------------------------------------------------\n"))))
         ))
 (setq mu4e-context-policy 'pick-first)
 ;; Prevent mu4e from permanently deleting trashed items

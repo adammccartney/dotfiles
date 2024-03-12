@@ -72,6 +72,7 @@
 (require 'ad-display)
 (require 'ad-sqlite)
 (require 'ad-pg)
+(require 'ad-mail)
 (require 'unannoy) ;; handy stuff from Chris Wellons
 (require 'faust-mode) ;; from rukano
 (setq auto-mode-alist (cons '("\\.dsp$" . faust-mode) auto-mode-alist))
