@@ -688,4 +688,11 @@
 (use-package pg
   :ensure t)
 
+(use-package i-ching
+  :ensure t
+  :config (setq i-ching-hexagram-size 18
+                i-ching-hexagram-font "DejaVu Sans"
+                i-ching-divination-method '3-coins
+                i-ching-randomness-source 'pseudo)
+  :bind (("C-c i h" . i-ching-insert-hexagram)))
 
