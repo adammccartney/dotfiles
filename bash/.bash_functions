@@ -307,8 +307,8 @@ function export_kubectl_files () {
 
     SESSION=$1
     tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_PROD=${KUBECONFIG_JAAS_PROD}" C-m
-    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_STAGING=${KUBECONFIG_STAGING}" C-m
-    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_TEST=${KUBECONFIG_TEST}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_STAGING=${KUBECONFIG_JAAS_STAGING}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_TEST=${KUBECONFIG_JAAS_TEST}" C-m
 }
 
 function activate_venv () {
