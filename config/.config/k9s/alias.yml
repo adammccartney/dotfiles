@@ -1,4 +1,0 @@
-# $XDG_CONFIG_HOME/k9s/alias.yml
-alias:
-  # Use pp as an alias for pods
-  pp: v1/pods
