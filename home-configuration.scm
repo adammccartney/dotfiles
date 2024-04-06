@@ -21,8 +21,10 @@
                                             "haunt"
                                             "emacs-geiser-guile"
                                             "emacs-geiser"
+                                            "sway"
                                             "git"
                                             "neovim"
+                                            "neomutt"
                                             "guile"
                                             "glibc-locales")))
 
@@ -32,5 +34,15 @@
    (list
     (service home-dotfiles-service-type
              (home-dotfiles-configuration
-              (directories (list "emacs" "vim" "nvim" "bash" "git" "tmux")))))))
+              (directories (list "git"
+                                 "emacs"
+                                 "bash"
+                                 "vim"
+                                 "nvim"
+                                 "bash"
+                                 "tmux"
+                                 "mail"
+                                 "guile"
+                                 "mutt"
+                                 "sway")))))))
 
