@@ -1,0 +1,72 @@
+# -*- mode: snippet -*-
+# name: render_template
+# key: render jinja templates
+# --
+#!/usr/bin/python3
+
+import argparse
+import copy
+import types
+import importlib.machinery
+
+from pathlib import Path
+from jinja2 import Environment, FileSystemLoader
+
+__doc__ = """Script to inject config from an environment dictionary imported from external config file."""
+
+def read_config(env, configpy="config.py"):
+    """Reads the config.py file in the current directory and updates environment"""
+    config = None
+    result = copy.deepcopy(env)
+    config_path = Path(configpy).resolve()
+    fname = config_path.stem
+    loader = importlib.machinery.SourceFileLoader(fname, str(config_path))
+    config = types.ModuleType(loader.name)
+    loader.exec_module(config)
+
+    external_env = config.environment
+    for k in external_env.keys():
+        result.update({
+            k: external_env[k]
+        })
+    return result
+
+
+def render_template(env={}, outdir=Path(".")):
+    """Basic render function that fills out the template files"""
+    environment = Environment(loader=FileSystemLoader("templates/"))
+    _templates = env["templates"]
+    try:
+        for templ in _templates:
+            template = environment.get_template(templ)
+            ofile = templ.strip(".j2")
+            output = Path(outdir).joinpath(ofile)
+            content = template.render(env)
+            with open(output, mode="w", encoding="utf-8") as f:
+                f.write(content)
+    except TypeError as err:
+        print(err)
+        print("Unable to find any templates, did you specify them in config.py?")
+        
+
+def getargs():
+    "Snarf up whatever's on the command line"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("-c", "--config",
+                        required=True,
+                        help="""Path to config file.
+                        Config file must be a python file that exports a single dictionary called 'environment'""")
+    parser.add_argument("-o", "--output-dir",
+                        required=True,
+                        help="Output directory to write the template")
+    return parser.parse_args()
+
+def main():
+    args = getargs()
+    config = args.config
+    env_with_config = read_config({}, config)
+    render_template(env=env_with_config, outdir=args.output_dir)
+
+if __name__ == '__main__':
+    main()
+

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: config_py
+# key: config
+# --
+#!/usr/bin/python3
+
+environment = {}

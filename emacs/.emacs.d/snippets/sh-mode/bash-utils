@@ -1,0 +1,118 @@
+# -*- mode: snippet -*-
+# name: bash utils
+# key: generic-script
+# --
+#!/bin/sh
+#
+# Many of the utility functions were lifted from the guix install script
+# Copyright © 2017 sharlatan <sharlatanus@gmail.com>
+# Copyright © 2018 Ricardo Wurmus <rekado@elephly.net>
+# Copyright © 2018 Efraim Flashner <efraim@flashner.co.il>
+# Copyright © 2019–2020, 2022 Tobias Geerinckx-Rice <me@tobias.gr>
+# Copyright © 2020 Morgan Smith <Morgan.J.Smith@outlook.com>
+# Copyright © 2020 Simon Tournier <zimon.toutoune@gmail.com>
+# Copyright © 2020 Daniel Brooks <db48x@db48x.net>
+# Copyright © 2021 Jakub Kądziołka <kuba@kadziolka.net>
+# Copyright © 2021 Chris Marusich <cmmarusich@gmail.com>
+# Copyright © 2021, 2022, 2023 Maxim Cournoyer <maxim.cournoyer@gmail.com>
+# Copyright © 2022 Prafulla Giri <prafulla.giri@protonmail.com>
+# Copyright © 2023 Andrew Tropin <andrew@trop.in>
+
+
+if [ "x$BASH_VERSION" = "x" ]
+then
+    exec bash "$0" "$@"
+fi
+
+set -eo pipefail
+
+REQUIRE=(
+    "dirname"
+    "readlink"
+    "curl"
+    "awk"
+    "grep"
+    "rm"
+    "tar"
+    "helm"
+)
+
+PAS=$'[ \033[32;1mPASS\033[0m ] '
+ERR=$'[ \033[31;1mFAIL\033[0m ] '
+WAR=$'[ \033[33;1mWARN\033[0m ] '
+INF="[ INFO ] "
+
+DEBUG=0
+
+
+# ------------------------------------------------------------------------------
+#+UTILITIES
+
+_err()
+{ # All errors go to stderr.
+    printf "[%s]: %s\n" "$(date +%s.%3N)" "\$1"
+}
+
+_msg()
+{ # Default message to stdout.
+    printf "[%s]: %s\n" "$(date +%s.%3N)" "\$1"
+}
+
+_debug()
+{
+    if [ "\$\{DEBUG\}" = '1' ]; then
+        printf "[%s]: %s\n" "$(date +%s.%3N)" "\$1"
+    fi
+}
+
+die()
+{
+    _err "\$\{ERR\}\$*"
+    exit 1
+}
+
+chk_require()
+{ # Check that every required command is available.
+    declare -a warn
+    local c
+
+    _debug "--- [ \$\{FUNCNAME[0]\} ] ---"
+
+    for c in "$@"; do
+        command -v "$c" &>/dev/null || warn+=("$c")
+    done
+
+    [ "\$\{#warn\}" -ne 0 ] && die "Missing commands: \$\{warn[*]\}."
+
+    _msg "\$\{PAS\}verification of required commands completed"
+}
+
+
+chk_term()
+{ # Check for ANSI terminal for color printing.
+    if [ -t 2 ]; then
+        if [ "\$\{TERM+set\}" = 'set' ]; then
+            case "$TERM" in
+                xterm*|rxvt*|urxvt*|linux*|vt*|eterm*|screen*)
+                    ;;
+                *)
+                    ERR="[ FAIL ] "
+                    PAS="[ PASS ] "
+                    ;;
+            esac
+        fi
+    fi
+}
+
+_usage()
+{
+    echo "usage: $(basename \$0) ..."
+}
+
+
+main () {
+    chk_require "\$\{REQUIRE[@]\}"
+}
+
+
+main $*
