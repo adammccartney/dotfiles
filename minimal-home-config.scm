@@ -1,14 +1,31 @@
-(use-modules (gnu home)
-             (gnu home services)
-             (gnu home services dotfiles)
-             (gnu home services shells)
-             (gnu services)
-             (gnu packages admin)
-             (guix gexp))
-
+(define-module (minimal-home-config)
+  #:use-module (gnu home)
+  #:use-module (gnu home services)
+  #:use-module (gnu home services dotfiles)
+  #:use-module (gnu home services shells)
+  #:use-module (gnu packages)
+  #:use-module (gnu services)
+  #:use-module (gnu packages admin)
+  #:use-module (guix gexp))
 
 (home-environment
- (packages (list htop))
+ (packages (specifications->packages (list "coreutils"
+                                           "glibc-locales"
+                                           "guile"
+                                           "guile-colorized"
+                                           "guile-readline"
+                                           "guile-ics"
+                                           "guile-ssh"
+                                           "emacs"
+                                           "emacs-geiser"
+                                           "emacs-yasnippet"
+                                           "git"
+                                           "neovim"
+                                           "vim"
+                                           "mu"
+                                           "libvterm"
+                                           "libtool"
+                                           "zbar")))
  (services
   (list
    (service home-dotfiles-service-type
@@ -22,22 +39,33 @@
                                 "mail"
                                 "guile"
                                 "mutt"
-                                "sway"))
-             (excluded '(".*~" ".*\\.swp" "\\.git" "\\.gitignore"
-                         "plugged/*"))))
+                                "sway"))))
+
+   ;; Shell setup
    (service home-bash-service-type
             (home-bash-configuration
              (guix-defaults? #t)
              (bash-profile (list (plain-file "bash-profile" "\
-export HISTFILE=$XDG_CACHE_HOME/.bash_history")))))
-;;             (bashrc (list `(".bash_prompt"
-;;                            ".bash_aliases"
-;;                            ".bash_functions"
-;;                            ".bash_env")))))
+export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
 
-   (simple-service 'test-config
-                   home-xdg-configuration-files-service-type
-                   (list `("test.conf"
-                           ,(plain-file "tmp-file.txt"
-                                        "the content of
-                                          ~/.config/test.conf")))))))
+             (aliases '(("train" . "source $HOME/bin/train")
+                        ("k" . "kubectl")                        
+                        ("slack" . "slack --enable-features=WebRTCPipewireCapturer")
+                        ("zoom" . "zoom --enable-features . WebRTCPipewireCapturer")
+                        ("ltucfg" . "source ~/dotfiles/bash/tu.aliases.bash")
+                        ("ls0" . "find . -maxdepth 1 -print0")
+                        ("mk" . "minikube kubectl --")
+                        ("bup" . "bkhome-wrapper.sh")
+                        ("wgu" . "sudo wg-quick up wg0")
+                        ("wgd" . "sudo wg-quick down wg0")
+                        ("emacs" . "XMODIFIERS='' emacs &")))             
+            (bashrc
+             `(,(local-file "files/bash-prompt")
+               ,(local-file "files/bash-functions"))))))))
+
+
+
+
+
+
+
