@@ -1,0 +1,526 @@
+#!/usr/bin/bash
+# ~/.bash_functions: collection of command line functions
+  # useage: source via ~/.bashrc at runtime
+
+function swap_ctrl_caps () {
+      XKBOPTIONS="ctrl:swapcaps"
+      if command /usr/bin/gsettings &> /dev/null; then
+          /usr/bin/gsettings set org.gnome.desktop.input-sources xkb-options "['caps:ctrl_modifier']"
+      fi
+      if command /usr/bin/setxbmap &> /dev/null; then
+          /usr/bin/setxkbmap -option $XKBOPTIONS
+      fi
+    }
+
+function ftsearch () {
+    # full text search, searches target for a term
+    local TERM="$1"
+    local TARGET="$2"
+    vim $(rg "$TERM" "$TARGET" | fzf | cut -d ":" -f 1)
+}
+
+function gitssh-work () {
+    export GIT_SSH_COMMAND="ssh -i ~/.ssh/tuw_id_ed25519"
+    git config --global user.name "Adam McCartney"
+    git config --global user.email "adam.mccartney@tuwien.ac.at"
+    git config --global user.signingkey 174C3ECBC22F87A8207AC9FE31DF3F14F2A9C47F
+}
+
+function gitssh-default () {
+    export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519"
+    git config --global user.name "Adam McCartney"
+    git config --global user.email "adam@mur.at"
+    git config --global user.signingkey C5BF27EE0290CDE5BC8A8801A5FCE0B0A42EFDA8
+}
+
+function json_to_env ()
+{
+    # Converts json dict to an env file with key=value pairs.
+
+    # require jq binary
+    if ! command -v jq &> /dev/null
+       then
+           echo "Error: no jq, (you may be better off without it)"
+           return -1
+    fi
+    # if argc != 2 (more or less, but in crazy bash talk)
+    if [ -z "$1" ] || [  -z "$2" ]; then
+        echo "$_DOC"
+        return -1
+    fi
+    local FILENAME=$1
+    local ENVFILE=$2
+    cat $FILENAME | jq -r 'keys[] as $k | "export \($k)=\(.[$k])"' > $ENVFILE
+}
+
+function orgtomd () {
+    local _DOC="usage: orgtomd <input> <output>"
+    if ! command -v pandoc &> /dev/null
+    then
+        echo "Error: pandoc could not be found, please install."
+        return -1
+    fi
+    if [ -z "$1" ] || [  -z "$2" ]; then
+        echo "$_DOC"
+        return -1
+    fi
+    input=$1
+    output=$2
+    pandoc -w markdown -o $output -f org $input
+}
+
+# Functions
+
+ds () {
+    echo "Disk Space Utilization For $HOSTNAME"
+    df -h
+}
+
+hs () {
+    echo "Home Space Utilzation For $USER"
+    du -sh /home/*
+}
+
+extractLoxBin () {
+    DISTDIR=/home/adam/.local/src/jlox/build/distributions
+    TARGETDIR=${DISTDIR}
+    tar -xf "${DISTDIR}/jlox.tar" -C "${TARGETDIR}"
+}
+
+function renameFilesRecursively () {
+
+  SEARCH_PATH="$1"
+  SEARCH="$2"
+  REPLACE="$3"
+
+  find ${SEARCH_PATH} -type f -name "*${SEARCH}*" | while read FILENAME ; do
+      NEW_FILENAME="$(echo ${FILENAME} | sed -e "s/${SEARCH}/${REPLACE}/g")";
+      mv "${FILENAME}" "${NEW_FILENAME}";
+  done
+
+}
+
+function tmux_ns () {
+    SESNAME="$1"
+    tmux new-session -s $SESNAME -d
+    tmux split-window -h
+    tmux split-window -v
+    tmux -2 attach-session -d 
+}
+
+function containerip () {
+   sudo docker inspect −−format '{{ .NetworkSettings.IPAddress }}' "$@"
+}
+
+function mk_pyvenv () {
+    NAME="$1"
+    python -m venv "~/.virtualenvs/${NAME}"
+    echo "~/.virtualenvs/${NAME}"
+}
+
+# list all ports currently listening
+get_listening_ports () {
+    sudo lsof -i -P -n | grep LISTEN 
+}
+
+function installed {
+    cmd=$(command -v "${1}")
+
+    [[ -n "${cmd}" ]] && [[ -f "${cmd}" ]]
+    return ${?}
+}
+
+function die {
+    >&2 echo "Fatal: ${@}"
+    exit 1
+}
+
+
+function wi { 
+    test -n "$1" && stat --printf "%F\n" $1
+    }
+
+
+function size {
+    t=0
+    test -d "$1" && for n in $(find $1 \
+    -type f -name '*.py' -print | \
+    xargs stat --printf "%s "); do ((t+=n)); done; echo $t; 
+}
+
+function weather { 
+    curl -s --connect-timeout 3 -m 5 http://wttr.in/$1 
+}
+
+# Elastic search functions
+if [ -f ~/.elastic_fun ]; then
+    . ~/.elastic_fun
+fi
+
+function makeonchange () {
+    while inotifywait -q . ; do echo -e '\n\n'; make; done
+}
+
+function make_html_onchange () {
+    # Run from the 'project/docs' directory
+    while inotifywait -q ./source ; do echo -e '\n\n'; make html; done
+    # Watch the source directory, if there are any changes, remake the docs.
+    }
+
+function serve_html_docs () {
+    # Run from the 'project/docs' directory
+    cd ./build/html && python3 -m http.server
+    # Serve the html docs built by sphinx
+}
+
+function pytestonchange () {
+    local WATCH=$1
+    local TESTS=$2
+    while inotifywait -q ${WATCH};
+    do
+        echo -e '\n\n';
+        pytest ${TESTS} -v;
+    done
+}
+
+getmail () {
+    mbsync -a
+}
+
+adworkon () {
+    VENV=$1
+    VENV_PATH=$HOME/.virtualenv/$VENV
+    if [ ! -d "$VENV_PATH" ]
+    then
+        echo "Directory $VENV_PATH DOES NOT exist."
+    else
+        source $VENV_PATH/bin/activate
+    fi
+
+    }
+
+function backup_home () {
+      # WARNING: assumes that you are running from home!
+      BACKUP_PATH=$1
+      EXCLUDES_PATH=$2
+      rsync -auv -r -P  --ignore-existing --exclude="/.*" --exclude-from=$EXCLUDES_PATH --include="/.ssh" --include="/.password-store" ./ $BACKUP_PATH
+}
+
+function backup () {
+    export CURRENTDATE=`date +"%b%d%Y"`
+    local BACKUPTYPE="$1"
+
+    if [ ! -d "/run/media/adam/adb/backup/$BACKUPTYPE" ]; then
+        mkdir -p "/run/media/adam/adb/backup/$BACKUPTYPE"
+        export BACKUP_DIR="/run/media/adam/adb/backup/$BACKUPTYPE"
+    fi
+
+    EXCLUDES_LIST="$HOME/backup_excludes.txt"
+
+    backup_home $BACKUP_DIR $EXCLUDES_LIST
+}
+
+# Work related stuff for creating dev environments 
+
+function load_aliases () 
+{
+    source "$HOME/dotfiles/bash/tu.aliases.bash"
+}
+
+function load_virtual_env () 
+{
+    local env_name=$1
+    workon "$env_name"
+}
+
+function start_grader_service () 
+{
+    load_virtual_env "jh3.0"
+    cdlx
+    grader-service -f "$GRADER_SERVICE_CONIG_PATH"
+}
+
+
+function create_gs_dev_session ()
+{
+    # creates a new tmux sesssion with a window for each of the following:
+    local VENV=$1
+    load_aliases
+    ## 1. editor  
+    tmux new-session -s gs-dev -n editor -d
+    tmux send-keys -t gs-dev "workon $VENV" C-m
+    tmux send-keys -t gs-dev "ltucfg" C-m
+    tmux send-keys -t gs-dev "vim" C-m
+    # 2. database
+    tmux new-window -t gs-dev -n database
+    tmux send-keys -t gs-dev:2.1 'ltucfg' C-m
+    tmux send-keys -t gs-dev:2.1 'dbconnect' C-m
+    # 3. grader labextension 
+    tmux new-window -t gs-dev -n labext 
+    tmux send-keys -t gs-dev:3.1 "workon $VENV" C-m
+    tmux send-keys -t gs-dev:3.1 "ltucfg" C-m
+    tmux send-keys -t gs-dev:3.1 "cdlx" C-m
+    tmux send-keys -t gs-dev:3.1 "jlpm build" C-m
+    # 4. jupyter apps (2 panes - lab and grader-service)
+    tmux new-window -t gs-dev -n srv 
+    tmux split-window -v -t srv 
+    tmux send-keys -t gs-dev:4.1 "workon $VENV" C-m
+    tmux send-keys -t gs-dev:4.1 "ltucfg" C-m
+    tmux send-keys -t gs-dev:4.1 "cdgs" C-m 
+    tmux send-keys -t gs-dev:4.1 "jupyterhub -f $JUPYTERHUB_CONFIG_PATH" C-m
+    tmux send-keys -t gs-dev:4.2 "workon $VENV" C-m
+    tmux send-keys -t gs-dev:4.2 "ltucfg" C-m
+    tmux send-keys -t gs-dev:4.2 "cdlx" C-m
+    tmux send-keys -t gs-dev:4.2 "grader-service -f $GRADER_SERVICE_CONFIG_PATH" C-m
+    tmux select-window -t gs-dev:1 
+    tmux attach -t gs-dev
+}
+
+function create_pydev_repl_session () {
+    # creates a new tmux sesssion with a window for each of the following:
+    local VENV=$1
+    ## 1. editor
+    tmux new-session -s dev -n editor -d
+    tmux split-window -hf -t dev
+    tmux send-keys -t dev:1.1 "workon $VENV" C-m
+    tmux send-keys -t dev:1.1 "vim" C-m
+    tmux send-keys -t dev:1.2 "workon $VENV" C-m
+    tmux send-keys -t dev:1.2 "python3" C-m
+    tmux attach -t dev
+}
+
+function lldev() {
+    # creates a new tmux sesssion with a window for each of the following:
+    ## 1. editor
+    tmux new-session -s lldev -n editor -d
+    tmux split-window -h -t lldev 
+    tmux split-window -v -t lldev:1.1
+    tmux send-keys -t lldev:1.1 "cd $HOME/Code/lowlevel/cs61c/su23-proj3-starter" C-m
+    tmux send-keys -t lldev:1.1 "java -jar tools/logisim-evolution.jar" C-m
+    tmux send-keys -t lldev:1.2 "cd $HOME/Code/lowlevel/cs61c/su23-proj3-starter" C-m
+    tmux send-keys -t lldev:1.3 "cd $HOME/Code/lowlevel/cs61c/su23-proj3-starter" C-m
+    tmux send-keys -t lldev:1.3 "vim" C-m
+    tmux attach -t lldev
+}
+
+function export_kubectl_files () {
+
+    SESSION=$1
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_PROD=${KUBECONFIG_JAAS_PROD}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_STAGING=${KUBECONFIG_JAAS_STAGING}" C-m
+    tmux send-keys -t "$SESSION" "export KUBECONFIG_JAAS_TEST=${KUBECONFIG_JAAS_TEST}" C-m
+}
+
+function activate_venv () {
+    if [ ! -z "$VENV" ]; then
+        tmux send-keys -t "$SESSION" "workon $VENV" C-m
+    fi 
+}
+
+function k8s_minimal () {
+    # minimal setup for k8s work for datalab
+    VENV=$1
+    OS_AZIMUTH="$HOME/Code/tuw/datalab/infrastructure/os-azimuth"
+    SHED="$HOME/Code/tuw/datalab/apps/shed"
+    JAAS_K8S_CLUSTER="$HOME/Code/tuw/datalab/k8s-clusters"
+
+    # Kubeconfig files
+    KUBECONFIG_JAAS_PROD="$HOME/infrastructure/k8s/clusters/jaas-prod/config.yaml"
+    KUBECONFIG_JAAS_STAGING="$HOME/infrastructure/k8s/clusters/jaas-staging/staging/config.yaml"
+    KUBECONFIG_JAAS_TEST="$HOME/infrastructure/k8s/clusters/jaas-test/config.yaml"
+    local SESSION="k8smin"
+    load_aliases
+    tmux new-session -s "$SESSION" -n scratch -d
+    # 1. jaas k8s cluster
+    tmux new-window -t "$SESSION" -n cluster
+    tmux send-keys -t "$SESSION" "cd ${JAAS_K8S_CLUSTER}" C-m
+    activate_venv
+    export_kubectl_files
+    # 2. shed
+    tmux new-window -t "$SESSION" -n deploy
+    tmux send-keys -t "$SESSION" "cd ${SHED}" C-m
+    activate_venv
+    export_kubectl_files
+    tmux attach -t "$SESSION"
+}
+
+function watt()
+{
+    # creates a new tmux sesssion with a window for each of the following:
+    ## 1. editor  
+    tmux new-session -s watt -n editor -d
+    tmux split-window -h -t watt 
+#    tmux split-window -v -t watt:1.1
+    tmux send-keys -t watt:1.1 "cd $HOME/Code/watt" C-m
+    tmux send-keys -t watt:1.2 "cd $HOME/Code/watt" C-m
+    tmux send-keys -t watt:1.2 "vim" C-m
+    tmux attach -t watt
+}
+
+function k8s()
+{   
+
+    local CLUSTER=$1 
+    # Exit if no cluster is specified  
+    if [ -z "$CLUSTER" ]; then
+        echo "Error: No cluster specified."
+        return 1
+    fi
+
+    declare -A clusters
+    clusters[jaas]="/home/adam/k8s/clusters/jupyter_all/config.yaml"
+
+    local KUBECONFIG=${clusters[$CLUSTER]}
+
+    # Exit if no kubeconfig is found
+    if [ -z "$KUBECONFIG" ]; then
+        echo "Error: No kubeconfig found for cluster $CLUSTER."
+        return 1
+    fi
+
+    tmux new-session -s k8s -n k9s -d
+    tmux send-keys -t k8s:1.1 "export KUBECONFIG=$KUBECONFIG && k9s" C-m
+    tmux attach -t k8s
+}
+
+function wcd () {
+    # courtesy of Efficient Linux At the Command Line (book)
+    # work cd - cd to one of a couple of frequently visited projects 
+    # accept a single argument and cd to the corresponding directory
+    case "$1" in
+      grader-service)
+        cd $HOME/Code/tuw/datalab/grader_service/grader_service
+        ;;
+      labext) 
+        cd $HOME/Code/tuw/datalab/grader_service/labextension
+        ;;
+      lechm)
+        cd $HOME/Code/tuw/datalab/lechm
+        ;;
+    *)
+        # The supplied argument was not supported 
+        echo "wcd: unknown key '$1'"
+        return 1
+    ;;
+    esac
+    # Print to show where we are
+    pwd
+}
+# set up tab completion for wcd
+complete -W "grader-service labext lechm" wcd
+
+function hmg () {
+    # hub memory guarantees
+    # sum all guaranteed memory for pods running in the jupyterhub-hub namespaces
+        paste <(k get pods -n jupyterhub-hub -o wide |\
+                                    awk '{print $1}' |\
+                                           grep "\-" |\
+ sed 's/^/kubectl describe pod -n jupyterhub-hub /') |\
+                                                bash |\
+                                  grep MEM_GUARANTEE |\
+                   awk '{ sum+=$2 } END { print sum }'
+}
+
+function syncnotes() {
+        #local OUTPUT="$HOME/Code/tuw/datalab/apps/shed/projects/homecopy/docs/design.md"
+        local OUTPUT="$1"
+        if [ -z ${OUTPUT} ]; then
+            echo "No output specified"
+            return 1
+        fi
+        #local INPUT="$HOME/Notes/org-roam/20231024112616-jaas_rsync_home.org"
+        local INPUT="$2"
+        if [ -z ${INPUT} ]; then
+            echo "No input file specfied"
+            return 1
+        fi
+
+        orgtomd $INPUT $OUTPUT
+        while inotifywait -q ${INPUT};
+        do
+            echo -e '\n\n';
+            orgtomd ${INPUT} ${OUTPUT};
+        done
+}
+
+function pcomm () {
+    # find the pid of a command
+    # TODO: fix race condition (pid folder can disappear)
+    local comm=$1
+    if [ -z ${comm} ]; then
+        echo "--error--- usage: pcomm <command>"
+        return 1
+    fi
+    paste <(ls -1 /proc/ |grep -E "[[:digit:]]"|\
+         sed 's/\(^.*\)/cat \/proc\/\1\/stat/' |\
+                                          bash |\
+                           awk '{print $1 $2}' | grep ${comm})
+
+}
+
+function kcmp () {
+    # kubectl shell completion note: this is a workaround because it
+    # seems to not activate when called at startup
+    if command /usr/bin/kubectl &> /dev/null; then
+        if [ "$SHELL" = "/usr/bin/zsh" ]; then
+            source <(kubectl completion zsh)
+        fi
+        if [ "$SHELL" = "/usr/bin/bash" ]; then
+            source <(kubectl completion bash)
+        fi
+    fi
+}
+
+function selekc () {
+    # select a kubeconfig file from available options and set the selected
+    # version as the KUBECONFIG environment variable
+    pmsg_create -cm 1 /aq
+    selekc.cli "/aq"
+    KCPATH=$(pmsg_receive /aq | head -1)
+    export KUBECONFIG=${KCPATH}
+    pmsg_unlink /aq
+}
+
+function k8s_getallimgs () {
+    # Get all images in a specific namespaces
+    ns=$1
+    kubectl get pods -n ${ns} -o jsonpath="{.items[*].spec['initContainers', 'containers'][*].image}" |\
+    tr -s '[[:space:]]' '\n' |\
+    sort |\
+    uniq -c
+}
+
+function guix-alias-realpath () {
+    # Get the realpath of an aliased command
+    # This is useful for getting into the guix store to find stuff
+    local COMMAND=$1
+    if [ -z ${COMMAND} ]; then
+        echo "--error--- usage: ${FUNCNAME} <command>"
+        return 1
+    else
+        realpath $(type ${COMMAND} |awk '{print $5}' |tr -d "'\`")
+    fi
+}
+
+function guix-alias-storeloc () {
+    # goto the storelocation of the alias of a specific program
+    local COMMAND=$1
+    if [ -z ${COMMAND} ]; then
+        echo "--error--- usage: ${FUNCNAME} <command>"
+        return 1
+    else
+        cd $(dirname $(dirname $(alias-realpath ${COMMAND})))
+    fi
+}
+
+function find_org () {
+    # copy the architecture decision record for datalab gitops
+    local PATTERN=$1
+    local ORG_DIR="${HOME}/Notes/org-roam/"
+    if [ -z ${PATTERN} ]; then
+        echo "--error-- usage: ${FUNCNAME} [PATTERN]"
+        return 1
+    else
+        find $ORG_DIR -type f -name "$PATTERN"
+    fi
+}
