@@ -12,39 +12,63 @@
 
  ;; List of user accounts
  (users (cons* (user-account
-                (name "amccartn")
+                (name "admccartney")
                 (comment "Adam McCartney")
                 (group "users")
-                (home-directory "/home/amccartn")
+                (home-directory "/home/admccartney")
                 (supplementary-groups '("wheel" "netdev" "audio" "video")))
                %base-user-accounts))
 
- ;; List of system services
- (services
-  (append (list (service gnome-desktop-service-type)
-
-                ;; To configure OpenSSH pass an 'openssh-configuration'
-                ;; record as second argument to 'service' below.
-                (service openssh-service-type)
-                (set-xorg-configuration
-                 (xorg-configuration (keyboard-layout keyboard-layout))))
-
-          ;; Default list of services we are appending to
-          %desktop-services))
 
  (bootloader (bootloader-configuration
-              (bootloader grub-bootloader)
-              (targets (list "/dev/sda"))
+              (bootloader grub-efi-bootloader)
+              (targets `("/boot/efi"))
               (keyboard-layout keyboard-layout)))
- (swap-devices (list (swap-space
-                      (target (uuid
-                               "b0e58e3c-f0f1-4a00-9a3e-b0c3b18fc23c")))))
+ 
 
  ;; list of filesystems that get "mounted", their ("UUIDs") can be obtained by running 'bklid' in a terminal.
- (file-systems (cons* (file-system
+ (file-systems (append
+                (list (file-system
+                       (device (file-system-label "ad-root"))
                        (mount-point "/")
-                       (device (uuid
-                                "6ba78fae-4a75-4a06-839e-497d3c7b23da"
-                                'ext4))
-                        (type "ext4")) %base-file-systems)))            
+                       (type "ext4"))
+                      (file-system
+                       (device (uuid "165D-E706" `fat))
+                       (mount-point "/boot/efi")
+                       (type "vfat"))
+                      (file-system
+                       (device (file-system-label "ad-home"))
+                       (mount-point "/home")
+                       (type "ext4")))
+                %base-file-systems))
+
+ ;; Specify a swap parition (note that at swap file might be handier)
+ (swap-devices (list (swap-space
+                      (target "/swapfile"))))
+
+ 
+ ;; Add GNOME and Xfce---we can choose at the log-in screen by clicking the gear.
+ ;; Use the "desktop" services, which include the X11 log-in service, networking with
+ ;; NetworkManager, and more
+ (services (if (target-x86-64?)
+               (append (list (service gnome-desktop-service-type)
+                             (service xfce-desktop-service-type)
+                             (set-xorg-configuration
+                              (xorg-configuration
+                               (keyboard-layout keyboard-layout))))
+                       %desktop-services)
+
+               ;; FIXME: Since GDM depends on Rust (gdm -> gnome-shell -> gjs -> mozjs -> rust) and Rust
+               ;; is currently unavailable on non-x86_64 platforms, we use SDDM and Mate here instead of
+               ;; GNOME and GDM
+               (append (list (service mate-desktop-service-type)
+                             (service xfce-desktop-service-type)
+                             (set-xorg-configuration
+                              (xorg-configuration
+                               (keyboard-layout keyboard-layout))
+                              sddm-service-type))
+                       %desktop-services)))
+
+ ;; Allow resolution of '.local' host names with mDNS
+ (name-service-switch %mdns-host-lookup-nss))
 
