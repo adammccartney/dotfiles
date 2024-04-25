@@ -25,6 +25,16 @@
               (bootloader grub-efi-bootloader)
               (targets `("/boot/efi"))
               (keyboard-layout keyboard-layout)))
+
+ ;; Add some critical packages that help with the installation
+ (packages (append (map specification->package
+                        '("git"
+                          "stow"
+                          "vim"
+                          "emacs-no-x-toolkit"
+                          "nss-certs" ;; SSL root certs
+                          "gvfs"));; for user mounts
+                   %base-packages))
  
 
  ;; list of filesystems that get "mounted", their ("UUIDs") can be obtained by running 'bklid' in a terminal.
@@ -37,7 +47,7 @@
                        (device (uuid "165D-E706" `fat))
                        (mount-point "/boot/efi")
                        (type "vfat"))
-                %base-file-systems))
+                %base-file-systems)))
 
  ;; Specify a swap parition (note that at swap file might be handier)
  (swap-devices (list (swap-space
@@ -68,4 +78,3 @@
 
  ;; Allow resolution of '.local' host names with mDNS
  (name-service-switch %mdns-host-lookup-nss))
-
