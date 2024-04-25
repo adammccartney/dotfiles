@@ -32,7 +32,6 @@
                           "stow"
                           "vim"
                           "emacs-no-x-toolkit"
-                          "nss-certs" ;; SSL root certs
                           "gvfs"));; for user mounts
                    %base-packages))
  
