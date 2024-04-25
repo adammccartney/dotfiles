@@ -46,8 +46,8 @@
                       (file-system
                        (device (uuid "165D-E706" 'fat))
                        (mount-point "/boot/efi")
-                       (type "vfat"))
-                %base-file-systems)))
+                       (type "vfat")))
+                %base-file-systems))
 
  ;; Specify a swap parition (note that at swap file might be handier)
  (swap-devices (list (swap-space
