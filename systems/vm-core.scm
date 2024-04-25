@@ -23,7 +23,7 @@
 
  (bootloader (bootloader-configuration
               (bootloader grub-efi-bootloader)
-              (targets `("/boot/efi"))
+              (targets '("/boot/efi"))
               (keyboard-layout keyboard-layout)))
 
  ;; Add some critical packages that help with the installation
@@ -44,7 +44,7 @@
                        (mount-point "/")
                        (type "ext4"))
                       (file-system
-                       (device (uuid "165D-E706" `fat))
+                       (device (uuid "165D-E706" 'fat))
                        (mount-point "/boot/efi")
                        (type "vfat"))
                 %base-file-systems)))
@@ -78,3 +78,7 @@
 
  ;; Allow resolution of '.local' host names with mDNS
  (name-service-switch %mdns-host-lookup-nss))
+
+
+
+
