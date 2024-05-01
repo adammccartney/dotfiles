@@ -16,7 +16,7 @@
                                            "guile-readline"
                                            "guile-ics"
                                            "guile-ssh"
-                                           "emacs"
+                                           "emacs-no-x-toolkit"
                                            "emacs-geiser"
                                            "emacs-yasnippet"
                                            "git"
@@ -49,7 +49,7 @@
 export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
 
              (aliases '(("train" . "source $HOME/bin/train")
-                        ("k" . "kubectl")                        
+                        ("k" . "kubectl")
                         ("slack" . "slack --enable-features=WebRTCPipewireCapturer")
                         ("zoom" . "zoom --enable-features . WebRTCPipewireCapturer")
                         ("ltucfg" . "source ~/dotfiles/bash/tu.aliases.bash")
@@ -58,7 +58,7 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                         ("bup" . "bkhome-wrapper.sh")
                         ("wgu" . "sudo wg-quick up wg0")
                         ("wgd" . "sudo wg-quick down wg0")
-                        ("emacs" . "XMODIFIERS='' emacs &")))             
+                        ("emacs" . "XMODIFIERS='' emacs &")))
             (bashrc
              `(,(local-file "files/bash-prompt")
                ,(local-file "files/bash-functions"))))))))
