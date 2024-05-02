@@ -49,15 +49,19 @@ accounts.\x1b[0m
 
  (bootloader (bootloader-configuration
               (bootloader grub-bootloader)
-              (targets '("/dev/vda"))
+              (targets '("/boot/efi"))
               (keyboard-layout keyboard-layout)))
 
  ;; list of filesystems that get "mounted", their ("UUIDs") can be obtained by running 'bklid' in a terminal.
  (file-systems (cons* (file-system
                        ;; specific to OVMF qemu instance
-                       (device "/dev/vda1")
+                       (device (file-system-label "ad-root"))
                        (mount-point "/")
                        (type "ext4"))
+                      (file-system
+                       (device "/dev/vda1")
+                       (mount-point "/boot/efi")
+                       (type "vfat"))
                 %base-file-systems))
 
 
