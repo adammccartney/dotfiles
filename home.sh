@@ -2,4 +2,4 @@
 #
 # script for testing guix home config
 
-guix home -L ~/dotfiles container minimal-home-config.scm
+guix home container minimal-home-config.scm

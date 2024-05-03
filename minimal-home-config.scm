@@ -16,13 +16,15 @@
                                            "guile-readline"
                                            "guile-ics"
                                            "guile-ssh"
-                                           "emacs-no-x-toolkit"
+                                           "emacs"
                                            "emacs-geiser"
                                            "emacs-yasnippet"
                                            "git"
                                            "neovim"
                                            "vim"
                                            "mu"
+                                           "tmux"
+                                           "neomutt"
                                            "libvterm"
                                            "libtool"
                                            "zbar")))
@@ -62,10 +64,4 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
             (bashrc
              `(,(local-file "files/bash-prompt")
                ,(local-file "files/bash-functions"))))))))
-
-
-
-
-
-
 
