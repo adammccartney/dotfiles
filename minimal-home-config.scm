@@ -78,7 +78,8 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
              
             (bashrc
              `(,(local-file "files/bash-prompt")
-               ,(local-file "files/bash-functions"))))))))
+               ,(local-file "files/bash-functions")
+               ,(local-file "files/bash-rc"))))))))
 
 
 
