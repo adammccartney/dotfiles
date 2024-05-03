@@ -16,12 +16,17 @@
                                            "guile-readline"
                                            "guile-ics"
                                            "guile-ssh"
-                                           "emacs"
+                                           "emacs-no-x-toolkit"  ; TODO figure out why regular emacs borks the desktop cursor
                                            "emacs-geiser"
                                            "emacs-yasnippet"
                                            "git"
-                                           "neovim"
+                                           "nss-certs"
+                                           "fzf"
                                            "vim"
+                                           "vim-guix-vim"
+                                           "vim-fugitive"
+                                           "vim-nerdtree"
+                                           "vim-slime"
                                            "mu"
                                            "tmux"
                                            "neomutt"
@@ -48,7 +53,6 @@
              (guix-defaults? #t)
              (bash-profile (list (plain-file "bash-profile" "\
 export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
-
              (aliases '(("train" . "source $HOME/bin/train")
                         ("k" . "kubectl")
                         ("slack" . "slack --enable-features=WebRTCPipewireCapturer")
@@ -60,7 +64,19 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                         ("wgu" . "sudo wg-quick up wg0")
                         ("wgd" . "sudo wg-quick down wg0")
                         ("emacs" . "XMODIFIERS='' emacs &")))
+             (environment-variables
+
+              '(("TERMINFO" . "/usr/share/terminfo")
+                ("EDITOR" . "emacsclient"))
+             
             (bashrc
              `(,(local-file "files/bash-prompt")
                ,(local-file "files/bash-functions"))))))))
+
+
+
+
+
+
+
 

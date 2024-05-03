@@ -10,7 +10,7 @@ if has("autocmd")
 endif
 
 " Rebind <Leader> key
-let mapleader="\<Space>" 
+let mapleader="\<Space>"
 let maplocalleader=","
 
 " switch buffers in normal mode
@@ -105,36 +105,13 @@ syntax on
 
 
 "========================================================
-" Packages 
+" Packages
 "========================================================
 
 
-" Use vimplug to manage plugins 
+" Use vimplug to manage plugins
 
 call plug#begin('~/.vim/plugged')
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-dispatch'
-Plug 'preservim/nerdtree'
-Plug 'leafgarland/typescript-vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'bfrg/vim-cpp-modern'
-Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'alx741/vim-hindent'
-Plug 'digitaltoad/vim-pug'
-Plug 'jpalardy/vim-slime'
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'rust-lang/rust.vim'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'ryanoasis/vim-devicons'
-"Plug 'vivien/vim-linux-coding-style'
-Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
-Plug 'uarun/vim-protobuf'
-
 if has("nvim")
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-treesitter/playground'
@@ -148,20 +125,13 @@ if has("nvim")
     Plug 'hrsh7th/nvim-cmp'
     Plug 'neovim/nvim-lspconfig'
     Plug 'mfussenegger/nvim-lint'
-    Plug 'mfussenegger/nvim-dap'
-    Plug 'rcarriga/nvim-dap-ui'
-    Plug 'mxsdev/nvim-dap-vscode-js'
-    Plug 'folke/zen-mode.nvim'
     Plug 'EdenEast/nightfox.nvim'
     Plug 'Olical/conjure'
     Plug 'ray-x/go.nvim'
     Plug 'ray-x/guihua.lua', { 'do': 'cd lua/fzy && make'}
-    Plug 'mfussenegger/nvim-dap'
-    Plug 'theHamsta/nvim-dap-virtual-text'
     Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
     " optional for icon support
     Plug 'nvim-tree/nvim-web-devicons'
-    Plug 'davidgranstrom/scnvim'
 
     " unmanaged
     Plug '~/Code/plugins/nvim-rinse'
@@ -267,18 +237,8 @@ let g:WebDevIconsUnicodeDecorateFolderNodeDefaultSymbol = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['nerdtree'] = ''
 
-" nvim-terminal
-" allows us to use escape key in terminal mode
-if has('nvim')
-    tnoremap <Esc> <C-\><C-n>
-    tnoremap <C-v><Esc> <Esc>
-    highlight! link TermCursor Cursor
-    highlight! TermCursorNC guibg=red guifg=white ctermbg=1 ctermfg=15
-endif
-
-" FZF default command 
+" FZF default command
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
-
 set list listchars=tab:▸\ ,trail:·,extends:»,precedes:«,nbsp:!
 
 " Insert footers for mail
