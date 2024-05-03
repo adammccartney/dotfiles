@@ -26,8 +26,7 @@
                                            "tmux"
                                            "neomutt"
                                            "libvterm"
-                                           "libtool"
-                                           "zbar")))
+                                           "libtool")))
  (services
   (list
    (service home-dotfiles-service-type
