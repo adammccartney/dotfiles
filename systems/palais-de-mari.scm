@@ -40,24 +40,87 @@
                 (name "adam")
                 (comment "none")
                 (group "users")
+                (home-directory "/home/adam")
                 (supplementary-groups '("wheel" "netdev"
                                         "audio" "video")))
                %base-user-accounts))
 
   ;; Add a bunch of window managers; we can choose one at
   ;; the log-in screen with F1.
-  (packages (append (list
-                     ;; window managers
-                     ratpoison i3-wm i3status dmenu
-                     emacs emacs-exwm emacs-desktop-environment
-                     ;; terminal emulator
-                     xterm)
+  (packages (append (map specification->package
+                         ;; window managers
+                         '("emacs-exwm"
+                           "sway"
+                           ;; terminal emulator
+                           "gnome-shell"
+                           "foot"
+                           ;; editors
+                           "emacs-no-x-toolkit"
+                           "vim"
+                           ;; cli apps
+                           "tmux"
+                           "x-resize"
+                           "gvfs")) ;; for use mounts
                     %base-packages))
 
-  ;; Use the "desktop" services, which include the X11
-  ;; log-in service, networking with NetworkManager, and more.
-  (services %desktop-services)
+ ;; Tailor a set of services that work well in a vm  
+ (services
+   (append (list (service xfce-desktop-service-type)
+
+                 ;; Choose SLiM, which is lighter than the default GDM.
+                 (service slim-service-type
+                          (slim-configuration
+                           (auto-login? #t)
+                           (default-user "guest")
+                           (xorg-configuration
+                            (xorg-configuration
+                             ;; The QXL virtual GPU driver is added to provide
+                             ;; a better SPICE experience.
+                             (modules (cons xf86-video-qxl
+                                            %default-xorg-modules))
+                             (keyboard-layout keyboard-layout)))))
+
+                 ;; Uncomment the line below to add an SSH server.
+                 ;;(service openssh-service-type)
+
+                 ;; Add support for the SPICE protocol, which enables dynamic
+                 ;; resizing of the guest screen resolution, clipboard
+                 ;; integration with the host, etc.
+                 (service spice-vdagent-service-type)
+
+                 ;; Use the DHCP client service rather than NetworkManager.
+                 (service dhcp-client-service-type))
+
+           ;; Remove some services that don't make sense in a VM.
+           (remove (lambda (service)
+                     (let ((type (service-kind service)))
+                       (or (memq type
+                                 (list gdm-service-type
+                                       sddm-service-type
+                                       wpa-supplicant-service-type
+                                       cups-pk-helper-service-type
+                                       network-manager-service-type
+                                       modem-manager-service-type))
+                           (eq? 'network-manager-applet
+                                (service-type-name type)))))
+                   (modify-services %desktop-services
+                     (login-service-type config =>
+                                         (login-configuration
+                                          (inherit config)
+                                          (motd vm-image-motd)))
+                    
+                     ;; Install and run the current Guix rather than an older
+                     ;; snapshot.
+                     (guix-service-type config =>
+                                        (guix-configuration
+                                         (inherit config)
+                                         (guix (current-guix))))))))
 
   ;; Allow resolution of '.local' host names with mDNS.
   (name-service-switch %mdns-host-lookup-nss))
+
+
+
+
+
 
