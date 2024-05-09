@@ -54,7 +54,7 @@ accounts.\x1b[0m
   (users (cons (user-account
                 (name "adam")
                 (comment "none")
-                (group "users")
+                (group "adam")
                 (home-directory "/home/adam")
                 (supplementary-groups '("wheel" "netdev"
                                         "audio" "video")))

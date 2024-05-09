@@ -11,15 +11,23 @@
 (home-environment
  (packages (specifications->packages (list "coreutils"
                                            "glibc-locales"
+
+                                           ;; Scheme
                                            "guile"
                                            "guile-colorized"
                                            "guile-readline"
                                            "guile-ics"
                                            "guile-ssh"
+
+                                           ;; Emacs
                                            "emacs-no-x-toolkit"  ; TODO figure out why regular emacs borks the desktop cursor
                                            "emacs-geiser"
                                            "emacs-yasnippet"
                                            "emacs-rg"
+                                           "libvterm"
+                                           "libtool"
+
+                                           ;; CLI apps
                                            "ripgrep"
                                            "git"
                                            "fzf"
@@ -30,9 +38,7 @@
                                            "vim-slime"
                                            "mu"
                                            "tmux"
-                                           "neomutt"
-                                           "libvterm"
-                                           "libtool")))
+                                           "neomutt")))
  
  (services
   (list
@@ -40,6 +46,7 @@
             (home-dotfiles-configuration
              (directories (list "git"
                                 "emacs"
+                                "sway"
                                 "vim"
                                 "tmux"
                                 "mail"
