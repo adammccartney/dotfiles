@@ -6,10 +6,25 @@
 ;; for a "desktop" setup without full-blown desktop
 ;; environments.
 
-(use-modules (gnu) (guix) (srfi srfi-1)
+(use-modules (gnu) (guix) (srfi srfi-1))
 (use-service-modules desktop mcron networking spice ssh xorg sddm)
 (use-package-modules bootloaders fonts
                      package-management xdisorg xorg)
+
+(define vm-image-motd (plain-file "motd" "
+\x1b[1;37mThis is the GNU system.  Welcome!\x1b[0m
+
+This instance of Guix is a template for virtualized environments.
+You can reconfigure the whole system by adjusting /etc/config.scm
+and running:
+
+  guix system reconfigure /etc/config.scm
+
+Run '\x1b[1;37minfo guix\x1b[0m' to browse documentation.
+
+\x1b[1;33mConsider setting a password for the 'root' and 'guest' \
+accounts.\x1b[0m
+"))
 
 (operating-system
   (host-name "malone")
@@ -66,20 +81,7 @@
  ;; Tailor a set of services that work well in a vm  
  (services
    (append (list (service xfce-desktop-service-type)
-
-                 ;; Choose SLiM, which is lighter than the default GDM.
-                 (service slim-service-type
-                          (slim-configuration
-                           (auto-login? #t)
-                           (default-user "guest")
-                           (xorg-configuration
-                            (xorg-configuration
-                             ;; The QXL virtual GPU driver is added to provide
-                             ;; a better SPICE experience.
-                             (modules (cons xf86-video-qxl
-                                            %default-xorg-modules))
-                             (keyboard-layout keyboard-layout)))))
-
+       
                  ;; Uncomment the line below to add an SSH server.
                  ;;(service openssh-service-type)
 
@@ -108,7 +110,6 @@
                                          (login-configuration
                                           (inherit config)
                                           (motd vm-image-motd)))
-                    
                      ;; Install and run the current Guix rather than an older
                      ;; snapshot.
                      (guix-service-type config =>
