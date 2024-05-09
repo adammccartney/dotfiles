@@ -6,10 +6,10 @@
 ;; for a "desktop" setup without full-blown desktop
 ;; environments.
 
-(use-modules (gnu) (gnu system nss))
-(use-service-modules desktop)
-(use-package-modules bootloaders emacs emacs-xyz ratpoison suckless wm
-                     xorg)
+(use-modules (gnu) (guix) (srfi srfi-1)
+(use-service-modules desktop mcron networking spice ssh xorg sddm)
+(use-package-modules bootloaders fonts
+                     package-management xdisorg xorg)
 
 (operating-system
   (host-name "malone")
