@@ -59,25 +59,8 @@
              (guix-defaults? #t)
 
              (bash-profile (list (plain-file "bash-profile" "\
-export HISTFILE=$XDG_CACHE_HOME/.bash_history\
-\
-if [ -d '$HOME/bin' ] ; then\
-    PATH='$HOME/bin:$PATH'\
-fi\
-\
-if [ -d '$HOME/.local/bin' ] ; then\
-    PATH='$HOME/.local/bin:$PATH'\
-fi\
-\
-if [ -d '$HOME/.guix-profile' ]; then\
-    GUIX_PROFILE='$HOME/.guix-profile'\
-     . '$GUIX_PROFILE/etc/profile'\
-fi\
-\
-if [ -f '$HOME/.local/bin/virtualenvwrapper.sh' ]; then\
-    . $HOME/.local/bin/virtualenvwrapper.sh\
-fi\
-")))
+export HISTFILE=$XDG_CACHE_HOME/.bash_history")
+                                 ,(local-file "files/bash-profile")))
 
              (aliases '(("train" . "source $HOME/bin/train")
                         ("k" . "kubectl")
@@ -101,8 +84,15 @@ fi\
                 ("TRAIN" . "$HOME/Code/trainlog/docs/training24.md")
                 ("MAILDIR" . "$HOME/.mail")))
              
-            (bashrc
+             (bashrc
              `(,(local-file "files/bash-prompt")
                ,(local-file "files/bash-functions")
                ,(local-file "files/bash-rc"))))))))
+
+
+
+
+
+
+
 
