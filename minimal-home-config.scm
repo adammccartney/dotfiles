@@ -60,7 +60,7 @@
 
              (bash-profile (list (plain-file "bash-profile" "\
 export HISTFILE=$XDG_CACHE_HOME/.bash_history")
-                                 ,(local-file "files/bash-profile")))
+                                 `(,(local-file "files/bash-profile"))))
 
              (aliases '(("train" . "source $HOME/bin/train")
                         ("k" . "kubectl")
