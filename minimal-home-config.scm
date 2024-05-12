@@ -59,8 +59,7 @@
              (guix-defaults? #t)
 
              (bash-profile (list (plain-file "bash-profile" "\
-export HISTFILE=$XDG_CACHE_HOME/.bash_history")
-                                 `(,(local-file "files/bash-profile"))))
+export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
 
              (aliases '(("train" . "source $HOME/bin/train")
                         ("k" . "kubectl")
@@ -85,7 +84,8 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")
                 ("MAILDIR" . "$HOME/.mail")))
              
              (bashrc
-             `(,(local-file "files/bash-prompt")
+              `(,(local-file "files/bash-prompt")
+                ,(local-file "files/bash-profile")
                ,(local-file "files/bash-functions")
                ,(local-file "files/bash-rc"))))))))
 
