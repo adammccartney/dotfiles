@@ -51,6 +51,7 @@
                                 "tmux"
                                 "mail"
                                 "guile"
+                                "readline"
                                 "mutt"))))
 
    ;; Shell setup

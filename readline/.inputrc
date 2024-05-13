@@ -1,0 +1,26 @@
+# example bindings
+# \C is emacs C- (ctrl)
+"\C-xq": "Hello, World"
+
+# \e is emacs M- (meta)
+"\e\C-p": "Good Bye!"
+
+# timeout for key-bindings
+set keyseq-timeout
+
+set colored-stats on
+set colored-completion-prefix on
+
+# Keyboard macros
+"\C-xP": print-last-kbd-macro
+
+# call out to fzf
+"\C-xF": "\C-e | fzf)\C-a(\C-a$\C-b\C-a"
+
+# make keybindings discoverable
+"\e\C-f": dump-functions
+"\e\C-v": dump-variables
+
+# Expand to hostname
+"\e\C-o": dabbrev-expand
+
