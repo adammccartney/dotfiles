@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# tiny wrapper for systemd
+
+PRG=$(which mbsync)
+$PRG -Va

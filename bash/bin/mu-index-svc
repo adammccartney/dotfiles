@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# tiny wrapper to get mu-index-svc working for systemd
+
+PRG=$(which mu)
+$PRG index
