@@ -1,3 +1,4 @@
+*.img
 .ansible
 BraveSoftware
 *cache*
@@ -18,13 +19,13 @@ yarn
 .yarn
 .local/lib/python*
 .local/share/containers
-.local
+.local/
 .minikube
 .vscode
 .mozilla/firefox/*/storage
 .rustup
 Music/bak
-.nvm
+.nvm/
 google-chrome
 .m2
 nvm

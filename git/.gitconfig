@@ -1,6 +1,6 @@
 [user]
-	name = adammccartney
-	email = adam@mur.at
-[core]
-	editor = vim
-	excludesfile = /home/adam/.gitignore_global
+	name = Adam McCartney
+	email = adam.mccartney@tuwien.ac.at
+	signingkey = 174C3ECBC22F87A8207AC9FE31DF3F14F2A9C47F
+[init]
+	defaultBranch = main

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Wrapper to stow dirs without guix home
+STOW_DIR="$HOME/dotfiles"
+
+# Load module
+source "${STOW_DIR}/bin/common"
+
+mystow "stow"
+
+unset -v STOW_DIR
+cleanup
