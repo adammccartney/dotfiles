@@ -6,4 +6,5 @@
    "nss-certs"
    "openssl"
    "vim"
+   "stow"
    ))
