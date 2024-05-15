@@ -1,5 +1,8 @@
 SHELL := /bin/sh
 
+setup-bash-config:
+	bin/setup-bash-config
+
 stow-no-guix-home:
 	bin/stow-no-guix-home
 

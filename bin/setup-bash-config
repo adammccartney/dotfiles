@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Instead of linking bash config files with stow,
+# we're going to append to the files that we need.
+
+# If we're using guix home, the content of the files can be inserted inline the
+# config.scm. If we are not using guix home, we need to do this manually.
+# This script handles the "manual" setup
+
+
+# backup
+cp -v "$HOME/.bash_profile" "$HOME/.bash_profileBAK"
+cp -v "$HOME/.bashrc" "$HOME/.bashrcBAK"
+cp -v "$HOME/.bash_functions" "$HOME/.bash_functionsBAK"
+cp -v "$HOME/.bash_prompt" "$HOME/.bash_promptBAK"
+
+# link new
+rm -fv "$HOME/.bash_profile" && ln -v files/bash-profile "$HOME/.bash_profile"
+rm -fv "$HOME/.bashrc" && ln -v files/bash-rc "$HOME/.bashrc"
+rm -fv "$HOME/.bash_functions" && ln -v files/bash-functions "$HOME/.bash_functions"
+rm -fv "$HOME/.bash_prompt" && ln -v files/bash-prompt "$HOME/.bash_prompt"

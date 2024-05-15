@@ -28,7 +28,6 @@ cleanup() {
 declare -A configs
 
 configs["git"]="$HOME"
-configs["bash"]="$HOME"
 configs["emacs"]="$HOME"
 configs["gpg"]="$HOME"
 configs["guile"]="$HOME"
