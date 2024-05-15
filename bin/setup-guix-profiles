@@ -4,7 +4,7 @@ GUIX_EXTRA_PROFILES="$HOME/.guix-extra-profiles"
 
 
 # get the profile names from the manifests
-pnames=$(for i in `ls ./guix/manifests/`; do echo ${i%.*}; done)
+pnames=$(for i in `ls ./guix-manifests/`; do echo ${i%.*}; done)
 
 for pn in $pnames; 
 do
