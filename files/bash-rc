@@ -3,11 +3,20 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-# If not running interactively, don't do anything
+# If not running interactively, setup guix profile manually
 case $- in
     *i*) ;;
-      *) return;;
+    *)
+        # Guix profiles
+        for GUIX_PROFILE in "$HOME/.config/guix/current" "$HOME/.guix-profile"
+        do
+            if [ -f "$GUIX_PROFILE/etc/profile" ]; then
+                . "$GUIX_PROFILE/etc/profile"
+            fi
+        done
+        ;;
 esac
+
 
 
 # don't put duplicate lines or lines starting with space in the history.
@@ -113,7 +122,6 @@ FZF_KEYBINDINGS_PATH="$HOME/.fzf.keybindings.bash"
 if [ -f ${FZF_KEYBINDINGS_PATH} ]; then
     . ${FZF_KEYBINDINGS_PATH}
 fi
-
 
 
 

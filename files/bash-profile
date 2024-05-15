@@ -8,14 +8,15 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
 
-# Guix profiles
+
+if [ -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
+    . $HOME/.local/bin/virtualenvwrapper.sh
+fi
+
+# Guix profiles, note that this only runs on login shells (not ssh)
 for GUIX_PROFILE in "$HOME/.config/guix/current" "$HOME/.guix-profile"
 do
     if [ -f "$GUIX_PROFILE/etc/profile" ]; then
         . "$GUIX_PROFILE/etc/profile"
     fi
 done
-
-if [ -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
-    . $HOME/.local/bin/virtualenvwrapper.sh
-fi
