@@ -13,10 +13,12 @@ then
 fi
 
 export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
+
+# check whether we're setup to use nss-certs via guix, possibly set required variables
 if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then
-    export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
-    export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
-    export GIT_SSL_CAINFO="$SSL_CERT_FILE"
+    [ -v $SSL_CERT_DIR ] && export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
+    [ -v $SSL_CERT_FILE ] && export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
+    [ -v $GIT_SSL_CAINFO ] && export GIT_SSL_CAINFO="$SSL_CERT_FILE"
 fi
 
 # don't put duplicate lines or lines starting with space in the history.
