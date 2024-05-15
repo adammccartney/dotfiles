@@ -1,6 +1,8 @@
 # -*- mode: sh -*-
 
+export LC_ALL=C
 export LANG=en_GB.UTF-8
+export LANGUAGE=en_GB.UTF-8
 
 # If not running interactively, setup guix profile manually
 if [[ $- != *i* ]]
