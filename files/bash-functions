@@ -521,3 +521,16 @@ function find_org () {
         find $ORG_DIR -type f -name "$PATTERN"
     fi
 }
+
+
+function guix_source_profiles() {
+    # Guix profiles, note that this only runs on login shells (not ssh)
+    GUIX_EXTRA_PROFILES="$HOME/.guix-extra-profiles"
+    for i in $GUIX_EXTRA_PROFILES/*; do
+        profile=$i/$(basename "$i")
+        if [ -f "$profile"/etc/profile ]; then
+            . "$profile"/etc/profile
+        fi
+        unset profile
+    done
+}

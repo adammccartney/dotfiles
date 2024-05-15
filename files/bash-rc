@@ -1,22 +1,30 @@
 # -*- mode: sh -*-
 
-export LC_ALL=C
+export LC_ALL=C.UTF-8
 export LANG=en_GB.UTF-8
 export LANGUAGE=en_GB.UTF-8
+
+if [ -f ~/.bash_prompt ]; then
+    . ~/.bash_prompt
+    ${PROMPT_COMMAND}
+fi
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+if [ -f ~/.bash_functions ]; then
+  . ~/.bash_functions
+fi
+
+if [ -f ~/.bash_env ] ; then
+    . ~/.bash_env
+fi
 
 # If not running interactively, setup guix profile manually
 if [[ $- != *i* ]]
 then
-    echo "non interactive shell, source guix profile"
-    # Guix profiles, note that this only runs on login shells (not ssh)
-    GUIX_EXTRA_PROFILES="$HOME/.guix-extra-profiles"
-    for i in $GUIX_EXTRA_PROFILES/*; do
-        profile=$i/$(basename "$i")
-        if [ -f "$profile"/etc/profile ]; then
-            . "$profile"/etc/profile
-        fi
-        unset profile
-    done
+    guix_source_profiles
 fi
 
 export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
@@ -27,6 +35,7 @@ if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then
     [ -v $SSL_CERT_FILE ] && export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
     [ -v $GIT_SSL_CAINFO ] && export GIT_SSL_CAINFO="$SSL_CERT_FILE"
 fi
+
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -71,23 +80,6 @@ fi
 #alias la='ls -A'
 #alias l='ls -CF'
 
-if [ -f ~/.bash_prompt ]; then
-    . ~/.bash_prompt
-    ${PROMPT_COMMAND}
-fi
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
-if [ -f ~/.bash_functions ]; then
-  . ~/.bash_functions
-fi
-
-if [ -f ~/.bash_env ] ; then
-    . ~/.bash_env
-fi
-
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -98,6 +90,13 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+# guix bash completion
+GUIX_BASH_COMPLETION="/var/guix/profiles/per-user/root/current-guix/etc/bash_completion.d/guix"
+if [ -f ${GUIX_BASH_COMPLETION} ]; then
+    . ${GUIX_BASH_COMPLETION}
+fi
+
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
@@ -116,12 +115,6 @@ if command kubectl &> /dev/null; then
     complete -o default -F __start_kubectl k
 fi
 
-# guix bash completion
-GUIX_BASH_COMPLETION="/var/guix/profiles/per-user/root/current-guix/etc/bash_completion.d/guix"
-if [ -f ${GUIX_BASH_COMPLETION} ]; then
-    . ${GUIX_BASH_COMPLETION}
-fi
-
 FZF_BASH_COMPLETIONS="$(dirname $(dirname $(realpath $(which fzf))))/etc/bash_completion.d/fzf"
 if [ -f "${FZF_BASH_COMPLETIONS}" ]; then
     . "${FZF_BASH_COMPLETIONS}"
@@ -131,9 +124,3 @@ FZF_KEYBINDINGS_PATH="$HOME/.fzf.keybindings.bash"
 if [ -f ${FZF_KEYBINDINGS_PATH} ]; then
     . ${FZF_KEYBINDINGS_PATH}
 fi
-
-
-
-
-
-
