@@ -3,6 +3,7 @@
  '("coreutils"
    "glibc-locales"
    "git"
+   "nss-certs"
    "openssl"
    "vim"
    ))
