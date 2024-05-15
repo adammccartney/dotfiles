@@ -1,0 +1,9 @@
+#!/bin/sh
+
+GUIX_EXTRA_PROFILES="$HOME"/.guix-extra-profiles
+
+for profile in "$GUIX_EXTRA_PROFILES"/*; do
+    pname=$(basename ${profile})
+    guix package --profile="$profile" --manifest="$HOME/.guix-manifests/$pname.scm"
+done
+unset pname profile
