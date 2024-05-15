@@ -13,6 +13,11 @@ then
 fi
 
 export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
+if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then
+    export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
+    export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
+    export GIT_SSL_CAINFO="$SSL_CERT_FILE"
+fi
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
