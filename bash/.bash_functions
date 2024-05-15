@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+# -*- mode: sh -*-
 # ~/.bash_functions: collection of command line functions
   # useage: source via ~/.bashrc at runtime
 

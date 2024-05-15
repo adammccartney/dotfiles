@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+# -*- mode: sh -*-
 
 NO_COLOUR="\[\033[0m\]"
 

@@ -31,14 +31,20 @@
                                            "ripgrep"
                                            "git"
                                            "fzf"
+                                           "tmux"
+
+                                           ;; vim
                                            "vim"
                                            "vim-guix-vim"
                                            "vim-fugitive"
                                            "vim-nerdtree"
                                            "vim-slime"
+
+                                           ;; mail
                                            "mu"
-                                           "tmux"
-                                           "neomutt")))
+                                           "isync"
+                                           "neomutt"
+                                           )))
  
  (services
   (list
@@ -85,15 +91,9 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                 ("MAILDIR" . "$HOME/.mail")))
              
              (bashrc
-              `(,(local-file "files/bash-prompt")
-                ,(local-file "files/bash-profile")
-               ,(local-file "files/bash-functions")
-               ,(local-file "files/bash-rc"))))))))
-
-
-
-
-
-
+              `(,(local-file "bash/.bash_prompt")
+                ,(local-file "bash/.bash_profile")
+               ,(local-file "bash/.bash_functions")
+               ,(local-file "bash/.bashrc"))))))))
 
 

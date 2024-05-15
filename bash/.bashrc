@@ -1,3 +1,6 @@
+# -*- mode: sh -*-
+
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -36,12 +39,12 @@ shopt -s checkwinsize
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
 
-    #alias grep='grep --color=auto'
-    #alias fgrep='fgrep --color=auto'
-    #alias egrep='egrep --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
 fi
 
 # colored GCC warnings and errors
@@ -81,26 +84,34 @@ if ! shopt -oq posix; then
   fi
 fi
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
 # git tools
 . ~/git-completion.bash
 
 # use emacs keybindings
 set -o emacs
-[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
 # swap the control and caps key
 swap_ctrl_caps
-
-if command $HOME/.local/miniconda3/bin/conda &> /dev/null; then
-    $HOME/.local/miniconda3/bin/conda init bash
-fi
 
 # idempotent kubectl setup
 if command kubectl &> /dev/null; then
     source <(kubectl completion bash)
     complete -o default -F __start_kubectl k
+fi
+# guix bash completion
+GUIX_BASH_COMPLETION="/var/guix/profiles/per-user/root/current-guix/etc/bash_completion.d/guix"
+if [ -f ${GUIX_BASH_COMPLETION} ]; then
+    . ${GUIX_BASH_COMPLETION}
+fi
+
+FZF_BASH_COMPLETIONS="$(dirname $(dirname $(realpath $(which fzf))))/etc/bash_completion.d/fzf"
+if [ -f "${FZF_BASH_COMPLETIONS}" ]; then
+    . "${FZF_BASH_COMPLETIONS}"
+fi
+
+FZF_KEYBINDINGS_PATH="$HOME/.fzf.keybindings.bash"
+if [ -f ${FZF_KEYBINDINGS_PATH} ]; then
+    . ${FZF_KEYBINDINGS_PATH}
 fi
 
 # Automatically added by the Guix install script.
@@ -109,4 +120,5 @@ if [ -n "$GUIX_ENVIRONMENT" ]; then
         PS1="${BASH_REMATCH[1]} [env]\\\$ "
     fi
 fi
+
 
