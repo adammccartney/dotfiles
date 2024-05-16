@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Upgrade the `$(hostname)` profile
+
+GUIX_EXTRA_PROFILES=${HOME}/.guix-extra-profiles
+
+profile=$(hostname)
+
+guix package --manifest=${HOME}/.guix-manifests/${profile}.scm --profile=${GUIX_EXTRA_PROFILES}/${profile}/${profile}
