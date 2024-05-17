@@ -63,16 +63,46 @@ accounts.\x1b[0m
                          ;; window managers
                          '("emacs-exwm"
                            "sway"
+                           
                            ;; terminal emulator
                            "gnome-shell"
-                           "foot"
-                           ;; editors
-                           "emacs-no-x-toolkit"
-                           "vim"
-                           ;; cli apps
+                           "foot"                                                     
+                           
+                           ;; Guile Scheme
+                           "guile"
+                           "guile-colorized"
+                           "guile-readline"
+
+                           ;; Emacs
+                           "emacs-no-x-toolkit"  ; TODO figure out why regular emacs borks the desktop cursor
+                           "emacs-geiser"
+                           "emacs-yasnippet"
+                           "emacs-rg"
+                           "libvterm"
+                           "libtool"
+
+                           ;; CLI apps
+                           "ripgrep"
+                           "git"
+                           "fzf"
                            "tmux"
+                           "stow"
+                           "openssl"                           
                            "x-resize"
-                           "gvfs")) ;; for use mounts
+                           "gvfs" ;; for user mounts
+
+                           
+                           ;; vim
+                           "vim"
+                           "vim-guix-vim"
+                           "vim-fugitive"
+                           "vim-nerdtree"
+                           "vim-slime"
+
+                           ;; mail
+                           "mu"
+                           "isync"
+                           "neomutt"))                           
                     %base-packages))
 
  ;; Tailor a set of services that work well in a vm  
@@ -116,9 +146,4 @@ accounts.\x1b[0m
 
   ;; Allow resolution of '.local' host names with mDNS.
   (name-service-switch %mdns-host-lookup-nss))
-
-
-
-
-
 
