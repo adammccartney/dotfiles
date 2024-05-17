@@ -1,6 +1,6 @@
 # -*- mode: sh -*-
 
-export LC_ALL=C.UTF-8
+export LC_ALL=en_GB.UTF-8
 export LANG=en_GB.UTF-8
 export LANGUAGE=en_GB.UTF-8
 
@@ -22,9 +22,10 @@ if [ -f ~/.bash_env ] ; then
 fi
 
 # If not running interactively, setup guix profile manually
+# Otherwise it gets sourced in the bash profile that called this file
 if [[ $- != *i* ]]
 then
-    guix_source_profiles
+    guix_source_host_profile
 fi
 
 export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"

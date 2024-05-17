@@ -523,7 +523,7 @@ function find_org () {
 }
 
 
-function guix_source_profiles() {
+function guix_source_all_profiles() {
     # Guix profiles, note that this only runs on login shells (not ssh)
     GUIX_EXTRA_PROFILES="$HOME/.guix-extra-profiles"
     for i in $GUIX_EXTRA_PROFILES/*; do
@@ -533,4 +533,12 @@ function guix_source_profiles() {
         fi
         unset profile
     done
+}
+
+function guix_source_host_profile() {
+    # Assumes that the host system has a default profile
+    profile=$(hostname)
+    GUIX_EXTRA_PROFILES="${HOME}/.guix-extra-profiles"
+    GUIX_PROFILE="${GUIX_EXTRA_PROFILES}/${profile}/${profile}"
+    . "${GUIX_PROFILE}/etc/profile"
 }
