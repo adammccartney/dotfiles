@@ -1,101 +1,149 @@
-(define-module (minimal-home-config)
-  #:use-module (gnu home)
-  #:use-module (gnu home services)
-  #:use-module (gnu home services dotfiles)
-  #:use-module (gnu home services shells)
-  #:use-module (gnu packages)
-  #:use-module (gnu services)
-  #:use-module (gnu packages admin)
-  #:use-module (guix gexp))
+;; -*- mode: scheme; -*-
+;; palais-de-mari.scm - defines a tempalte for a minimal desktop system for guix
 
-(home-environment
- (packages (specifications->packages (list "coreutils"
-                                           "glibc-locales"
+(use-modules (gnu) (guix) (srfi srfi-1))
 
-                                           ;; Guile Scheme
-                                           "guile"
-                                           "guile-colorized"
-                                           "guile-readline"
+(use-service-modules desktop mcron networking spice ssh xorg sddm)
 
-                                           ;; Emacs
-                                           "emacs-no-x-toolkit"  ; TODO figure out why regular emacs borks the desktop cursor
-                                           "emacs-geiser"
-                                           "emacs-yasnippet"
-                                           "emacs-rg"
-                                           "libvterm"
-                                           "libtool"
+(use-package-modules bootloaders fonts xdisorg xorg shells bash emacs gnome
+                     version-control package-management vim) 
 
-                                           ;; CLI apps
-                                           "ripgrep"
-                                           "git"
-                                           "fzf"
-                                           "tmux"
-                                           "stow"
-                                           "openssl"
+(define vm-image-motd (plain-file "motd" "
+\x1b[1;37mThis is the GNU system.  Welcome!\x1b[0m
 
-                                           ;; vim
-                                           "vim"
-                                           "vim-guix-vim"
-                                           "vim-fugitive"
-                                           "vim-nerdtree"
-                                           "vim-slime"
+This instance of Guix is a template for virtualized environments.
+You can reconfigure the whole system by adjusting /etc/config.scm
+and running:
 
-                                           ;; mail
-                                           "mu"
-                                           "isync"
-                                           "neomutt"
-                                           )))
- 
+  guix system reconfigure /etc/config.scm
+
+Run '\x1b[1;37minfo guix\x1b[0m' to browse documentation.
+
+\x1b[1;33mConsider setting a password for the 'root' and 'guest' \
+accounts.\x1b[0m
+"))
+
+(operating-system
+  (host-name "malone")
+  (timezone "Europe/Vienna")
+  (locale "en_IE.utf8")
+  (keyboard-layout (keyboard-layout "de" "nodeadkeys"))
+
+  ;; Use the UEFI variant of GRUB with the EFI System
+  ;; Partition mounted on /boot/efi.
+  (bootloader (bootloader-configuration
+                (bootloader grub-efi-bootloader)
+                (targets '("/boot/efi"))))
+
+  ;; Assume the target root file system is labelled "my-root",
+  ;; and the EFI System Partition has UUID 1234-ABCD.
+  (file-systems (append
+                 (list (file-system
+                         (device (file-system-label "ad-root"))
+                         (mount-point "/")
+                         (type "ext4"))
+                       (file-system
+                         (device (uuid "1234-ABCD" 'fat))
+                         (mount-point "/boot/efi")
+                         (type "vfat")))
+                 %base-file-systems))
+
+  (users (cons (user-account
+                (name "adam")
+                (comment "none")
+                (group "adam")
+                (home-directory "/home/adam")
+                (supplementary-groups '("wheel" "netdev"
+                                        "audio" "video")))
+               %base-user-accounts))
+
+  ;; Add a bunch of window managers; we can choose one at
+  ;; the log-in screen with F1.
+  (packages (append (map specification->package
+                         ;; window managers
+                         '("emacs-exwm"
+                           "sway"
+                           
+                           ;; terminal emulator
+                           "gnome-shell"
+                           "foot"                                                     
+                           
+                           ;; Guile Scheme
+                           "guile"
+                           "guile-colorized"
+                           "guile-readline"
+
+                           ;; Emacs
+                           "emacs-no-x-toolkit"  ; TODO figure out why regular emacs borks the desktop cursor
+                           "emacs-geiser"
+                           "emacs-yasnippet"
+                           "emacs-rg"
+                           "libvterm"
+                           "libtool"
+
+                           ;; CLI apps
+                           "ripgrep"
+                           "git"
+                           "fzf"
+                           "tmux"
+                           "stow"
+                           "openssl"                           
+                           "x-resize"
+                           "gvfs" ;; for user mounts
+
+                           
+                           ;; vim
+                           "vim"
+                           "vim-guix-vim"
+                           "vim-fugitive"
+                           "vim-nerdtree"
+                           "vim-slime"
+
+                           ;; mail
+                           "mu"
+                           "isync"
+                           "neomutt"))                           
+                    %base-packages))
+
+ ;; Tailor a set of services that work well in a vm  
  (services
-  (list
-   (service home-dotfiles-service-type
-            (home-dotfiles-configuration
-             (directories (list "git"
-                                "emacs"
-                                "gpg"
-                                "guile"
-                                "guix-manifests"
-                                "nettools"
-                                "sway"
-                                "vim"
-                                "tmux"
-                                "mail"
-                                "guile"
-                                "readline"
-                                "mutt"))))
+   (append (list (service xfce-desktop-service-type)
+       
+                 ;; Uncomment the line below to add an SSH server.
+                 ;;(service openssh-service-type)
 
-   ;; Shell setup
-   (service home-bash-service-type
-            (home-bash-configuration
-             (guix-defaults? #t)
+                 ;; Add support for the SPICE protocol, which enables dynamic
+                 ;; resizing of the guest screen resolution, clipboard
+                 ;; integration with the host, etc.
+                 (service spice-vdagent-service-type)
 
-             (bash-profile (list (plain-file "bash-profile" "\
-export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
+                 ;; Use the DHCP client service rather than NetworkManager.
+                 (service dhcp-client-service-type))
 
-             (aliases '(("train" . "source $HOME/bin/train")
-                        ("k" . "kubectl")
-                        ("slack" . "slack --enable-features=WebRTCPipewireCapturer")
-                        ("zoom" . "zoom --enable-features . WebRTCPipewireCapturer")
-                        ("ltucfg" . "source ~/dotfiles/bash/tu.aliases.bash")
-                        ("ls0" . "find . -maxdepth 1 -print0")
-                        ("mk" . "minikube kubectl --")
-                        ("bup" . "bkhome-wrapper.sh")
-                        ("wgu" . "sudo wg-quick up wg0")
-                        ("wgd" . "sudo wg-quick down wg0")
-                        ("emacs" . "XMODIFIERS='' emacs &")))
-             
-             (environment-variables
-              '(("TERMINFO" . "/usr/share/terminfo")
-                ("EDITOR" . "vim")
-                ("MANWIDTH" . "80")
-                ("SSL_CERT_DIR" . "/etc/ssl/certs")  ;; This are configured for foreign distro usage
-                ("SSL_CERT_FILE" . "/etc/ssl/certs/ca-certificates.crt")
-                ("GIT_SSL_CAINFO" . "$SSL_CERT_FILE")
-                ("TRAIN" . "$HOME/Code/trainlog/docs/training24.md")
-                ("MAILDIR" . "$HOME/.mail")))
-             
-             (bashrc
-              `(,(local-file "files/bash-prompt")
-                ,(local-file "files/bash-profile")
-               ,(local-file "files/bash-functions")
-               ,(local-file "files/bash-rc"))))))))
+           ;; Remove some services that don't make sense in a VM.
+           (remove (lambda (service)
+                     (let ((type (service-kind service)))
+                       (or (memq type
+                                 (list gdm-service-type
+                                       sddm-service-type
+                                       wpa-supplicant-service-type
+                                       cups-pk-helper-service-type
+                                       network-manager-service-type
+                                       modem-manager-service-type))
+                           (eq? 'network-manager-applet
+                                (service-type-name type)))))
+                   (modify-services %desktop-services
+                     (login-service-type config =>
+                                         (login-configuration
+                                          (inherit config)
+                                          (motd vm-image-motd)))
+                     ;; Install and run the current Guix rather than an older
+                     ;; snapshot.
+                     (guix-service-type config =>
+                                        (guix-configuration
+                                         (inherit config)
+                                         (guix (current-guix))))))))
+
+  ;; Allow resolution of '.local' host names with mDNS.
+  (name-service-switch %mdns-host-lookup-nss))
+

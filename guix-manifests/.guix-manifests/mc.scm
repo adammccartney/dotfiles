@@ -16,13 +16,11 @@
    "guile"
    "guile-colorized"
    "guile-readline"
-   "guile-ics"
-   "guile-ssh"
 
    ;; go
    "go"
 
- ;; Emacs
+   ;; Emacs
    "emacs"
    "emacs-geiser"
    "emacs-geiser-guile"
@@ -31,13 +29,15 @@
    "libvterm"
    "libtool"
 
- ;; vim + plugins
+   ;; vim + plugins
    "vim"
    "vim-guix-vim"
    "vim-fugitive"
    "vim-nerdtree"
    "vim-slime"
+
    ;; mail
    "mu"
    "isync"
    "neomutt"))
+
