@@ -54,15 +54,15 @@
   (list
    (service home-dotfiles-service-type
             (home-dotfiles-configuration
-             (directories (list "git"
-                                "emacs"
-                                "sway"
-                                "vim"
-                                "tmux"
-                                "mail"
-                                "guile"
-                                "readline"
-                                "mutt"))))
+             (directories (list "../../git"
+                                "../../emacs"
+                                "../../sway"
+                                "../../vim"
+                                "../../tmux"
+                                "../../mail"
+                                "../../guile"
+                                "../../readline"
+                                "../../mutt"))))
 
    ;; Shell setup
    (service home-bash-service-type
@@ -95,8 +95,18 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                 ("MAILDIR" . "$HOME/.mail")))
              
              (bashrc
-              `(,(local-file "files/bash-prompt")
-                ,(local-file "files/bash-profile")
-               ,(local-file "files/bash-functions")
-               ,(local-file "files/bash-rc"))))))))
+              `(,(local-file "../../files/bash-prompt")
+                ,(local-file "../../files/bash-profile")
+                ,(local-file "../../files/bash-functions")
+                ,(local-file "../../files/bash-rc"))))))))
+
+
+
+
+
+
+
+
+
+
 
