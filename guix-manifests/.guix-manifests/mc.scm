@@ -1,3 +1,4 @@
+;; this manifest is designed for running with guix on foreign distro
 (specifications->manifest
  '( ;; basic system utils
    "coreutils"
@@ -7,7 +8,7 @@
    "openssl"
    "stow"
 
- ;; cli apps
+    ;; cli apps
    "ripgrep"
    "git"
    "fzf"
