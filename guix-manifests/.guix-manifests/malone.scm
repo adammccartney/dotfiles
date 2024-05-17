@@ -1,7 +1,9 @@
 ;; -*- mode: scheme; -*-
 ;; palais-de-mari.scm - defines a tempalte for a minimal desktop system for guix
 
-(use-modules (gnu) (guix) (srfi srfi-1))
+(use-modules (gnu packages)
+             (guix)
+             (srfi srfi-1))
 
 (use-service-modules desktop mcron networking spice ssh xorg sddm)
 
