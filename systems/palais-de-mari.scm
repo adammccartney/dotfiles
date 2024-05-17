@@ -1,15 +1,12 @@
 ;; -*- mode: scheme; -*-
-;; palais-de-mari.scm - defines a minimal desktop system for guix
-
-;; -*- mode: scheme; -*-
-;; This is an operating system configuration template
-;; for a "desktop" setup without full-blown desktop
-;; environments.
+;; palais-de-mari.scm - defines a tempalte for a minimal desktop system for guix
 
 (use-modules (gnu) (guix) (srfi srfi-1))
+
 (use-service-modules desktop mcron networking spice ssh xorg sddm)
-(use-package-modules bootloaders fonts
-                     package-management xdisorg xorg)
+
+(use-package-modules bootloaders fonts xdisorg xorg shells bash emacs gnome
+                     version-control package-management vim) 
 
 (define vm-image-motd (plain-file "motd" "
 \x1b[1;37mThis is the GNU system.  Welcome!\x1b[0m
