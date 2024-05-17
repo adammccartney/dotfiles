@@ -3,12 +3,13 @@
 
 (define-module (admccartney home-config malone)
   #:use-module (gnu)
+  #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services dotfiles)
   #:use-module (gnu home services shells)
   #:use-module (gnu packages)
-  #:use-module (gnu services)
   #:use-module (gnu packages admin)
+  #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1))
 
