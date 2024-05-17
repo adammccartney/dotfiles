@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# update home based on hostname
+
+RUNNING_GUIX_HOME=1 guix home -L ~/dotfiles reconfigure ~/dotfiles/guix-manifests/.guix-manifests/$(hostname).scm
