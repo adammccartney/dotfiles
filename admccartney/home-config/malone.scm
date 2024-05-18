@@ -6,12 +6,12 @@
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services dotfiles)
-  #:use-module (admccartney home-services shell)
   #:use-module (gnu packages)
   #:use-module (gnu packages package-management)
   #:use-module (gnu services)
   #:use-module (guix gexp)
-  #:use-module (srfi srfi-1))
+  #:use-module (srfi srfi-1)
+  #:use-module (admccartney home-services shell))
 
 (home-environment
  (packages (specifications->packages (list "coreutils"
