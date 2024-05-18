@@ -8,6 +8,7 @@
   #:use-module (gnu home services dotfiles)
   #:use-module (gnu home services shells)
   #:use-module (gnu packages)
+  #:use-module (gnu packages package-management)
   #:use-module (gnu services)
   #:use-module (gnu services desktop)
   #:use-module (gnu services networking)
@@ -194,4 +195,3 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                                                (guix-configuration
                                                 (inherit config)
                                                 (guix (current-guix)))))))))
-
