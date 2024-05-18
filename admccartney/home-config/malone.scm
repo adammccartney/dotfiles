@@ -108,5 +108,5 @@
                                       "../../mutt"))))
 
          ;; Shell service
-         `(,@ad/shell-service-type)))))
+         `(,@ad/shell-service)))))
 

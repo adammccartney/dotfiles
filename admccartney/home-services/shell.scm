@@ -9,9 +9,9 @@
   #:use-module (gnu home services)
   #:use-module (gnu home services shells)
 
-  #:export (ad/shell-service-type))
+  #:export (ad/shell-service))
 
-(define ad/shell-service-type
+(define ad/shell-service
   (service home-bash-service-type
            (home-bash-configuration
             (guix-defaults? #t)
@@ -46,4 +46,5 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                ,(local-file "../../files/bash-profile")
                ,(local-file "../../files/bash-functions")
                ,(local-file "../../files/bash-rc"))))))
+
 
