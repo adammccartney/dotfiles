@@ -24,6 +24,15 @@
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1))
 
+(define vm-image-motd (plain-file "motd" "
+\x1b[1;37mWelcome home Malone!\x1b[0m
+
+This instance of Malone is configured for virtualized environments.
+
+It was initially configured using:
+guix home -L ~/dotfiles reconfigure ~/dotfiles/admcartney/home-config/$(hostname).scm.\x1b[0m
+"))
+
 
 (home-environment
  (packages (specifications->packages (list "coreutils"
