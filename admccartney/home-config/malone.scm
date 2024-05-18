@@ -15,9 +15,9 @@
   #:use-module (gnu packages xorg)
   #:use-module (gnu services)
   #:use-module (gnu services desktop)
-  #:use-module (gnu services spice)
   #:use-module (gnu services mcron)
   #:use-module (gnu services networking)
+  #:use-module (gnu services spice)
   #:use-module (gnu services ssh)
   #:use-module (gnu services xorg)
   #:use-module (gnu services sddm) 
@@ -39,6 +39,54 @@ guix home -L ~/dotfiles reconfigure ~/dotfiles/admcartney/home-config/$(hostname
                                            "glibc-locales"
                                            "stow"
 
+                                           ;; desktop
+                                           "sway"
+                                           "swayidle"
+                                           "swaylock"
+
+                                           ;; Compatibility for older Xorg applications
+                                           "xorg-server-xwayland"
+
+                                           ;; Flatpak and XDG utilities
+                                           "flatpak"
+                                           "xdg-desktop-portal"
+                                           "xdg-desktop-portal-gtk"
+                                           "xdg-desktop-portal-wlr"
+                                           "xdg-utils" ;; For xdg-open, etc
+                                           "xdg-dbus-proxy"
+                                           "shared-mime-info"
+
+                                           ;; Appearance
+                                           "gnome-themes-extra"
+                                           "adwaita-icon-theme"
+
+                                           ;; Fonts
+                                           "font-jost"
+                                           "font-iosevka-ss08"
+                                           "font-iosevka-aile"
+                                           "font-liberation"
+                                           "font-awesome"
+                                           "gucharmap"
+                                           "fontmanager"
+
+                                           ;; Browsers
+                                           "vimb"
+
+                                           ;; Authentication
+                                           "password-store"
+
+                                           ;; PDF reader
+                                           "zathura"
+                                           "zathura-pdf-mupdf"
+
+                                           ;; General utilities
+                                           "curl"
+                                           "wget"
+                                           "openssh"
+                                           "zip"
+                                           "unzip"
+                                           "trash-cli"
+                                           
                                            ;; Scheme
                                            "guile"
                                            "guile-colorized"
@@ -68,7 +116,10 @@ guix home -L ~/dotfiles reconfigure ~/dotfiles/admcartney/home-config/$(hostname
                                            ;; mail
                                            "mu"
                                            "tmux"
-                                           "neomutt")))
+                                           "neomutt"
+
+                                           
+                                           )))
  
  (services
   (append
