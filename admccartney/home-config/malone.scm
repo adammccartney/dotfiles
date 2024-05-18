@@ -10,6 +10,7 @@
   #:use-module (gnu packages)
   #:use-module (gnu services)
   #:use-module (gnu services desktop)
+  #:use-module (gnu services networking)
   #:use-module (gnu services spice)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1))
