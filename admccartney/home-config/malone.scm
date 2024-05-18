@@ -18,7 +18,7 @@
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
 
-  #:use-module (admccartney home-services shells))
+  #:use-module (admccartney home-services shell))
 
 (define vm-image-motd (plain-file "motd" "
 \x1b[1;37mWelcome home Malone!\x1b[0m
