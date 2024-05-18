@@ -6,29 +6,12 @@
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services dotfiles)
-  #:use-module (gnu home services shells)
+  #:use-module (admccartney home-services shell)
   #:use-module (gnu packages)
   #:use-module (gnu packages package-management)
   #:use-module (gnu services)
-  #:use-module (gnu services desktop)
-  #:use-module (gnu services networking)
-  #:use-module (gnu services spice)
-  #:use-module (gnu services sddm)
-  #:use-module (gnu services xorg)
   #:use-module (guix gexp)
-  #:use-module (srfi srfi-1)
-
-  #:use-module (admccartney home-services shell))
-
-(define vm-image-motd (plain-file "motd" "
-\x1b[1;37mWelcome home Malone!\x1b[0m
-
-This instance of Malone is configured for virtualized environments.
-
-It was initially configured using:
-guix home -L ~/dotfiles reconfigure ~/dotfiles/admcartney/home-config/$(hostname).scm.\x1b[0m
-"))
-
+  #:use-module (srfi srfi-1))
 
 (home-environment
  (packages (specifications->packages (list "coreutils"
@@ -126,6 +109,4 @@ guix home -L ~/dotfiles reconfigure ~/dotfiles/admcartney/home-config/$(hostname
 
          ;; Shell service
          `(,@ad/shell-service-type)))))
-
-
 
