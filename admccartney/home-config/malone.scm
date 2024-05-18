@@ -98,7 +98,52 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
               `(,(local-file "../../files/bash-prompt")
                 ,(local-file "../../files/bash-profile")
                 ,(local-file "../../files/bash-functions")
-                ,(local-file "../../files/bash-rc"))))))))
+                ,(local-file "../../files/bash-rc")))))
+
+   ;; setup desktop for vm
+   (service xfce-desktop-service-type)
+   
+   ;; Uncomment the line below to add an SSH server.
+   ;;(service openssh-service-type)
+
+   ;; Add support for the SPICE protocol, which enables dynamic
+   ;; resizing of the guest screen resolution, clipboard
+   ;; integration with the host, etc.
+   (service spice-vdagent-service-type)
+
+   ;; Use the DHCP client service rather than NetworkManager.
+   (service dhcp-client-service-type)
+
+  ;; Remove some services that don't make sense in a VM.
+  (remove (lambda (service)
+            (let ((type (service-kind service)))
+              (or (memq type
+                        (list gdm-service-type
+                              sddm-service-type
+                              wpa-supplicant-service-type
+                              cups-pk-helper-service-type
+                              network-manager-service-type
+                              modem-manager-service-type))
+                  (eq? 'network-manager-applet
+                       (service-type-name type)))))
+          (modify-services %desktop-services
+                           (login-service-type config =>
+                                               (login-configuration
+                                                (inherit config)
+                                                (motd vm-image-motd)))
+                           ;; Install and run the current Guix rather than an older
+                           ;; snapshot.
+                           (guix-service-type config =>
+                                              (guix-configuration
+                                               (inherit config)
+                                               (guix (current-guix))))))))
+
+  ;; Allow resolution of '.local' host names with mDNS.
+  (name-service-switch %mdns-host-lookup-nss))
+
+
+   
+   )))
 
 
 
