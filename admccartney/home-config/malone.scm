@@ -61,13 +61,8 @@ guix home -L ~/dotfiles reconfigure ~/dotfiles/admcartney/home-config/$(hostname
                                            "adwaita-icon-theme"
 
                                            ;; Fonts
-                                           "font-jost"
-                                           "font-iosevka-ss08"
-                                           "font-iosevka-aile"
+                                           "font-iosevka"
                                            "font-liberation"
-                                           "font-awesome"
-                                           "gucharmap"
-                                           "fontmanager"
 
                                            ;; Browsers
                                            "vimb"
