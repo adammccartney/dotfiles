@@ -136,14 +136,7 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                            (guix-service-type config =>
                                               (guix-configuration
                                                (inherit config)
-                                               (guix (current-guix))))))))
-
-  ;; Allow resolution of '.local' host names with mDNS.
-  (name-service-switch %mdns-host-lookup-nss))
-
-
-   
-   )))
+                                               (guix (current-guix)))))))))
 
 
 
