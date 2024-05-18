@@ -71,7 +71,7 @@ guix home -L ~/dotfiles reconfigure ~/dotfiles/admcartney/home-config/$(hostname
                                            "neomutt")))
  
  (services
-  (list
+  (append (list
    (service home-dotfiles-service-type
             (home-dotfiles-configuration
              (directories (list "../../git"
@@ -156,15 +156,4 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                            (guix-service-type config =>
                                               (guix-configuration
                                                (inherit config)
-                                               (guix (current-guix)))))))))
-
-
-
-
-
-
-
-
-
-
-
+                                               (guix (current-guix))))))))))
