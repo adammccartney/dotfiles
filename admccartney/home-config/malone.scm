@@ -1,5 +1,5 @@
 ;; -*- mode: scheme; -*-
-;; palais-de-mari.scm - defines a tempalte for a minimal desktop system for guix
+;; malone.scm - defines a home config for host
 
 (define-module (admccartney home-config malone)
   #:use-module (gnu)
@@ -16,7 +16,9 @@
   #:use-module (gnu services sddm)
   #:use-module (gnu services xorg)
   #:use-module (guix gexp)
-  #:use-module (srfi srfi-1))
+  #:use-module (srfi srfi-1)
+
+  #:use-module (admccartney home-services shells))
 
 (define vm-image-motd (plain-file "motd" "
 \x1b[1;37mWelcome home Malone!\x1b[0m
@@ -122,38 +124,5 @@ guix home -L ~/dotfiles reconfigure ~/dotfiles/admcartney/home-config/$(hostname
                                       "../../readline"
                                       "../../mutt"))))
 
-         ;; Shell setup
-         (service home-bash-service-type
-                  (home-bash-configuration
-                   (guix-defaults? #t)
-
-                   (bash-profile (list (plain-file "bash-profile" "\
-export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
-
-                   (aliases '(("train" . "source $HOME/bin/train")
-                              ("k" . "kubectl")
-                              ;;("slack" . "slack --enable-features=WebRTCPipewireCapturer")
-                              ;;("zoom" . "zoom --enable-features . WebRTCPipewireCapturer")
-                              ;;("ltucfg" . "source ~/dotfiles/bash/tu.aliases.bash")
-                              ("ls0" . "find . -maxdepth 1 -print0")
-                              ("mk" . "minikube kubectl --")
-                              ("bup" . "bkhome-wrapper.sh")
-                              ("wgu" . "sudo wg-quick up wg0")
-                              ("wgd" . "sudo wg-quick down wg0")
-                              ("emacs" . "XMODIFIERS='' emacs &")))
-                   
-                   (environment-variables
-                    '(("TERMINFO" . "/usr/share/terminfo")
-                      ("EDITOR" . "vim")
-                      ("MANWIDTH" . "80")
-                      ;;("SSL_CERT_DIR" . "/etc/ssl/certs")  ;; This are configured for foreign distro usage
-                      ;;("SSL_CERT_FILE" . "/etc/ssl/certs/ca-certificates.crt")
-                      ;;("GIT_SSL_CAINFO" . "$SSL_CERT_FILE")
-                      ("TRAIN" . "$HOME/Code/trainlog/docs/training24.md")
-                      ("MAILDIR" . "$HOME/.mail")))
-                   
-                   (bashrc
-                    `(,(local-file "../../files/bash-prompt")
-                      ,(local-file "../../files/bash-profile")
-                      ,(local-file "../../files/bash-functions")
-                      ,(local-file "../../files/bash-rc")))))))))
+         ;; Shell service
+         `(,@ad/shell-service)))))
