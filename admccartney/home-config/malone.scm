@@ -13,6 +13,7 @@
   #:use-module (gnu services desktop)
   #:use-module (gnu services networking)
   #:use-module (gnu services spice)
+  #:use-module (gnu services sddm)
   #:use-module (gnu services xorg)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1))
