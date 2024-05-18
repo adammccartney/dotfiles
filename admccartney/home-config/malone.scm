@@ -156,18 +156,4 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                     `(,(local-file "../../files/bash-prompt")
                       ,(local-file "../../files/bash-profile")
                       ,(local-file "../../files/bash-functions")
-                      ,(local-file "../../files/bash-rc")))))
-
-         ;; setup desktop for vm
-         (service xfce-desktop-service-type)
-         
-         ;; Uncomment the line below to add an SSH server.
-         ;;(service openssh-service-type)
-
-         ;; Add support for the SPICE protocol, which enables dynamic
-         ;; resizing of the guest screen resolution, clipboard
-         ;; integration with the host, etc.
-         (service spice-vdagent-service-type)
-
-         ;; Use the DHCP client service rather than NetworkManager.
-         (service dhcp-client-service-type)))))
+                      ,(local-file "../../files/bash-rc")))))))))
