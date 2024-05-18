@@ -125,4 +125,7 @@ guix home -L ~/dotfiles reconfigure ~/dotfiles/admcartney/home-config/$(hostname
                                       "../../mutt"))))
 
          ;; Shell service
-         `(,@ad/shell-service)))))
+         `(,@ad/shell-service-type)))))
+
+
+
