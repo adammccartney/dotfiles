@@ -132,7 +132,7 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
    (service spice-vdagent-service-type)
 
    ;; Use the DHCP client service rather than NetworkManager.
-   (service dhcp-client-service-type)
+   (service dhcp-client-service-type))))
 
   ;; Remove some services that don't make sense in a VM.
   (remove (lambda (service)
@@ -156,4 +156,4 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                            (guix-service-type config =>
                                               (guix-configuration
                                                (inherit config)
-                                               (guix (current-guix))))))))))
+                                               (guix (current-guix)))))))
