@@ -17,5 +17,5 @@ if [ -f "$HOME/.bashrc" ]; then
 fi
 
 # Source the profile associated with _this_ hostname
-guix_source_host_profile
+# guix_source_host_profile
 

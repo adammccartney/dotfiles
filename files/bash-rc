@@ -21,13 +21,7 @@ if [ -f ~/.bash_env ] ; then
     . ~/.bash_env
 fi
 
-# If not running interactively, setup guix profile manually
-# Otherwise it gets sourced in the bash profile that called this file
-if [[ $- != *i* ]]
-then
-    guix_source_host_profile
-fi
-
+# Note this stuff is sometimes needed when running on foreign distros
 export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
 
 # check whether we're setup to use nss-certs via guix, possibly set required variables
