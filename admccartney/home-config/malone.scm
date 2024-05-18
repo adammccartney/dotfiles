@@ -35,8 +35,6 @@ guix home -L ~/dotfiles reconfigure ~/dotfiles/admcartney/home-config/$(hostname
 
                                            ;; desktop
                                            "sway"
-                                           "swayidle"
-                                           "swaylock"
 
                                            ;; Compatibility for older Xorg applications
                                            "xorg-server-xwayland"
