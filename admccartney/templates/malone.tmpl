@@ -69,7 +69,11 @@ This instance of Guix is designed to test a full desktop setup.
 
  ;; Tailor a set of services that work well in a vm  
  (services
-   (append (list (service xfce-desktop-service-type)
+  (append (list (service xfce-desktop-service-type)
+                (set-xorg-configuration
+                 (xorg-configuration
+                  (keyboard-layout keyboard-layout))))
+          %desktop-services)
        
                  ;; Uncomment the line below to add an SSH server.
                  ;;(service openssh-service-type)
@@ -86,8 +90,8 @@ This instance of Guix is designed to test a full desktop setup.
            (remove (lambda (service)
                      (let ((type (service-kind service)))
                        (or (memq type
-                                 (list ;;gdm-service-type
-                                       ;;sddm-service-type
+                                 (list gdm-service-type
+                                       sddm-service-type
                                        wpa-supplicant-service-type
                                        cups-pk-helper-service-type
                                        network-manager-service-type
