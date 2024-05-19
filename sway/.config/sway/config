@@ -13,7 +13,7 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term foot
+set $term xfce4-terminal
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -222,11 +222,11 @@ bindsym --locked XF86MonBrightnessUp exec brightnessctl set 5%+
     bindsym $mod+r mode "resize"
 
     # start a foot server
-    exec /bin/foot --server --term=xterm
+    #exec /bin/foot --server --term=xterm
     # setup workspaces
     exec swaymsg "workspace 3; exec emacs"
     exec swaymsg "workspace 2; exec firefox"
-    exec swaymsg "workspace 1; exec /bin/footclient --command tmux"
+    exec swaymsg "workspace 1; exec $term --command tmux"
 
     #
     # Status Bar:
