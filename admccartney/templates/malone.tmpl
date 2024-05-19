@@ -67,20 +67,20 @@ This instance of Guix is designed to test a full desktop setup.
                            "gvfs")) ;; for use mounts
                     %base-packages))
 
- ;; Tailor a set of services that work well in a vm  
- (services
-  (append (list (service xfce-desktop-service-type
-                         (xorg-configuration
-                          (xorg-configuration
-                           ;; The QXL virtual GPU driver is added to provide
-                           ;; a better SPICE experience.
-                           (modules (cons xf86-video-qxl
-                                          %default-xorg-modules))
-                           (keyboard-layout keyboard-layout))))
+  ;; Tailor a set of services that work well in a vm  
+  (services
+   (append (list (service xfce-desktop-service-type)
+
+                 (set-xorg-configuration
+                  ;; The QXL virtual GPU driver is added to provide
+                  ;; a better SPICE experience.
+                  (modules (cons xf86-video-qxl
+                                 %default-xorg-modules))
+                  (keyboard-layout keyboard-layout))
 
 
                  ;; Uncomment the line below to add an SSH server.
-                ;;(service openssh-service-type)                
+                 ;;(service openssh-service-type)                
 
                  ;; Add support for the SPICE protocol, which enables dynamic
                  ;; resizing of the guest screen resolution, clipboard
@@ -95,23 +95,23 @@ This instance of Guix is designed to test a full desktop setup.
                      (let ((type (service-kind service)))
                        (or (memq type
                                  (list ;;gdm-service-type
-                                       ;;sddm-service-type
-                                       wpa-supplicant-service-type
-                                       cups-pk-helper-service-type
-                                       network-manager-service-type
-                                       modem-manager-service-type))
+                                  ;;sddm-service-type
+                                  wpa-supplicant-service-type
+                                  cups-pk-helper-service-type
+                                  network-manager-service-type
+                                  modem-manager-service-type))
                            (eq? 'network-manager-applet
                                 (service-type-name type)))))
-;;                     (login-service-type config =>
-;;                                         (login-configuration
-;;                                          (inherit config)
-;;                                          (motd vm-image-motd)))
-                     ;; Install and run the current Guix rather than an older
-                     ;; snapshot.
-                     (guix-service-type config =>
-                                        (guix-configuration
-                                         (inherit config)
-                                         (guix (current-guix))))))))
+                   ;;                     (login-service-type config =>
+                   ;;                                         (login-configuration
+                   ;;                                          (inherit config)
+                   ;;                                          (motd vm-image-motd)))
+                   ;; Install and run the current Guix rather than an older
+                   ;; snapshot.
+                   (guix-service-type config =>
+                                      (guix-configuration
+                                       (inherit config)
+                                       (guix (current-guix))))))))
 
   ;; Allow resolution of '.local' host names with mDNS.
   (name-service-switch %mdns-host-lookup-nss))
