@@ -110,7 +110,7 @@
 
          ;; Shell service
          `(,@ad/shell-service)
-          (,@ad/home-desktop-service-type)))))
+         `(,@ad/home-desktop-service-type)))))
 
 
 
