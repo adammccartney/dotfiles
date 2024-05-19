@@ -4,22 +4,6 @@ export LC_ALL=en_GB.UTF-8
 export LANG=en_GB.UTF-8
 export LANGUAGE=en_GB.UTF-8
 
-if [ -f ~/.bash_prompt ]; then
-    . ~/.bash_prompt
-    ${PROMPT_COMMAND}
-fi
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
-if [ -f ~/.bash_functions ]; then
-  . ~/.bash_functions
-fi
-
-if [ -f ~/.bash_env ] ; then
-    . ~/.bash_env
-fi
 
 # Note this stuff is sometimes needed when running on foreign distros
 export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
@@ -98,6 +82,24 @@ fi
 # git tools
 . ~/git-completion.bash
 
+if [ -f ~/.bash_prompt ]; then
+    . ~/.bash_prompt
+    ${PROMPT_COMMAND}
+fi
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+if [ -f ~/.bash_functions ]; then
+  . ~/.bash_functions
+fi
+
+if [ -f ~/.bash_env ] ; then
+    . ~/.bash_env
+fi
+
+
 # use emacs keybindings
 set -o emacs
 
@@ -119,3 +121,5 @@ FZF_KEYBINDINGS_PATH="$HOME/.fzf.keybindings.bash"
 if [ -f ${FZF_KEYBINDINGS_PATH} ]; then
     . ${FZF_KEYBINDINGS_PATH}
 fi
+
+
