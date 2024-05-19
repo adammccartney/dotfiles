@@ -14,6 +14,11 @@
   #:use-module (admccartney home-services shell)
   #:use-module (admccartney home-services desktop))
 
+
+(use-service-modules desktop mcron networking spice ssh xorg sddm)
+(use-package-modules bootloaders fonts
+                     package-management xdisorg xorg)
+
 (home-environment
  (packages (specifications->packages (list "coreutils"
                                            "glibc-locales"
@@ -108,9 +113,14 @@
                                       "../../readline"
                                       "../../mutt"))))
 
+         (service xfce-desktop-service-type)
+         (service spice-vdagent-service-type)
+         (service dhcp-client-service-type)
          ;; Shell service
          `(,@ad/shell-service)
-         `(,@ad/home-desktop-service-type)))))
+         
+
+         ))))
 
 
 
