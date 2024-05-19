@@ -42,7 +42,6 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                ("MAILDIR" . "$HOME/.mail")))
             
             (bashrc
-<<<<<<< HEAD
              `(,(local-file "../../files/bash-prompt")
                ;;,(local-file "../../files/bash-profile")
                ,(local-file "../../files/bash-functions")
