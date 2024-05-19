@@ -69,14 +69,15 @@ This instance of Guix is designed to test a full desktop setup.
 
   ;; Tailor a set of services that work well in a vm  
   (services
-   (append (list (service xfce-desktop-service-type)
-
+   (append (list (service gnome-desktop-service-type)
+                 (service xfce-desktop-service-type)
                  (set-xorg-configuration
-                  ;; The QXL virtual GPU driver is added to provide
-                  ;; a better SPICE experience.
-                  (modules (cons xf86-video-qxl
-                                 %default-xorg-modules))
-                  (keyboard-layout keyboard-layout))
+                  (xorg-configuration
+                   ;; The QXL virtual GPU driver is added to provide
+                   ;; a better SPICE experience.
+                   (modules (cons xf86-video-qxl
+                                  %default-xorg-modules))
+                   (keyboard-layout keyboard-layout)))
 
 
                  ;; Uncomment the line below to add an SSH server.
