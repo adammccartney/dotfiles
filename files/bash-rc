@@ -4,7 +4,6 @@ export LC_ALL=en_GB.UTF-8
 export LANG=en_GB.UTF-8
 export LANGUAGE=en_GB.UTF-8
 
-
 # Note this stuff is sometimes needed when running on foreign distros
 export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
 
@@ -14,7 +13,6 @@ if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then
     [ -v $SSL_CERT_FILE ] && export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
     [ -v $GIT_SSL_CAINFO ] && export GIT_SSL_CAINFO="$SSL_CERT_FILE"
 fi
-
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -30,7 +28,7 @@ HISTFILE="$XDG_CACHE_HOME/.bash_history"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
-shopt -s checkwinsize
+#shopt -s checkwinsize
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
@@ -76,7 +74,6 @@ if [ -f ${GUIX_BASH_COMPLETION} ]; then
     . ${GUIX_BASH_COMPLETION}
 fi
 
-
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # git tools
@@ -99,7 +96,6 @@ if [ -f ~/.bash_env ] ; then
     . ~/.bash_env
 fi
 
-
 # use emacs keybindings
 set -o emacs
 
@@ -121,5 +117,4 @@ FZF_KEYBINDINGS_PATH="$HOME/.fzf.keybindings.bash"
 if [ -f ${FZF_KEYBINDINGS_PATH} ]; then
     . ${FZF_KEYBINDINGS_PATH}
 fi
-
 
