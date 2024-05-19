@@ -14,7 +14,6 @@
   #:use-module (admccartney home-services shell)
   #:use-module (admccartney home-services desktop))
 
-
 (use-service-modules desktop mcron networking spice ssh xorg sddm)
 (use-package-modules bootloaders fonts
                      package-management xdisorg xorg)
@@ -94,9 +93,7 @@
                                            ;; mail
                                            "mu"
                                            "tmux"
-                                           "neomutt"
-
-                                           
+                                           "neomutt"                                           
                                            )))
  
  (services
@@ -113,14 +110,8 @@
                                       "../../readline"
                                       "../../mutt"))))
 
-         (service xfce-desktop-service-type)
-         (service spice-vdagent-service-type)
-         (service dhcp-client-service-type)
          ;; Shell service
-         `(,@ad/shell-service)
-         
-
-         ))))
+         `(,@ad/shell-service)))))
 
 
 
