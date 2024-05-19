@@ -10,18 +10,9 @@
                      package-management xdisorg xorg)
 
 (define vm-image-motd (plain-file "motd" "
-\x1b[1;37mThis is the GNU system.  Welcome!\x1b[0m
+\x1b[1;37mWelcome to Malone!\x1b[0m
 
-This instance of Guix is a template for virtualized environments.
-You can reconfigure the whole system by adjusting /etc/config.scm
-and running:
-
-  guix system reconfigure /etc/config.scm
-
-Run '\x1b[1;37minfo guix\x1b[0m' to browse documentation.
-
-\x1b[1;33mConsider setting a password for the 'root' and 'guest' \
-accounts.\x1b[0m
+This instance of Guix is customized for use in a VM.
 "))
 
 (operating-system
@@ -52,7 +43,7 @@ accounts.\x1b[0m
   (users (cons (user-account
                 (name "adam")
                 (comment "none")
-                (group "adam")
+                (group "users")
                 (home-directory "/home/adam")
                 (supplementary-groups '("wheel" "netdev"
                                         "audio" "video")))
