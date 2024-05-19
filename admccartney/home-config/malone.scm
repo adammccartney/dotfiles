@@ -11,7 +11,8 @@
   #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
-  #:use-module (admccartney home-services shell))
+  #:use-module (admccartney home-services shell)
+  #:use-module (admccartney home-services desktop))
 
 (home-environment
  (packages (specifications->packages (list "coreutils"
@@ -108,5 +109,14 @@
                                       "../../mutt"))))
 
          ;; Shell service
-         `(,@ad/shell-service)))))
+         `(,@ad/shell-service)
+          (,@ad/home-desktop-service-type)))))
+
+
+
+
+
+
+
+
 
