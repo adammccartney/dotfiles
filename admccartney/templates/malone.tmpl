@@ -102,10 +102,6 @@ This instance of Guix is designed to test a full desktop setup.
                                   modem-manager-service-type))
                            (eq? 'network-manager-applet
                                 (service-type-name type)))))
-                   ;;                     (login-service-type config =>
-                   ;;                                         (login-configuration
-                   ;;                                          (inherit config)
-                   ;;                                          (motd vm-image-motd)))
                    ;; Install and run the current Guix rather than an older
                    ;; snapshot.
                    (guix-service-type config =>
