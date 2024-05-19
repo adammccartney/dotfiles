@@ -2,7 +2,6 @@
 ;; shell.scm - defines a shell service
 (define-module (admccartney home-services shell)
   #:use-module (guix gexp)
-  #:use-module (guix home)
   #:use-module (gnu packages)
   #:use-module (gnu packages shellutils)
   #:use-module (gnu services)
