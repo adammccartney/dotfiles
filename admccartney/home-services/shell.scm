@@ -1,3 +1,4 @@
+
 ;; -*- mode: scheme; -*-
 ;; shell.scm - defines a shell service
 (define-module (admccartney home-services shell)
@@ -41,9 +42,10 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                ("MAILDIR" . "$HOME/.mail")))
             
             (bashrc
-             `(,(local-file "../../files/bash-prompt")
-               ,(local-file "../../files/bash-profile")
+             `(;;,(local-file "../../files/bash-prompt")
+               ;;,(local-file "../../files/bash-profile")
                ,(local-file "../../files/bash-functions")
                ,(local-file "../../files/bash-rc"))))))
+
 
 
