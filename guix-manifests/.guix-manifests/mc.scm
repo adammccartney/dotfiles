@@ -8,11 +8,15 @@
    "openssl"
    "stow"
 
-    ;; cli apps
+   ;; build tools
+   "cmake"
+   
+   ;; cli apps
    "ripgrep"
    "git"
    "fzf"
    "tmux"
+   
    ;; guile scheme
    "guile"
    "guile-colorized"
