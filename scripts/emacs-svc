@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# tiny wrapper for systemd
-
-PRG=$(type -P emacs)
-XMODIFIERS='' $PRG --daemon

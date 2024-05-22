@@ -4,9 +4,10 @@ Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs
 
 [Service]
 Type=forking
-ExecStart=%h/bin/emacs-svc
-ExecStop=%h/bin/emacs-svc-stop
-#Environment=SSH_AUTH_SOCK=%t/keyring/ssh
+EnvironmentFile=%h/.config/systemd/user/etc/emacs.conf
+ExecStart=/bin/sh -c ${EMACS_CMD}
+ExecStop=/bin/sh -c ${EMACSCLIENT_EXE} --eval '(kill emacs)'
+Environment=SSH_AUTH_SOCK=%t/keyring/ssh
 Restart=on-failure
 
 [Install]
