@@ -70,27 +70,19 @@ Get a list of direcories that can be used as candidates for
   (let* ((venv-roots (ad/path->dirlist venvparent)))
     venv-roots))
 
-;; TODO: simplify me
-(transient-define-suffix tsc-suffix-print-args (the-prefix-arg)
-  "Report the PREFIX-ARG, prefix's scope, and infix values."
-  :transient 'transient--do-call
-  (interactive "P")
-  (let ((args (transient-args (oref transient-current-prefix command)))
-        (scope (oref transient-current-prefix scope)))
-    (message "prefix-arg: %s \nprefix's scope value: %s \ntransient-args: %s"
-             the-prefix-arg scope args)))
 
-
-(transient-define-suffix ad-venv-set-python-shell-virtualenv-root (the-prefix-arg)
-  "Set the `python-shell-virtualenv-root' using the PREFIX-ARG"
+(transient-define-suffix ad--venv-set-python-shell-virtualenv-root (the-prefix-arg)
+  "Set the `python-shell-virtualenv-root' using the PREFIX-ARG
+We perform a little bit of manipulation of ARGS once they are determined from context.
+Assumes that the virtualenvironment name we want to set appears as the first item in the
+ARGS list in the form '--venv=NAME' we parse out the rhs of this expression and use it
+to set the desired variable."
   :transient 'transient--do-call
   (interactive "P")
   (let* ((args (transient-args (oref transient-current-prefix command)))
-         (venv-name (string-split args "=")))
+         (venv-name (ad/get-rhs (split-string (car args) "="))))
     (progn
-;;      (message args)
-      ;; to do, strip the fluff from our args
-      (setq python-shell-virtualenv-root (format "~/.virtualenv/%s" venv-name))
+      (setq python-shell-virtualenv-root (format "~/.virtualenv/%s/" venv-name))
       (message (format "python-shell-virtualenv-root: %s" python-shell-virtualenv-root)))))
 
 
@@ -111,17 +103,9 @@ The selection will be passed to `ad-venv-set-python-shell-virtualenv-root'"
     :choices ad/get-choices-venv)]
   ["Show Environment"
    ("s" "show selected environment" tsc-suffix-print-args)
-   ("e" "enable selected environment" ad-venv-set-python-shell-virtualenv-root)])
+   ("e" "enable selected environment" ad--venv-set-python-shell-virtualenv-root)])
 
 (ad-venv-choices-with-completions)
 
-
-
 (provide 'adlisp)
-
-
-
-
-
-
 
