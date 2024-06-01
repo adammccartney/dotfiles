@@ -12,3 +12,5 @@ restow-no-guix-home:
 unstow-no-guix-home:
 	bin/unstow-no-guix-home
 
+generate_systemd_values_files:
+	./scripts/gen-emacs-systemd-config

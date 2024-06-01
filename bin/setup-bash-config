@@ -9,13 +9,10 @@
 
 
 # backup
-cp -v "$HOME/.bash_profile" "$HOME/.bash_profileBAK"
-cp -v "$HOME/.bashrc" "$HOME/.bashrcBAK"
-cp -v "$HOME/.bash_functions" "$HOME/.bash_functionsBAK"
-cp -v "$HOME/.bash_prompt" "$HOME/.bash_promptBAK"
-
 # link new
-rm -fv "$HOME/.bash_profile" && ln -v files/bash-profile "$HOME/.bash_profile"
+for cfg in aliases functions profile prompt; do
+    cp -v "$HOME/.bash_${cfg}" "$HOME/.bash_${cfg}BAK"
+    rm -rf "$HOME/.bash_${cfg}" && ln -v files/bash-${cfg} "$HOME/.bash_${cfg}"
+done
+cp -v "$HOME/.bashrc" "$HOME/.bashrcBAK"
 rm -fv "$HOME/.bashrc" && ln -v files/bash-rc "$HOME/.bashrc"
-rm -fv "$HOME/.bash_functions" && ln -v files/bash-functions "$HOME/.bash_functions"
-rm -fv "$HOME/.bash_prompt" && ln -v files/bash-prompt "$HOME/.bash_prompt"

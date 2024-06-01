@@ -63,6 +63,7 @@
                                            "zip"
                                            "unzip"
                                            "trash-cli"
+                                           "cmake"
                                            
                                            ;; Scheme
                                            "guile"
@@ -72,8 +73,10 @@
                                            ;; Emacs
                                            "emacs-no-x-toolkit"  ; TODO figure out why regular emacs borks the desktop cursor
                                            "emacs-geiser"
+                                           "emacs-geiser-guile"
                                            "emacs-yasnippet"
                                            "emacs-rg"
+                                           "emacs-dumb-jump"
                                            "libvterm"
                                            "libtool"
 
@@ -112,12 +115,5 @@
 
          ;; Shell service
          `(,@ad/shell-service)))))
-
-
-
-
-
-
-
 
 

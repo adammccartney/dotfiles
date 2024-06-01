@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# Tiny wrapper for systemd
-
-PRG=$(which emacsclient)
-$(PRG) --eval "(kill-emacs)
-# Tiny wrapper for systemd"

@@ -1,0 +1,22 @@
+alias k=kubectl
+
+alias train="source /home/amccartn/bin/train"
+
+alias slack="slack --enable-features=WebRTCPipewireCapturer"
+
+alias zoom="zoom --enable-features=WebRTCPipewireCapturer"
+
+alias ltucfg="source ~/dotfiles/bash/tu.aliases.bash"
+
+alias guile=/home/amccartn/.guix-extra-profiles/mc/mc/bin/guile
+
+alias ls0="find . -maxdepth 1 -print0"
+
+alias mk="minikube kubectl --"
+alias bup="bkhome-wrapper.sh"
+alias wgu="sudo wg-quick up wg0"
+lias wgd="sudo wg-quick down wg0"
+alias tuvpn='sudo openconnect --user amccartn@tuwien.ac.at vpn.tuwien.ac.at'
+
+
+#alias emacs="XMODIFIERS='' emacs &"
