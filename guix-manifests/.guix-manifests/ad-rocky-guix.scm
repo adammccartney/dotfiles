@@ -3,7 +3,8 @@
    "coreutils"
    "glibc-locales"
    "git"
-;;   "nss-certs"
+   "mcron"
+   "nss-certs"
    "openssl"
    "stow"
 
