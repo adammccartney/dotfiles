@@ -51,21 +51,21 @@ This instance of Guix is designed to test a full desktop setup.
 
   ;; Add a bunch of window managers; we can choose one at
   ;; the log-in screen with F1.
-  (packages (append (map specification->package
-                         ;; window managers
-                         '("emacs-exwm"
-                           "sway"
-                           ;; terminal emulator
-                           "gnome-shell"
-                           "foot"
-                           ;; editors
-                           "emacs-no-x-toolkit"
-                           "vim"
-                           ;; cli apps
-                           "tmux"
-                           "x-resize"
-                           "gvfs")) ;; for use mounts
-                    %base-packages))
+  (packages (cons*
+             ;; window managers
+             emacs-exwm
+             sway
+             ;; terminal emulator
+             gnome-shell
+             foot
+             ;; editors
+             emacs-no-x-toolkit
+             vim
+             ;; cli apps
+             tmux
+             x-resize
+             gvfs ;; for use mounts
+             %base-packages))
 
   ;; Tailor a set of services that work well in a vm  
   (services
