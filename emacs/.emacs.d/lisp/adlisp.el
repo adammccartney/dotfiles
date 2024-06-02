@@ -86,13 +86,13 @@ to set the desired variable."
       (message (format "python-shell-virtualenv-root: %s" python-shell-virtualenv-root)))))
 
 
-(transient-define-argument ad-venv--get-pyvenv-root-options-switch ()
-  :description "Possible virtual environment roots for python"
-  :class 'transient-switches
-  :key "v"
-  :argument-format "%s"
-  :argument-regexp nil
-  :choices (ad/get-choices-venv))
+;;(transient-define-argument ad-venv--get-pyvenv-root-options-switch ()
+;;  :description "Possible virtual environment roots for python"
+;;  :class 'transient-switches
+;;  :key "v"
+;;  :argument-format "%s"
+;;  :argument-regexp nil
+;;  :choices (ad/get-choices-venv))
 
 (transient-define-prefix ad-venv-choices-with-completions ()
   "Provide a set of choices for python virtual environments.
@@ -102,10 +102,10 @@ The selection will be passed to `ad-venv-set-python-shell-virtualenv-root'"
     :always-read t ; don't allow unsetting, just read a new value
     :choices ad/get-choices-venv)]
   ["Show Environment"
-   ("s" "show selected environment" tsc-suffix-print-args)
+;;   ("s" "show selected environment" tsc-suffix-print-args)
    ("e" "enable selected environment" ad--venv-set-python-shell-virtualenv-root)])
 
-(ad-venv-choices-with-completions)
+;;(ad-venv-choices-with-completions)
 
 (provide 'adlisp)
 
