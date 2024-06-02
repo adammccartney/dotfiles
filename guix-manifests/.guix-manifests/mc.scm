@@ -4,9 +4,13 @@
    "coreutils"
    "glibc-locales"
    "git"
-   "nss-certs"
+;;   "nss-certs"
    "openssl"
    "stow"
+   "tree"
+
+   ;; passwords
+   "password-store"
 
    ;; build tools
    "cmake"
