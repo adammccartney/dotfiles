@@ -3,7 +3,7 @@
    "coreutils"
    "glibc-locales"
    "git"
-   "nss-certs"
+;;   "nss-certs"
    "openssl"
    "stow"
 
@@ -12,6 +12,7 @@
    "git"
    "fzf"
    "tmux"
+   "tree"
 
    ;; guile scheme
    "guile"
