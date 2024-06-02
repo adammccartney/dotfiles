@@ -44,5 +44,6 @@
    ;; mail
    "mu"
    "isync"
+   "mutt"
    "neomutt"))
 

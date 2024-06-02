@@ -108,6 +108,8 @@
 (require 'epa-file)
 (epa-file-enable)
 
+(require 'transient)
+
 ;;----------------------------------------------------------------------------
 ;; load extra config.el files
 ;;---------------------------------------------------------------------------
@@ -572,3 +574,5 @@
   (setq elfeed-feeds
         '("https://nullprogram.com/feed/"
           "https://drewdevault.com/blog/index.xml")))
+
+;;(require 'transient-showcase)
