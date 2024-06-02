@@ -49,4 +49,4 @@ color tilde color250 color235
 color search black white
 
 # Threads
-set use_threads=yes sort=date sort_aux=date
+#set use_threads=yes sort=date sort_aux=date
