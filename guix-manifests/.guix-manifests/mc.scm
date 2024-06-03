@@ -40,7 +40,7 @@
    "libtool"
 
    ;; vim + plugins
-   "vim"
+   "vim-full"
    "vim-guix-vim"
    "vim-fugitive"
    "vim-nerdtree"
