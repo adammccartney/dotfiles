@@ -10,7 +10,6 @@
   #:use-module (gnu home services desktop)
   #:use-module (gnu packages)
   #:use-module (gnu packages package-management)
-  #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
   #:use-module (admccartney home-services shell)
