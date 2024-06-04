@@ -17,8 +17,10 @@
   #:use-module (admccartney home-services shell)
   #:use-module (admccartney home-services desktop))
 
-(use-service-modules guix admin desktop mcron networking spice ssh)
-(use-package-modules admin bootloaders fonts guile guile-xyz
+(use-service-modules guix admin sysctl desktop linux mcron
+                     networking spice ssh xorg ssh)
+
+(use-package-modules bootloaders fonts guile guile-xyz linux bash emacs gnome
                      package-management version-control certs tmux vim)
 
 (home-environment
