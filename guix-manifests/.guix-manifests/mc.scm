@@ -19,6 +19,7 @@
    ;; cli apps
    "ripgrep"
    "git"
+   "git-crypt"
    "fzf"
    "tmux"
    

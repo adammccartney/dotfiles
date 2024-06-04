@@ -2,5 +2,5 @@
 
 # update home based on hostname
 
-guix home -L ~/dotfiles/ reconfigure ~/dotfiles/$(whoami)/home-config/$(hostname).scm
+guix home -L ~/dotfiles/ reconfigure ~/dotfiles/admccartney/home-config/$(hostname).scm
 
