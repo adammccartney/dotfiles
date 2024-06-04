@@ -17,9 +17,9 @@
   #:use-module (admccartney home-services shell)
   #:use-module (admccartney home-services desktop))
 
-(use-service-modules admin mcron networking spice ssh)
+(use-service-modules guix admin desktop mcron networking spice ssh)
 (use-package-modules admin bootloaders fonts guile guile-xyz
-                     package-management version-control certs tls rust-apps terminals tmux vim)
+                     package-management version-control certs tmux vim)
 
 (home-environment
  (packages (cons* coreutils
