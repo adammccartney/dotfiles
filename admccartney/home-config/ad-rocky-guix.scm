@@ -8,12 +8,6 @@
   #:use-module (gnu home services dotfiles)
   #:use-module (gnu packages)
   #:use-module (gnu packages package-management)
-  #:use-module (gnu packages version-control)
-  #:use-module (gnu packages guile-xyz)
-  #:use-module (gnu packages certs)
-  #:use-module (gnu packages tls)
-  #:use-module (gnu packages rust-apps)
-  #:use-module (gnu packages terminals)
   #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
@@ -21,7 +15,8 @@
   #:use-module (admccartney home-services desktop))
 
 (use-service-modules mcron networking spice ssh)
-(use-package-modules bootloaders fonts package-management)
+(use-package-modules bootloaders fonts package-management version-control
+                     guile-xyz certs tls rust-apps terminals tmux)
 
 (home-environment
  (packages (cons*
