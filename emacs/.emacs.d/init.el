@@ -29,6 +29,7 @@
 
 ;; Make sure to load packages that were installed by guix
 (add-to-list 'load-path (format "%s/share/emacs/site-lisp" (getenv "GUIX_PROFILE")))
+(use-package emacs-guix)
 (guix-emacs-autoload-packages)
              
 
@@ -532,7 +533,7 @@
 (customize-set-variable 'tramp-debug-to-file t)
 (setq tramp-verbose 6)
 
-(use-package emacs-guix)
+
 
 (with-eval-after-load 'geiser-guile
   (add-to-list 'geiser-guile-load-path "~/src/guix"))
