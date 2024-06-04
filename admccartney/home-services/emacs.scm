@@ -6,15 +6,15 @@
 (define-module (admccartney home-services emacs)
   #:use-module (guix gexp)
   #:use-module (gnu packages)
-  #:use-module (gnu packages emacs)
   #:use-module (gnu services)
   #:use-module (gnu home services)
 
   #:export (ad/emacs-packages))
 
+
 (define ad/emacs-packages
   (list
-   emacs-use-package
+   emacs
    emacs-geiser
    emacs-geiser-guile
    emacs-yasnippet
@@ -68,12 +68,3 @@
    libvterm
    libtool))
    
-
-(define ad/home-emacs-config-service-type
-  (service-type (name 'home-emacs-config)
-                (description "Applies a personal configuration to Emacs")
-                (extensions
-                 (list (service-extension
-                        home-profile-service-type
-                        home-emacs-config-profile-service)))
-                (default-value #f)))
