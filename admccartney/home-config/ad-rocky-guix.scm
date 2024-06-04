@@ -10,12 +10,9 @@
   #:use-module (gnu home services dotfiles)
   #:use-module (gnu home services shells)
   #:use-module (gnu home services desktop)
-  #:use-module (gnu packages)
-  #:use-module (gnu packages package-management)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
-  #:use-module (admccartney home-services shell)
-  #:use-module (admccartney home-services desktop))
+  #:use-module (admccartney home-services shell))
 
 (use-service-modules guix admin sysctl desktop linux mcron
                      networking spice ssh xorg ssh)
@@ -33,7 +30,7 @@
 
                   ;; vim + plugins
                   vim-full
-                  %base-packages)))
+                  %base-packages))
 
  (services
   (append
