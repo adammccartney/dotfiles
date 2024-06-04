@@ -5,8 +5,10 @@
 
 (define-module (admccartney home-services emacs)
   #:use-module (guix gexp)
+  #:use-module (gnu)
   #:use-module (gnu packages)
-  #:use-module (gnu packages emacs-xyz
+  #:use-module (gnu packages emacs)
+  #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu services)
   #:use-module (gnu home services)
 
@@ -32,8 +34,8 @@
    ;; Org mode
    emacs-org
    emacs-org-roam
-   emacs-org-roam-ui
-   emacs-ob-typescript
+;;   emacs-org-roam-ui
+;;   emacs-ob-typescript
    emacs-ob-go
    
    ;; Completions
@@ -64,9 +66,5 @@
    emacs-yaml-mode
 
    emacs-ement
-   emacs-elfeed
-
-   ;; TODO: check if we really need these
-   libvterm
-   libtool))
-   
+   emacs-elfeed))
+    
