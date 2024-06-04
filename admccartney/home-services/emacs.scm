@@ -6,6 +6,7 @@
 (define-module (admccartney home-services emacs)
   #:use-module (guix gexp)
   #:use-module (gnu packages)
+  #:use-module (gnu packages emacs-xyz
   #:use-module (gnu services)
   #:use-module (gnu home services)
 
@@ -15,6 +16,7 @@
 (define ad/emacs-packages
   (list
    emacs
+   emacs-use-package
    emacs-geiser
    emacs-geiser-guile
    emacs-yasnippet
