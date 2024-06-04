@@ -27,7 +27,10 @@
 (eval-when-compile
   (require 'use-package))
 
-
+;; Make sure to load packages that were installed by guix
+(add-to-list 'load-path (format "%s/share/emacs/site-lisp" (getenv "GUIX_PROFILE")))
+(guix-emacs-autoload-packages)
+             
 
 ;;--------------------------------------------------------------------------
 ;; Some global settings
@@ -432,7 +435,7 @@
   (setq geiser-default-implementation 'guile)
   (setq geiser-active-implementations '(guile))
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile)))
-  (setq geiser-guile-binary "~/.guix-profile/bin/guile"))
+  (setq geiser-guile-binary (format "%s/bin/guile" (getenv "GUIX_PROFILE"))))
 
 (use-package geiser-guile)
 
@@ -509,16 +512,16 @@
   :ensure t
   :init 
   (setq inferior-lisp-program "/usr/bin/sbcl")
-;;  (setq slime-lisp-implementations
-;;        (let ((core-file (format "%s" (substitute-in-file-name "$HOME/.cache/emacs/sbcl.core-for-slime"))))
-;;        '((sbcl ("sbcl" "--core" core-file)))))
+  ;;  (setq slime-lisp-implementations
+  ;;        (let ((core-file (format "%s" (substitute-in-file-name "$HOME/.cache/emacs/sbcl.core-for-slime"))))
+  ;;        '((sbcl ("sbcl" "--core" core-file)))))
   :config
   (add-hook 'slime-load-hook
             (lambda ()
               (define-key slime-prefix-map (kbd "M-h") 'slime-documentation-lookup))))
 
 
-; Tramp for tramping
+                                        ; Tramp for tramping
 (tramp-set-completion-function
  "ssh"
  '((tramp-parse-sconfig "/etc/ssh_config")
@@ -528,6 +531,15 @@
 ;;      debug-on-signal t)
 (customize-set-variable 'tramp-debug-to-file t)
 (setq tramp-verbose 6)
+
+(use-package emacs-guix)
+
+(with-eval-after-load 'geiser-guile
+  (add-to-list 'geiser-guile-load-path "~/src/guix"))
+
+(with-eval-after-load 'yasnippet
+  (add-to-list 'yas-snippet-dirs "~/src/guix/etc/snippets/yas"))
+
 
 (use-package nix-mode
   ;; https://github.com/NixOS/nix-mode
