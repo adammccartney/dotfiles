@@ -21,36 +21,17 @@
                      package-management version-control certs tls rust-apps terminals tmux vim)
 
 (home-environment
- (packages (cons*
-            coreutils
-            glibc-locales
-            git
-            mcron
-            nss-certs
-            openssl
-            stow
+ (packages (cons* coreutils
+                  git
+                  stow
 
-            ;; cli apps
-            ripgrep
-            git
-            fzf
-            tmux
-            tree
+                  ;; cli apps
+                  tmux
 
-            ;; guile scheme
-            guile
-            guile-colorized
-            guile-readline
-            guile-ics
-            guile-ssh
+                  ;; vim + plugins
+                  vim-full
+                  %base-packages)))
 
-            ;; vim + plugins
-            vim-full
-            vim-guix-vim
-            vim-fugitive
-            vim-nerdtree
-            vim-slime)))
- 
  (services
   (append
    (list (service home-dotfiles-service-type
