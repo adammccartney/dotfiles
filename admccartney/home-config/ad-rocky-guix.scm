@@ -8,6 +8,7 @@
   #:use-module (gnu home services dotfiles)
   #:use-module (gnu packages)
   #:use-module (gnu packages package-management)
+  #:use-module (gnu packages version-control)
   #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
