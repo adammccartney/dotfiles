@@ -9,13 +9,22 @@ export LANGUAGE=en_GB.UTF-8
 
 # Check for a "host" profile
 GUIX_EXTRA_PROFILES="$HOME/.guix-extra-profiles"
+GUIX_HOME="$HOME/.guix-home"
 if [ -d "$GUIX_EXTRA_PROFILES/$(hostname)/$(hostname)" ]; then
     export GUIX_PROFILE="$GUIX_EXTRA_PROFILES/$(hostname)/$(hostname)"
     . "$GUIX_PROFILE/etc/profile"
+elif [ -d "$GUIX_HOME/profile" ]; then
+    export GUIX_PROFILE="$GUIX_HOME/profile"
+    . "$GUIX_PROFILE/etc/profile"
+else
+    echo "No guix profile"
 fi
 
 # Note this stuff is sometimes needed when running on foreign distros
-export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
+# TODO: clean this up, we should always use the locale from the default profile
+if [ ! -z $GUIX_PROFILE ]; then
+    export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
+fi
 
 # check whether we're setup to use nss-certs via guix, possibly set required variables
 if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then

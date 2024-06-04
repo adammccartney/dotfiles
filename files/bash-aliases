@@ -8,7 +8,7 @@ alias zoom="zoom --enable-features=WebRTCPipewireCapturer"
 
 alias ltucfg="source ~/dotfiles/bash/tu.aliases.bash"
 
-alias guile=/home/amccartn/.guix-extra-profiles/mc/mc/bin/guile
+#alias guile=/home/amccartn/.guix-extra-profiles/mc/mc/bin/guile
 
 alias ls0="find . -maxdepth 1 -print0"
 
