@@ -14,7 +14,7 @@
   #:use-module (admccartney home-services shell)
   #:use-module (admccartney home-services desktop))
 
-(use-service-modules mcron networking spice ssh)
+(use-service-modules admin mcron networking spice ssh)
 (use-package-modules bootloaders fonts package-management version-control
                      guile-xyz certs tls rust-apps terminals tmux)
 
