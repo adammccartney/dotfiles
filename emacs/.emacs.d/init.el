@@ -282,15 +282,15 @@
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(use-package company
-  :ensure t
-  :config
-  (setq company-global-mode t)
-  (setq company-minimum-prefix-length 2)
-  (setq company-idle-delay
-        (lambda () (if (company-in-string-or-comment) nil 0.3)))
-  (setq company-global-modes '(not org-mode))
-  (setq company-selection-wrap-around t))
+;;(use-package company
+;;  :ensure t
+;;  :config
+;;  (setq company-global-mode t)
+;;  (setq company-minimum-prefix-length 2)
+;;  (setq company-idle-delay
+;;        (lambda () (if (company-in-string-or-comment) nil 0.3)))
+;;  (setq company-global-modes '(not org-mode))
+;;  (setq company-selection-wrap-around t))
 
 
 (use-package which-key
@@ -561,7 +561,7 @@
 ;; reading
 ;;---------------------------------------------------------------------
 (use-package i-ching
-  :ensure t
+  :ensure f
   :config (setq i-ching-hexagram-size 18
                 i-ching-hexagram-font "DejaVu Sans"
                 i-ching-divination-method '3-coins
@@ -569,10 +569,11 @@
   :bind (("C-c i h" . i-ching-insert-hexagram)))
 
 (use-package elfeed
-  :ensure t
+  :ensure f
   :config
   (setq elfeed-feeds
         '("https://nullprogram.com/feed/"
           "https://drewdevault.com/blog/index.xml")))
 
 ;;(require 'transient-showcase)
+
