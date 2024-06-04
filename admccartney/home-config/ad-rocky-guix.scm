@@ -33,7 +33,7 @@
                    ;; vim + plugins
                    vim-full
                    %base-packages)
-            ad/emacs-packages)
+            ad/emacs-packages))
 
  (services
   (append
