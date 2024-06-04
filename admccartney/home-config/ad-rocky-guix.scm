@@ -11,6 +11,7 @@
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages guile-xyz)
   #:use-module (gnu packages certs)
+  #:use-module (gnu packages tls)
   #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
