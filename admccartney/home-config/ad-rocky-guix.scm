@@ -3,6 +3,8 @@
 
 (define-module (admccartney home-config ad-rocky-guix)
   #:use-module (gnu)
+  #:use-module (gnu system)
+  #:use-module (gnu system nss)
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services dotfiles)
