@@ -7,8 +7,7 @@
   #:use-module (guix gexp)
   #:use-module (gnu packages)
   #:use-module (gnu services)
-  #:use-module (gnu home services)
-  #:use-module (gnu home services emacs)
+  #:use-module (gnu home services))
 
   #:export (ad/emacs-packages))
 
