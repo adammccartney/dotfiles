@@ -29,9 +29,8 @@
 
 ;; Make sure to load packages that were installed by guix
 (add-to-list 'load-path (format "%s/share/emacs/site-lisp" (getenv "GUIX_PROFILE")))
-(use-package emacs-guix)
+(require 'guix-emacs)
 (guix-emacs-autoload-packages)
-             
 
 ;;--------------------------------------------------------------------------
 ;; Some global settings

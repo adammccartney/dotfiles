@@ -33,6 +33,7 @@
 
    ;; Emacs
    "emacs"
+   "emacs-guix"
    "emacs-geiser"
    "emacs-geiser-guile"
    "emacs-yasnippet"
