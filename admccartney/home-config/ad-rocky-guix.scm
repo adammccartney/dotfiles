@@ -6,6 +6,8 @@
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services dotfiles)
+  #:use-module (gnu home services shells)
+  #:use-module (gnu home services desktop)
   #:use-module (gnu packages)
   #:use-module (gnu packages package-management)
   #:use-module (gnu services)
