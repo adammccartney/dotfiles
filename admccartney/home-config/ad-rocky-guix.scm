@@ -10,6 +10,7 @@
   #:use-module (gnu packages package-management)
   #:use-module (gnu packages version-control)
   #:use-module (gnu packages guile-xyz)
+  #:use-module (gnu packages certs)
   #:use-module (gnu services)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
