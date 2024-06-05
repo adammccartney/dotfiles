@@ -137,4 +137,7 @@ if [ -f ${FZF_KEYBINDINGS_PATH} ]; then
     . ${FZF_KEYBINDINGS_PATH}
 fi
 
+# Go Setup (temporary?)
+export GOPATH="$HOME/go"
+export PATH="$PATH:$GOPATH/bin"
 
