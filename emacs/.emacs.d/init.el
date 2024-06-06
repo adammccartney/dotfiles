@@ -27,7 +27,10 @@
 (eval-when-compile
   (require 'use-package))
 
-
+;; Make sure to load packages that were installed by guix
+(add-to-list 'load-path (format "%s/share/emacs/site-lisp" (getenv "GUIX_PROFILE")))
+(require 'guix-emacs)
+(guix-emacs-autoload-packages)
 
 ;;--------------------------------------------------------------------------
 ;; Some global settings
@@ -282,15 +285,15 @@
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
-(use-package company
-  :ensure t
-  :config
-  (setq company-global-mode t)
-  (setq company-minimum-prefix-length 2)
-  (setq company-idle-delay
-        (lambda () (if (company-in-string-or-comment) nil 0.3)))
-  (setq company-global-modes '(not org-mode))
-  (setq company-selection-wrap-around t))
+;;(use-package company
+;;  :ensure t
+;;  :config
+;;  (setq company-global-mode t)
+;;  (setq company-minimum-prefix-length 2)
+;;  (setq company-idle-delay
+;;        (lambda () (if (company-in-string-or-comment) nil 0.3)))
+;;  (setq company-global-modes '(not org-mode))
+;;  (setq company-selection-wrap-around t))
 
 
 (use-package which-key
@@ -336,6 +339,10 @@
          (go-mode . eglot-ensure))
   :config
   (setq eglot-autoshutdown t))
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(python-mode . ("/usr/local/bin/pyright-langserver" "--stdio" "--venvpath=~/.virtualenvs"))))
 
 
 (use-package magit
@@ -432,7 +439,7 @@
   (setq geiser-default-implementation 'guile)
   (setq geiser-active-implementations '(guile))
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile)))
-  (setq geiser-guile-binary "~/.guix-profile/bin/guile"))
+  (setq geiser-guile-binary (format "%s/bin/guile" (getenv "GUIX_PROFILE"))))
 
 (use-package geiser-guile)
 
@@ -509,16 +516,16 @@
   :ensure t
   :init 
   (setq inferior-lisp-program "/usr/bin/sbcl")
-;;  (setq slime-lisp-implementations
-;;        (let ((core-file (format "%s" (substitute-in-file-name "$HOME/.cache/emacs/sbcl.core-for-slime"))))
-;;        '((sbcl ("sbcl" "--core" core-file)))))
+  ;;  (setq slime-lisp-implementations
+  ;;        (let ((core-file (format "%s" (substitute-in-file-name "$HOME/.cache/emacs/sbcl.core-for-slime"))))
+  ;;        '((sbcl ("sbcl" "--core" core-file)))))
   :config
   (add-hook 'slime-load-hook
             (lambda ()
               (define-key slime-prefix-map (kbd "M-h") 'slime-documentation-lookup))))
 
 
-; Tramp for tramping
+                                        ; Tramp for tramping
 (tramp-set-completion-function
  "ssh"
  '((tramp-parse-sconfig "/etc/ssh_config")
@@ -528,6 +535,13 @@
 ;;      debug-on-signal t)
 (customize-set-variable 'tramp-debug-to-file t)
 (setq tramp-verbose 6)
+
+(with-eval-after-load 'geiser-guile
+  (add-to-list 'geiser-guile-load-path "~/src/guix"))
+
+(with-eval-after-load 'yasnippet
+  (add-to-list 'yas-snippet-dirs "~/src/guix/etc/snippets/yas"))
+
 
 (use-package nix-mode
   ;; https://github.com/NixOS/nix-mode
@@ -561,7 +575,7 @@
 ;; reading
 ;;---------------------------------------------------------------------
 (use-package i-ching
-  :ensure t
+  :ensure f
   :config (setq i-ching-hexagram-size 18
                 i-ching-hexagram-font "DejaVu Sans"
                 i-ching-divination-method '3-coins
@@ -569,10 +583,11 @@
   :bind (("C-c i h" . i-ching-insert-hexagram)))
 
 (use-package elfeed
-  :ensure t
+  :ensure f
   :config
   (setq elfeed-feeds
         '("https://nullprogram.com/feed/"
           "https://drewdevault.com/blog/index.xml")))
 
 ;;(require 'transient-showcase)
+

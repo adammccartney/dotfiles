@@ -12,7 +12,8 @@
   #:use-module (gnu home services desktop)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
-  #:use-module (admccartney home-services shell))
+  #:use-module (admccartney home-services shell)
+  #:use-module (admccartney home-services emacs))
 
 (use-service-modules guix admin sysctl desktop linux mcron
                      networking spice ssh xorg ssh)
@@ -21,7 +22,8 @@
                      package-management version-control certs tmux vim)
 
 (home-environment
- (packages (cons* coreutils
+ (packages (append
+            (cons* coreutils
                   git
                   stow
 
@@ -30,7 +32,9 @@
 
                   ;; vim + plugins
                   vim-full
-                  %base-packages))
+                  
+                  %base-packages)
+            ad/emacs-packages))
 
  (services
   (append
