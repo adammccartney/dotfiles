@@ -340,6 +340,10 @@
   :config
   (setq eglot-autoshutdown t))
 
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(python-mode . ("/usr/local/bin/pyright-langserver" "--stdio" "--venvpath=~/.virtualenvs"))))
+
 
 (use-package magit
   :ensure t
@@ -531,8 +535,6 @@
 ;;      debug-on-signal t)
 (customize-set-variable 'tramp-debug-to-file t)
 (setq tramp-verbose 6)
-
-
 
 (with-eval-after-load 'geiser-guile
   (add-to-list 'geiser-guile-load-path "~/src/guix"))
