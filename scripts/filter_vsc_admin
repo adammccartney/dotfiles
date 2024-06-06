@@ -1,0 +1,3 @@
+#!/bin/bash
+imapfilter -c ~/.imapfilter/config.lua -t /etc/ssl/certs
+

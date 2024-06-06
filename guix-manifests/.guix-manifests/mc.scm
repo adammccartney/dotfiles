@@ -51,6 +51,7 @@
    ;; mail
    "mu"
    "isync"
+   "imapfilter"
    "mutt"
    "neomutt"))
 

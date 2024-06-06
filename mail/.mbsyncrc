@@ -156,6 +156,15 @@ Sync All
 Expunge Both
 SyncState *
 
+Channel tuw-vsc-admin
+Master :tuw-remote:
+Slave :tuw-local:
+Patterns "vsc_admin"
+Create Slave
+Sync All
+Expunge Both
+SyncState *
+
 Group tuw
 Channel tuw-inbox
 #Channel tuw-calendar
@@ -165,91 +174,3 @@ Channel tuw-archive
 Channel tuw-deleted-items
 Channel tuw-junk-email
 
-
-IMAPAccount datalab
-Host mail.intern.tuwien.ac.at
-User E020-04_datalab@intern
-AuthMechs LOGIN
-PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/.password-store/Email/E020-04_datalab.gpg"
-SSLType IMAPS
-CertificateFile /etc/ssl/certs/ca-certificates.crt
-
-IMAPStore datalab-remote
-Account datalab
-
-MaildirStore datalab-local
-SubFolders Verbatim
-Path ~/.mail/datalab/
-Inbox ~/.mail/datalab/Inbox
-
-Channel datalab-inbox
-Master :datalab-remote:
-Slave :datalab-local:
-Patterns *
-Create Slave
-Sync All
-Expunge Both
-SyncState *
-
-#Channel datalab-calendar
-#Master :datalab-remote:
-#Slave :datalab-local:
-#Patterns "Calendar"
-#Create Slave
-#Sync All
-#Expunge Both
-#SyncState *
-
-Channel datalab-sent
-Master :datalab-remote:
-Slave :datalab-local:
-Patterns "Sent Items"
-Create Slave
-Sync All
-Expunge Both
-SyncState *
-
-Channel datalab-drafts
-Master :datalab-remote:
-Slave :datalab-local:
-Patterns "Drafts"
-Create Slave
-Sync All
-Expunge Both
-SyncState *
-
-Channel datalab-archive
-Master :datalab-remote:
-Slave :datalab-local:
-Patterns "Archive"
-Create Slave
-Sync All
-Expunge Both
-SyncState *
-
-Channel datalab-deleted-items
-Master :datalab-remote:
-Slave :datalab-local:
-Patterns "Deleted Items"
-Create Slave
-Sync All
-Expunge Both
-SyncState *
-
-Channel datalab-junk-email
-Master :datalab-remote:
-Slave :datalab-local:
-Patterns "Junk Email"
-Create Slave
-Sync All
-Expunge Both
-SyncState *
-
-Group datalab
-Channel datalab-inbox
-#Channel datalab-calendar
-Channel datalab-sent
-Channel datalab-drafts
-Channel datalab-archive
-Channel datalab-deleted-items
-Channel datalab-junk-email
