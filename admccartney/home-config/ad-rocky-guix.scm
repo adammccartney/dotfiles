@@ -42,6 +42,7 @@
                   (home-dotfiles-configuration
                    (directories (list "../../git"
                                       "../../emacs"
+                                      "../../guix"
                                       "../../sway"
                                       "../../vim"
                                       "../../tmux"
