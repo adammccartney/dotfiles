@@ -29,7 +29,7 @@
 
 ;; Make sure to load packages that were installed by guix
 (add-to-list 'load-path (format "%s/share/emacs/site-lisp" (getenv "GUIX_PROFILE")))
-(require 'guix-emacs)
+(use-package guix)
 (guix-emacs-autoload-packages)
 
 ;;--------------------------------------------------------------------------
@@ -525,7 +525,8 @@
               (define-key slime-prefix-map (kbd "M-h") 'slime-documentation-lookup))))
 
 
-                                        ; Tramp for tramping
+; Tramp for tramping
+(require 'tramp)
 (tramp-set-completion-function
  "ssh"
  '((tramp-parse-sconfig "/etc/ssh_config")
