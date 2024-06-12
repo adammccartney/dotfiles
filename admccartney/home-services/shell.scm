@@ -1,4 +1,3 @@
-
 ;; -*- mode: scheme; -*-
 ;; shell.scm - defines a shell service
 (define-module (admccartney home-services shell)
@@ -28,16 +27,15 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                        ("mk" . "minikube kubectl --")
                        ("bup" . "bkhome-wrapper.sh")
                        ("wgu" . "sudo wg-quick up wg0")
-                       ("wgd" . "sudo wg-quick down wg0")
-                       ("emacs" . "XMODIFIERS='' emacs &")))
+                       ("wgd" . "sudo wg-quick down wg0")))
             
             (environment-variables
              '(("TERMINFO" . "/usr/share/terminfo")
                ("EDITOR" . "vim")
                ("MANWIDTH" . "80")
-               ("SSL_CERT_DIR" . "/etc/ssl/certs")  ;; This are configured for foreign distro usage
-               ("SSL_CERT_FILE" . "/etc/ssl/certs/ca-certificates.crt")
-               ("GIT_SSL_CAINFO" . "$SSL_CERT_FILE")
+;;               ("SSL_CERT_DIR" . "/etc/ssl/certs")  ;; This are configured for foreign distro usage
+;;               ("SSL_CERT_FILE" . "/etc/ssl/certs/ca-certificates.crt")
+;;               ("GIT_SSL_CAINFO" . "$SSL_CERT_FILE")
                ("TRAIN" . "$HOME/Code/trainlog/docs/training24.md")
                ("MAILDIR" . "$HOME/.mail")))
             
@@ -46,4 +44,6 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                ;;,(local-file "../../files/bash-profile")
                ,(local-file "../../files/bash-functions")
                ,(local-file "../../files/bash-rc"))))))
+
+
 
