@@ -196,7 +196,7 @@
 ;; close to ispell lookup
 (global-set-key (kbd "M-§") #'dictionary-lookup-definition)
 
-(add-to-list 'Info-directory-list "/usr/share/info")
+;;(add-to-list 'Info-directory-list "/usr/share/info")
 
 
 ;;--------------------------------------------------------------------------
@@ -216,9 +216,7 @@
             ("\\.gif\\'" "animate")))))
 
 ;; some pretty schnick-schnack for dired
-(use-package all-the-icons-dired
-  :ensure t)
-
+(use-package all-the-icons-dired)
 
 ;;--------------------------------------------------------------------------
 ;; Completion frameworks
@@ -525,11 +523,11 @@
               (define-key slime-prefix-map (kbd "M-h") 'slime-documentation-lookup))))
 
 
-                                        ; Tramp for tramping
-(tramp-set-completion-function
- "ssh"
- '((tramp-parse-sconfig "/etc/ssh_config")
-   (tramp-parse-sconfig "~/.ssh/config")))
+; Tramp for tramping
+;;(tramp-set-completion-function
+;; "ssh"
+;; '((tramp-parse-sconfig "/etc/ssh_config")
+;;   (tramp-parse-sconfig "~/.ssh/config")))
 (customize-set-variable 'tramp-default-method "ssh")
 ;;(setq debug-on-error t
 ;;      debug-on-signal t)
@@ -591,3 +589,18 @@
 
 ;;(require 'transient-showcase)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("6c01b5d4faa0f143055e63c9fba8e23e9160f181e54b14b46d56410811edbc9e" default))
+ '(package-selected-packages
+   '(mu4e elfeed ts ement yaml-mode magit-popup edit-indirect bui vterm mmm-mode json-mode slime paredit dockerfile-mode rust-mode nasm-mode rainbow-mode rainbow-delimiters yasnippet-snippets eglot go-mode dumb-jump which-key orderless marginalia vertico ob-go async magit pg finalize markdown-mode company graphviz-dot-mode memoize f fontaine ef-themes rg geiser-guile diminish x86-lookup quelpa-use-package org-roam-ui ob-typescript no-littering consult all-the-icons-dired)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
