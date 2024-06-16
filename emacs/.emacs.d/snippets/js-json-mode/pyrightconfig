@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: pyrightconfig.json
+# key: pyrightconfig
+# --
+{
+    "venvPath": "~/.virtualenvs",
+    "venv": "yourenv"
+}

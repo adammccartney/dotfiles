@@ -31,6 +31,10 @@
    ;; go
    "go"
 
+   ;; python
+   "python-pytest"
+   "python-lsp-server"   
+
    ;; Emacs
    "emacs"
    "emacs-guix"
@@ -54,4 +58,9 @@
    "imapfilter"
    "mutt"
    "neomutt"))
+
+
+
+
+
 
