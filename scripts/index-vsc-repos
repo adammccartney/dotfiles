@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Top level wrapper for building a local index of VSC git repos
+
+
+# -----------------------------------------------------------------------------
+# Utilities
+# -----------------------------------------------------------------------------
+
+die() {
+    # **
+    # Prints a message to stderr & exits script with non-successful code "1"
+    # *
+
+    printf '%s\n' "$@" >&2
+    exit 1
+}
+
+# -----------------------------------------------------------------------------
+# Main
+# -----------------------------------------------------------------------------
+
+TOKEN=$1
+if [ -z ${TOKEN} ]; then
+    die "No TOKEN found. usage: ${0##*/} TOKEN"
+fi
+
+index-tu-gitlab-repos -a ${TOKEN} | \
+                          sort -u | \
+                   grep -E '^vsc' > ~/vsc-repos.txt || \
+die 'python index-tu-gitlab-repos failed'

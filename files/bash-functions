@@ -542,3 +542,6 @@ function guix_source_host_profile() {
     GUIX_PROFILE="${GUIX_EXTRA_PROFILES}/${profile}/${profile}"
     . "${GUIX_PROFILE}/etc/profile"
 }
+
+
+tu_gitlab_clone() { local repo=${1#git:}; shift; git clone "gitlab.tu:$repo" "$@"; }

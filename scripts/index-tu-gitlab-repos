@@ -1,0 +1,71 @@
+#!/bin/python3
+
+import argparse
+import requests
+
+__doc__ = """Build an index of projects available on gitlab.tuwien.ac.at.
+
+Will retrieve all projects that are visible to the token passed in as an argument.
+"""
+
+PROJECTS_BASE_URL = "https://gitlab.tuwien.ac.at/api/v4/projects?per_page=100&page="
+
+def get_page(base_url, token, page_num):
+    """Gets a page of data entries from the url
+
+    Expects that base_url is valid after an integer has been appended
+
+    Example base url: https://gitlab.tuwien.ac.at/api/v4/projects?per_page=100&page=
+
+    Calls iter_get_page
+    """
+    result = []
+    headers = {"PRIVATE-TOKEN": token}
+
+    def iter_get_page(page_num, result):
+        """Iteratively GET pages and append data in responses to result
+        Returns a nested list of pages.
+        """
+        try:
+            nonlocal base_url
+            url = base_url + str(page_num)
+            res = requests.get(url, headers=headers)
+            data_lst = res.json()
+            result.append(data_lst)
+            if len(data_lst) <= 0:
+                return result
+            else:
+                return iter_get_page(page_num + 1, result)
+        except Exception as e:
+            print(f"{get_page.__name__} failed with {e}")
+
+    # start with page one and recurse until we find an empty page
+    return iter_get_page(1, [])
+
+def flatten(xss):
+  return [x for xs in xss for x in xs]
+
+def filter_repos(flat_data):
+    "Walk the list and filter"
+    return [x["path_with_namespace"] for x in flat_data]
+
+def getparser():
+    "Snarf up whatever's on the command line"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--access-token", "-a", default=None,
+                        help="This is the access token for gitlab")
+    return parser
+
+def main():
+    parser = getparser()
+    args = parser.parse_args()
+    token = args.access_token
+    start_page = 1
+    result = get_page(PROJECTS_BASE_URL, token, start_page)
+    flat_data = flatten(result)
+    repos = filter_repos(flat_data)
+    for r in repos:
+        print(r)
+
+if __name__ == '__main__':
+    main()
