@@ -345,7 +345,7 @@
 
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
-               '(python-mode . ("/usr/local/bin/pyright-langserver" "--stdio" "--venvpath=~/.virtualenvs"))))
+               '(python-mode . ("/usr/bin/pylsp"))))
 
 
 (use-package magit
