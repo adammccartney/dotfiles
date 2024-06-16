@@ -137,8 +137,11 @@
 
 ;; themes
 (use-package ef-themes
-  :ensure t)
-(load-theme 'ef-maris-dark)
+  :ensure t
+  :config
+  (setq ef-themes-to-toggle '(ef-summer ef-winter))
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme 'ef-winter :no-confirm))
 
 (use-package fontaine
   :ensure t)
