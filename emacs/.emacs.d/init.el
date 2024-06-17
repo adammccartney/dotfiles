@@ -146,6 +146,8 @@
 (use-package fontaine
   :ensure t)
 
+(use-package tmr)
+
 
 (use-package all-the-icons
   :if (display-graphic-p)

@@ -37,11 +37,60 @@
 
    ;; Emacs
    "emacs"
-   "emacs-guix"
+   "emacs-use-package"
+   "emacs-no-littering"
    "emacs-geiser"
    "emacs-geiser-guile"
+   "emacs-consult"
+   "emacs-all-the-icons-dired"
    "emacs-yasnippet"
    "emacs-rg"
+
+   ;; Fonts
+   "emacs-ef-themes"
+   "emacs-fontaine"
+   "emacs-tmr"
+   "emacs-all-the-icons"
+   "emacs-graphviz-dot-mode"
+   "emacs-markdown-mode"
+
+   ;; Org mode
+   "emacs-org"
+   "emacs-org-roam"
+;;   "emacs-org-roam-ui"
+;;   "emacs-ob-typescript"
+   "emacs-ob-go"
+   
+   ;; Completions
+   "emacs-vertico"
+   "emacs-marginalia"
+   "emacs-orderless"
+   "emacs-which-key"
+
+   "emacs-dumb-jump"
+
+   ;; Development
+   "emacs-go-mode"
+   "emacs-eglot"
+   "emacs-magit"
+   "emacs-yasnippet"
+   "emacs-yasnippet-snippets"
+   "emacs-rainbow-delimiters"
+   "emacs-rainbow-mode"
+   "emacs-nasm-mode"
+   "emacs-rust-mode"
+   "emacs-dockerfile-mode"
+   "emacs-paredit"
+   "emacs-slime"
+   "emacs-nix-mode"
+   "emacs-pg"
+   "emacs-vterm"
+   "emacs-guix"
+   "emacs-yaml-mode"
+
+   "emacs-ement"
+   "emacs-elfeed"
+   
    "libvterm"
    "libtool"
 
