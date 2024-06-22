@@ -4,35 +4,6 @@ export LC_ALL=en_GB.UTF-8
 export LANG=en_GB.UTF-8
 export LANGUAGE=en_GB.UTF-8
 
-
-# Guix Profile stuff
-
-# Check for a "host" profile
-GUIX_EXTRA_PROFILES="$HOME/.guix-extra-profiles"
-GUIX_HOME="$HOME/.guix-home"
-if [ -d "$GUIX_EXTRA_PROFILES/$(hostname)/$(hostname)" ]; then
-    export GUIX_PROFILE="$GUIX_EXTRA_PROFILES/$(hostname)/$(hostname)"
-    . "$GUIX_PROFILE/etc/profile"
-elif [ -d "$GUIX_HOME/profile" ]; then
-    export GUIX_PROFILE="$GUIX_HOME/profile"
-    . "$GUIX_PROFILE/etc/profile"
-else
-    echo "No guix profile"
-fi
-
-# Note this stuff is sometimes needed when running on foreign distros
-# TODO: clean this up, we should always use the locale from the default profile
-if [ ! -z $GUIX_PROFILE ]; then
-    export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
-fi
-
-# check whether we're setup to use nss-certs via guix, possibly set required variables
-if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then
-    [ -v $SSL_CERT_DIR ] && export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
-    [ -v $SSL_CERT_FILE ] && export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
-    [ -v $GIT_SSL_CAINFO ] && export GIT_SSL_CAINFO="$SSL_CERT_FILE"
-fi
-
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoredups
@@ -87,12 +58,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# guix bash completion
-GUIX_BASH_COMPLETION="/var/guix/profiles/per-user/root/current-guix/etc/bash_completion.d/guix"
-if [ -f ${GUIX_BASH_COMPLETION} ]; then
-    . ${GUIX_BASH_COMPLETION}
-fi
-
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # git tools
@@ -114,6 +79,31 @@ fi
 if [ -f ~/.bash_env ] ; then
     . ~/.bash_env
 fi
+
+### Guix
+
+# guix bash completion
+GUIX_BASH_COMPLETION="/var/guix/profiles/per-user/root/current-guix/etc/bash_completion.d/guix"
+if [ -f ${GUIX_BASH_COMPLETION} ]; then
+    . ${GUIX_BASH_COMPLETION}
+fi
+
+# Guix Profile stuff
+guix_activate_profile  # try to activate host profile
+
+# Note this stuff is sometimes needed when running on foreign distros
+# TODO: clean this up, we should always use the locale from the default profile
+if [ ! -z $GUIX_PROFILE ]; then
+    export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
+fi
+
+# check whether we're setup to use nss-certs via guix, possibly set required variables
+if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then
+    [ -v $SSL_CERT_DIR ] && export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
+    [ -v $SSL_CERT_FILE ] && export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
+    [ -v $GIT_SSL_CAINFO ] && export GIT_SSL_CAINFO="$SSL_CERT_FILE"
+fi
+
 
 # use emacs keybindings
 set -o emacs
@@ -139,5 +129,12 @@ fi
 
 # Go Setup (temporary?)
 export GOPATH="$HOME/go"
-export PATH="$PATH:$GOPATH/bin"
+if ! [[ $PATH =~ "$GOPATH/bin" ]]; then
+    export PATH="$PATH:$GOPATH/bin"
+fi
 
+complete -W"`<~/vsc-repos.txt`" tu_gitlab_clone
+
+if ! [[ $PATH =~ ~/.cargo/bin ]]; then
+    export PATH=$PATH:~/.cargo/bin
+fi

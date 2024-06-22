@@ -535,13 +535,41 @@ function guix_source_all_profiles() {
     done
 }
 
-function guix_source_host_profile() {
-    # Assumes that the host system has a default profile
-    profile=$(hostname)
-    GUIX_EXTRA_PROFILES="${HOME}/.guix-extra-profiles"
-    GUIX_PROFILE="${GUIX_EXTRA_PROFILES}/${profile}/${profile}"
-    . "${GUIX_PROFILE}/etc/profile"
+
+function guix_activate_profile() {
+    # Check for a "host" profile
+    # Set it if it exists
+    local GUIX_HOST_PROFILE="$HOME/.guix-extra-profiles/$(hostname)/$(hostname)"
+    local GUIX_HOME_PROFILE="$HOME/.guix-home/profile"
+    if [ -d "$GUIX_HOST_PROFILE" ]; then
+        export GUIX_PROFILE="$GUIX_HOST_PROFILE"
+        # Guard against duplicate path entries
+        if ! [[ $PATH =~ "$GUIX_HOST_PROFILE/bin" ]]; then
+            . "$GUIX_PROFILE/etc/profile"
+        fi
+    elif [ -d "$GUIX_HOME_PROFILE" ]; then
+        export GUIX_PROFILE="$GUIX_HOME_PROFILE"
+        if ! [[ $PATH =~ "$GUIX_HOME_PROFILE/bin" ]]; then
+            . "$GUIX_PROFILE/etc/profile"
+        fi
+    fi
 }
 
 
-tu_gitlab_clone() { local repo=${1#git:}; shift; git clone "gitlab.tu:$repo" "$@"; }
+tu_gitlab_clone() {
+    local gitlab_root="$HOME/src/gitlab.tuwien.ac.at"
+    local repo=${1#git:}
+    shift
+    local dest=${gitlab_root}/${repo}
+    mkdir -pv $dest
+    git clone "gitlab.tu:$repo" "$dest"
+}
+
+ansible_ping_host () {
+    local host=$1
+    # check for null argument
+    if [ ! -z $host ]; then
+        ansible $host -m ansible.builtin.ping
+    fi
+}
+
