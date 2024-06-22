@@ -107,5 +107,12 @@ The selection will be passed to `ad-venv-set-python-shell-virtualenv-root'"
 
 ;;(ad-venv-choices-with-completions)
 
+
+(defun ad/list->printlines (lst)
+  "Print each var in LST, followed by a newline character.
+Return a string"
+  (with-output-to-string
+    (dolist (var load-path) (progn (princ var) (princ "\n")))))
+
 (provide 'adlisp)
 

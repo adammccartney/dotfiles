@@ -15,22 +15,24 @@
 ;;---------------------------------------------------------------------------
 ;; Packaging
 ;;---------------------------------------------------------------------------
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-			 ("elpa" . "https://elpa.gnu.org/packages/")
-			 ("org" . "http://orgmode.org/elpa/")))
-
-;; Install and load `quelpa-use-package'.
-(package-install 'quelpa-use-package)
-(require 'quelpa-use-package)
+;; Just use GUIX!
+;;(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+;;			 ("elpa" . "https://elpa.gnu.org/packages/")
+;;			 ("org" . "http://orgmode.org/elpa/")))
+;;
+;;;; Install and load `quelpa-use-package'.
+;;(package-install 'quelpa-use-package)
+;;(require 'quelpa-use-package)
 
 ;; Set up use-package
 (eval-when-compile
   (require 'use-package))
 
+(add-to-list 'load-path '"~/dotfiles/emacs/.emacs.d/lisp")
 ;; Make sure to load packages that were installed by guix
 (add-to-list 'load-path (format "%s/share/emacs/site-lisp" (getenv "GUIX_PROFILE")))
-(require 'guix-emacs)
-(guix-emacs-autoload-packages)
+;(use-package guix-emacs)
+;(guix-emacs-autoload-packages)
 
 ;;--------------------------------------------------------------------------
 ;; Some global settings
@@ -57,7 +59,6 @@
 
 ;; Use no-littering to automatically set common paths to the new user-emacs-directory
 (use-package no-littering
-  :ensure t
   :config
   ;; Keep customization settings in a temporary file (thanks Ambrevar!)
   (setq custom-file
@@ -94,7 +95,6 @@
 
 
 (use-package emacs
-  :ensure t
   :init
   ;; TAB cycle if there are only a few candidates
   (setq completion-cycle-threshold 3)
@@ -118,7 +118,6 @@
 ;;---------------------------------------------------------------------------
 
 ;; Custom lispy stuff
-(push "~/.emacs.d/lisp" load-path)  
 (require 'adlisp)
 (require 'ad-display)
 (require 'ad-mail)
@@ -137,25 +136,21 @@
 
 ;; themes
 (use-package ef-themes
-  :ensure t
   :config
   (setq ef-themes-to-toggle '(ef-summer ef-winter))
   (mapc #'disable-theme custom-enabled-themes)
   (load-theme 'ef-winter :no-confirm))
 
-(use-package fontaine
-  :ensure t)
+(use-package fontaine)
 
 (use-package tmr)
 
 
 (use-package all-the-icons
-  :if (display-graphic-p)
-  :ensure t)
+  :if (display-graphic-p))
 
 ;; Drawing
 (use-package graphviz-dot-mode
-  :ensure t
   :config
   (setq graphviz-dot-indent-width 4))
 
@@ -165,7 +160,6 @@
 ;;--------------------------------------------------------------------------
 
 (use-package markdown-mode
-  :ensure t
   :defer t
   :mode ("\\.md$" "\\.markdown$" "vimperator-.+\\.tmp$")
   :config
@@ -182,7 +176,6 @@
 
 ;; mark for removal
 ;;(use-package imenu-list
-;;  :ensure t
 ;;  :bind (("C-'" . imenu-list-smart-toggle))
 ;;  :config
 ;;  (setq imenu-list-focus-after-activation t
@@ -229,7 +222,6 @@
 
 ; Mark for removal
 ;;(use-package helm
-;;  :ensure t
 ;;  :init
 ;;  ;; a good chunk of the following config is from
 ;;  ;; http://tuhdo.github.io/helm-intro.html
@@ -256,40 +248,33 @@
 ;;  (define-key helm-map (kbd "C-z") 'helm-select-action)
 ;;  (helm-autoresize-mode 1))
 ;;
-;;(use-package helm-pass
-;;  :ensure t)
+;;(use-package helm-pass)
 
 (use-package vertico
-  :ensure t
   :custom
   (vertico-cycle t)
   :init
   (vertico-mode))
 
 (use-package savehist
-  :ensure t
   :init
   (savehist-mode))
 
 (use-package marginalia
   :after vertico
-  :ensure t
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
   :init
   (marginalia-mode))
 
-(use-package consult
-  :ensure t)
+(use-package consult)
 
 (use-package orderless
-  :ensure t
   :custom
   (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 ;;(use-package company
-;;  :ensure t
 ;;  :config
 ;;  (setq company-global-mode t)
 ;;  (setq company-minimum-prefix-length 2)
@@ -300,12 +285,10 @@
 
 
 (use-package which-key
-  :ensure t
   :config
   (which-key-mode))
 
 (use-package dabbrev
-  :ensure t
   ;; Swap M-/ and C-M-/
   :bind (("M-/" . dabbrev-completion)
          ("C-M-/" . dabbrev-expand))
@@ -313,8 +296,7 @@
   :custom
   (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'")))
 
-(use-package dumb-jump
-  :ensure t)
+(use-package dumb-jump)
 
 (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
@@ -323,9 +305,7 @@
 ;; dev stuff
 ;;---------------------------------------------------------------------------
 
-(use-package go-mode
-  :ensure t)
-
+(use-package go-mode)
 ;; BUG: emacs pics up the PATH in a funny way, sometimes gopath is absent,
 ;; run these two lines if it's acting up.
 ;;(setenv "PATH" (concat (getenv "PATH") ":/home/amccartn/go/bin"))
@@ -333,8 +313,8 @@
 
 
 ;; lsp
+(use-package jsonrpc)
 (use-package eglot
-  :ensure t
   :hook (((c-mode c++-mode) . eglot-ensure)       
          (python-mode . eglot-ensure)
          (rust-mode . eglot-ensure)
@@ -343,13 +323,12 @@
   :config
   (setq eglot-autoshutdown t))
 
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '(python-mode . ("/usr/bin/pylsp"))))
+;;(with-eval-after-load 'eglot
+;;  (add-to-list 'eglot-server-programs
+;;               '(python-mode . ("/usr/bin/pylsp"))))
 
 
 (use-package magit
-  :ensure t
   :init (if (not (boundp 'project-switch-commands)) 
             (setq project-switch-commands nil))
   :custom
@@ -400,25 +379,12 @@
 ;; parenthesis stuff
 
 (use-package paren
-  :ensure t
-  :config (show-paren-mode))
-
-(use-package rainbow-delimiters
-  :ensure t
   :defer t
   :init
   (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode)
-  :config
-  (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4")
-  (setf rainbow-delimiters-max-face-count 1)
-  (set-face-attribute 'rainbow-delimiters-unmatched-face nil
-                      :foreground 'unspecified
-                      :inherit 'error)
-  (set-face-foreground 'rainbow-delimiters-depth-1-face "snow4"))
+  (add-hook 'ielm-mode-hook #'rainbow-delimiters-mode))
 
 (use-package rainbow-mode
-  :ensure t
   :defer t
   :hook (org-mode
          emacs-lisp-mode
@@ -427,7 +393,6 @@
          js2-mode))
 
 (use-package browse-url
-  :ensure t
   :defer t
   :init
   (setf url-cache-directory (locate-user-emacs-file "local/url"))
@@ -448,7 +413,6 @@
 
 ;; ensure some c related goodness
 (use-package cc-mode
-  :ensure t
   :defer t
   :hook (cc-mode . lsp-deferred)
   :init
@@ -468,21 +432,18 @@
 
 ;; asm related packages
 (use-package nasm-mode
-  :ensure t
   :defer t
   :mode ("\\.nasm$" "\\.asm$" "\\.s$")
   :config
   (add-hook 'nasm-mode-hook (lambda () (setf indent-tabs-mode t))))
 
 (use-package asm-mode
-  :ensure t
   :defer t
   :init
   (add-hook 'asm-mode-hook (lambda () (setf indent-tabs-mode t
                                             tab-always-indent t))))
 
 (use-package x86-lookup
-  :ensure t
   :defer t
   :init
   (setq x86-lookup-pdf '"~/Documents/bookstaging/325383-sdm-vol-2abcd.pdf")
@@ -490,18 +451,14 @@
 
 ;; Rust
 (use-package rust-mode
-  :ensure t
-  :init
+  :config
   (setq rust-mode-treeqsitter-derive t))
 
-(use-package dockerfile-mode
-  :ensure t)
+(use-package dockerfile-mode)
 
-(use-package paredit
-  :ensure t)
+(use-package paredit)
 
 (use-package eshell
-  :ensure t
   :defer t
   :bind ([f1] . eshell-as)
   :init
@@ -516,7 +473,6 @@
 (setq gdb-many-windows t)
 
 (use-package slime
-  :ensure t
   :init 
   (setq inferior-lisp-program "/usr/bin/sbcl")
   ;;  (setq slime-lisp-implementations
@@ -550,8 +506,7 @@
   ;; https://github.com/NixOS/nix-mode
   :mode "\\.nix\\'")
 
-(use-package pg
-  :ensure t)
+(use-package pg)
 
 
 ;;----------------------------------------------------------------------
@@ -559,19 +514,15 @@
 ;;----------------------------------------------------------------------
 
 (use-package vterm
-  :ensure t
   :commands vterm
   :config
   (setq vterm-max-scrollback 10000))
 
-
-
-
 ;;---------------------------------------------------------------------
 ;; matrix
 ;;---------------------------------------------------------------------
-(use-package ement
-  :quelpa (ement :fetcher github :repo "alphapapa/ement.el"))
+;;(use-package ement
+;;  :quelpa (ement :fetcher github :repo "alphapapa/ement.el"))
 
 
 ;;---------------------------------------------------------------------
@@ -593,19 +544,3 @@
           "https://drewdevault.com/blog/index.xml")))
 
 ;;(require 'transient-showcase)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("6c01b5d4faa0f143055e63c9fba8e23e9160f181e54b14b46d56410811edbc9e" default))
- '(package-selected-packages
-   '(mu4e elfeed ts ement yaml-mode magit-popup edit-indirect bui vterm mmm-mode json-mode slime paredit dockerfile-mode rust-mode nasm-mode rainbow-mode rainbow-delimiters yasnippet-snippets eglot go-mode dumb-jump which-key orderless marginalia vertico ob-go async magit pg finalize markdown-mode company graphviz-dot-mode memoize f fontaine ef-themes rg geiser-guile diminish x86-lookup quelpa-use-package org-roam-ui ob-typescript no-littering consult all-the-icons-dired)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

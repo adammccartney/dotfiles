@@ -111,7 +111,6 @@
   (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project")))
 
 (use-package org-roam
-  :ensure t
   :init 
   (setq org-roam-v2-ack t)
   (setq org-roam-directory "~/Notes/org-roam/")
@@ -160,7 +159,6 @@
   (my/org-roam-refresh-agenda-list))
 
 (use-package org-roam-ui
-  :ensure t
   :after org-roam
   :hook (after-init . org-roam-ui-mode)
   :config
@@ -169,11 +167,9 @@
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start nil))
 
-(use-package ob-typescript
-  :ensure t)
+;;(use-package ob-typescript)
 
-(use-package ob-go
-  :ensure t)
+(use-package ob-go)
 
 (add-hook 'org-mode-hook
             (lambda () (add-hook 'after-save-hook #'org-babel-tangle
@@ -205,7 +201,7 @@
      (scheme . t)
      (ruby . t)
      (js . t)
-     (typescript . t)
+;;     (typescript . t)
      (go . t)
      (gnuplot . t)
      (dot . t)
