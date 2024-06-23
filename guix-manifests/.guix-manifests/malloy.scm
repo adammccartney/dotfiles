@@ -36,6 +36,7 @@
    "emacs-use-package"
    "emacs-geiser"
    "emacs-geiser-guile"
+   "emacs-no-littering"
    "emacs-consult"
    "emacs-all-the-icons-dired"
    "emacs-yasnippet"
