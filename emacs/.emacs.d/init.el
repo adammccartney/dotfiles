@@ -119,6 +119,7 @@
 
 ;; Custom lispy stuff
 (require 'adlisp)
+(require 'ad-virtualenvwrapper)
 (require 'ad-display)
 (require 'ad-mail)
 (require 'ad-org)
