@@ -45,6 +45,7 @@
    ;; Fonts
    "emacs-ef-themes"
    "emacs-fontaine"
+   "emacs-tmr"
    "emacs-all-the-icons"
    "emacs-graphviz-dot-mode"
    "emacs-markdown-mode"
