@@ -8,10 +8,6 @@ if [ -d "$HOME/.local/bin" ] ; then
     PATH="$PATH:$HOME/.local/bin"
 fi
 
-if [ -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
-    . $HOME/.local/bin/virtualenvwrapper.sh
-fi
-
 if [ -f "$HOME/.bashrc" ]; then
     . "$HOME/.bashrc"
 fi

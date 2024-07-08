@@ -9,6 +9,8 @@ __doc__ = "Setup a basic directory structure for ansible"
 def role_mkdirs(basedir: Path, roles: list[str]):
     "Return the role directory tree"
     dirs = []
+    if not roles:
+        return
     roles_node = basedir.joinpath("roles")
     for r in roles:
         role_node = roles_node.joinpath(r)
