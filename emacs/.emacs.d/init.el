@@ -306,6 +306,8 @@
 ;; dev stuff
 ;;---------------------------------------------------------------------------
 
+(use-package pyvenv)
+
 (use-package go-mode)
 ;; BUG: emacs pics up the PATH in a funny way, sometimes gopath is absent,
 ;; run these two lines if it's acting up.
@@ -486,10 +488,13 @@
 
 
 ; Tramp for tramping
-;;(tramp-set-completion-function
-;; "ssh"
-;; '((tramp-parse-sconfig "/etc/ssh_config")
-;;   (tramp-parse-sconfig "~/.ssh/config")))
+(use-package tramp)
+(tramp-set-completion-function "ssh"
+ '((tramp-parse-sconfig "/etc/ssh_config")
+   (tramp-parse-sconfig "~/.ssh/config")))
+(add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+
+
 (customize-set-variable 'tramp-default-method "ssh")
 ;;(setq debug-on-error t
 ;;      debug-on-signal t)
