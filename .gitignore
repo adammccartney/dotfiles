@@ -12,4 +12,4 @@ emacs/.emacs.d/tree-sitter/
 
 # vim plugins
 vim/.vim/plugged/*
-./systemd/.config/systemd/user/etc/emacs.conf
+systemd/.config/systemd/user/etc/emacs.conf
