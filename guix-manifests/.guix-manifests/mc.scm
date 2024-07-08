@@ -32,8 +32,8 @@
    "go"
 
    ;; python
-   "python-pytest"
-   "python-lsp-server"   
+   "python-next"
+   "python-lsp-server"
 
    ;; Emacs
    "emacs"
@@ -71,12 +71,13 @@
 
    ;; Development
    "emacs-go-mode"
+   "emacs-jsonrpc"
    "emacs-eglot"
    "emacs-magit"
    "emacs-yasnippet"
    "emacs-yasnippet-snippets"
-   "emacs-rainbow-delimiters"
    "emacs-rainbow-mode"
+   "emacs-rainbow-delimiters"
    "emacs-nasm-mode"
    "emacs-rust-mode"
    "emacs-dockerfile-mode"
@@ -87,6 +88,7 @@
    "emacs-vterm"
    "emacs-guix"
    "emacs-yaml-mode"
+   "emacs-pyvenv"
 
    "emacs-ement"
    "emacs-elfeed"
