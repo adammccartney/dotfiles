@@ -61,7 +61,7 @@ fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # git tools
-. ~/git-completion.bash
+[ -f ~/git-completion.bash ] && . ~/git-completions.bash
 
 if [ -f ~/.bash_prompt ]; then
     . ~/.bash_prompt
@@ -81,6 +81,13 @@ if [ -f ~/.bash_env ] ; then
 fi
 
 ### Guix
+# Automatically added by the Guix install script.
+if [ -n "$GUIX_ENVIRONMENT" ]; then
+    if [[ $PS1 =~ (.*)"\\$" ]]; then
+        PS1="${BASH_REMATCH[1]} [env]\\\$ "
+    fi
+fi
+
 
 # guix bash completion
 GUIX_BASH_COMPLETION="/var/guix/profiles/per-user/root/current-guix/etc/bash_completion.d/guix"
@@ -89,12 +96,16 @@ if [ -f ${GUIX_BASH_COMPLETION} ]; then
 fi
 
 # Guix Profile stuff
+#if [ -z ${GUIX_PROFILE} ]; then # none active
 guix_activate_profile  # try to activate host profile
 
-# Note this stuff is sometimes needed when running on foreign distros
-# TODO: clean this up, we should always use the locale from the default profile
-if [ ! -z $GUIX_PROFILE ]; then
-    export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
+guix_activate_root_profiles  # possibly activate anything we have in /opt/guix/extra-profiles
+
+# This assumes that we've run guix install glibc-locales as root (installing in
+# to the root profile for the daemon)
+GUIX_LOCPATH=/var/guix/profiles/per-user/root/guix-profile/lib/locale/
+if [[ -d $GUIX_LOCPATH ]]; then
+    export GUIX_LOCPATH
 fi
 
 # check whether we're setup to use nss-certs via guix, possibly set required variables
@@ -117,9 +128,13 @@ if command kubectl &> /dev/null; then
     complete -o default -F __start_kubectl k
 fi
 
-FZF_BASH_COMPLETIONS="$(dirname $(dirname $(realpath $(which fzf))))/etc/bash_completion.d/fzf"
-if [ -f "${FZF_BASH_COMPLETIONS}" ]; then
-    . "${FZF_BASH_COMPLETIONS}"
+
+FZF="$(which fzf)"
+if [[ "$FZF" =~ "guix" ]]; then
+    FZF_BASH_COMPLETIONS="$(dirname $(dirname $(realpath "$FZF")))/etc/bash_completion.d/fzf"
+    if [ -f "${FZF_BASH_COMPLETIONS}" ]; then
+        . "${FZF_BASH_COMPLETIONS}"
+    fi
 fi
 
 FZF_KEYBINDINGS_PATH="$HOME/.fzf.keybindings.bash"
@@ -133,8 +148,16 @@ if ! [[ $PATH =~ "$GOPATH/bin" ]]; then
     export PATH="$PATH:$GOPATH/bin"
 fi
 
-complete -W"`<~/vsc-repos.txt`" tu_gitlab_clone
+if [[ -f "~/vsc-repos.txt" ]]; then
+    complete -W"`<~/vsc-repos.txt`" tu_gitlab_clone
+fi
 
 if ! [[ $PATH =~ ~/.cargo/bin ]]; then
     export PATH=$PATH:~/.cargo/bin
 fi
+
+export WORKON_HOME="$HOME/.virtualenvs"
+if [ -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
+    . $HOME/.local/bin/virtualenvwrapper.sh
+fi
+
