@@ -158,7 +158,7 @@ elseif has('win32')
 elseif has('nvim')
     colorscheme desert
 else
-    colorscheme ron
+    colorscheme desert
 end
 if &term =~ "256color" || &term =~"xterm"
     let &t_SI = "\<Esc>[6 q"

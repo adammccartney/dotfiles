@@ -555,6 +555,21 @@ function guix_activate_profile() {
     fi
 }
 
+function guix_activate_root_profiles () {
+    GUIX_EXTRA_PROFILES=/opt/guix/extra-profiles
+    if [[ -d $GUIX_EXTRA_PROFILES ]]; then
+        for i in $GUIX_EXTRA_PROFILES/*; do
+          profile=$i/$(basename "$i")
+          if [ -f "$profile"/etc/profile ]; then
+            GUIX_PROFILE="$profile"
+            . "$GUIX_PROFILE"/etc/profile
+          fi
+          unset profile
+        done
+    fi
+    unset GUIX_EXTRA_PROFILES
+}
+
 
 tu_gitlab_clone() {
     local gitlab_root="$HOME/src/gitlab.tuwien.ac.at"
@@ -573,3 +588,8 @@ ansible_ping_host () {
     fi
 }
 
+
+mount_gpfs () {
+    mount 10.11.73.200:/gpfs/opt/adm /opt/adm
+    mount 10.11.73.200:/gpfs/opt/sw /opt/sw
+}

@@ -8,11 +8,16 @@
 # This script handles the "manual" setup
 
 
+DOTFILES_ROOT=$(pwd)
+FILES_PATH="$DOTFILES_ROOT/files"
+if ! [[ -d "$FILES_PATH" ]]; then
+    echo "Error, no files path found"
+    exit 1
+fi
+
 # backup
 # link new
 for cfg in aliases functions profile prompt; do
-    cp -v "$HOME/.bash_${cfg}" "$HOME/.bash_${cfg}BAK"
-    rm -rf "$HOME/.bash_${cfg}" && ln -v files/bash-${cfg} "$HOME/.bash_${cfg}"
+    ln -sbv "$FILES_PATH"/bash-${cfg} "$HOME/.bash_${cfg}"
 done
-cp -v "$HOME/.bashrc" "$HOME/.bashrcBAK"
-rm -fv "$HOME/.bashrc" && ln -v files/bash-rc "$HOME/.bashrc"
+ln -sbv "$FILES_PATH"/bash-rc "$HOME/.bashrc"
