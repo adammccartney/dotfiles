@@ -61,7 +61,7 @@ fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 # git tools
-[ -f ~/git-completion.bash ] && . ~/git-completions.bash
+[ -f ~/git-completion.bash ] && . ~/git-completion.bash
 
 if [ -f ~/.bash_prompt ]; then
     . ~/.bash_prompt
