@@ -31,8 +31,8 @@
 (add-to-list 'load-path '"~/dotfiles/emacs/.emacs.d/lisp")
 ;; Make sure to load packages that were installed by guix
 (add-to-list 'load-path (format "%s/share/emacs/site-lisp" (getenv "GUIX_PROFILE")))
-;(use-package guix-emacs)
-;(guix-emacs-autoload-packages)
+                                        ;(use-package guix-emacs)
+                                        ;(guix-emacs-autoload-packages)
 
 ;;--------------------------------------------------------------------------
 ;; Some global settings
@@ -107,7 +107,7 @@
   ;; completion-at-point is often bound to M-TAB
   (setq tab-always-indent 'complete))
 
-; EasyPG for encrypting files
+                                        ; EasyPG for encrypting files
 (require 'epa-file)
 (epa-file-enable)
 
@@ -188,9 +188,9 @@
 ;; mandatory, as the dictionary misbehaves!
 (setq switch-to-buffer-obey-display-actions t)
 (add-to-list 'display-buffer-alist
-   '("^\\*Dictionary\\*" display-buffer-in-side-window
-     (side . left)
-     (window-width . 50)))
+             '("^\\*Dictionary\\*" display-buffer-in-side-window
+               (side . left)
+               (window-width . 50)))
 
 ;; close to ispell lookup
 (global-set-key (kbd "M-§") #'dictionary-lookup-definition)
@@ -221,7 +221,7 @@
 ;; Completion frameworks
 ;;--------------------------------------------------------------------------
 
-; Mark for removal
+                                        ; Mark for removal
 ;;(use-package helm
 ;;  :init
 ;;  ;; a good chunk of the following config is from
@@ -315,6 +315,12 @@
 ;;(setenv "PATH" (concat (getenv "PATH") ":/usr/local/go/bin"))
 
 
+;; Optional: install eglot-format-buffer as a save hook.
+;; The depth of -10 places this before eglot's willSave notification,
+;; so that that notification reports the actual contents that will be saved.
+(defun eglot-format-buffer-before-save ()
+  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
+
 ;; lsp
 (use-package jsonrpc)
 (use-package eglot
@@ -322,9 +328,23 @@
          (python-mode . eglot-ensure)
          (rust-mode . eglot-ensure)
          (lua-mode . eglot-ensure)
-         (go-mode . eglot-ensure))
+         (go-mode . eglot-ensure)
+         (go-mode . eglot-format-buffer-before-save))
+         ;; hook to organize imports automatically
   :config
-  (setq eglot-autoshutdown t))
+  (setq eglot-autoshutdown t)
+  (add-to-list 'eglot-server-programs
+               `(go-mode . ,(eglot-alternatives
+                             '(("gopls")
+                               ;; Note that this line is dependent on an external gopls server 
+                               ("localhost" 37833))))))
+                                
+
+(add-hook 'before-save-hook
+     (lambda ()
+       (call-interactively 'eglot-code-action-organize-imports))
+     nil t)
+                             
 
 ;;(with-eval-after-load 'eglot
 ;;  (add-to-list 'eglot-server-programs
@@ -337,7 +357,16 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-(use-package project)
+(defun project-find-go-module (dir)
+  (when-let ((root (locate-dominating-file dir "go.mod")))
+    (cons 'go-module root)))
+
+(cl-defmethod project-root ((project (head go-module)))
+  (cdr project))
+
+(use-package project
+  :init
+  (add-hook 'project-find-functions #'project-find-go-module))
 
 (use-package yasnippet
   :hook (prog-mode . yas-minor-mode)
@@ -547,6 +576,7 @@
   :config
   (setq elfeed-feeds
         '("https://nullprogram.com/feed/"
-          "https://drewdevault.com/blog/index.xml")))
+          "https://drewdevault.com/blog/index.xml"
+          "https://kmcd.dev/posts/index.xml")))
 
 ;;(require 'transient-showcase)
