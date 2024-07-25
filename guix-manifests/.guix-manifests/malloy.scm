@@ -3,6 +3,7 @@
  '( ;; basic system utils
    "coreutils"
    "glibc-locales"
+   "curl"
    "git"
    "nss-certs"
    "mcron"

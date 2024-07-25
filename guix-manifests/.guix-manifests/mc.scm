@@ -2,10 +2,10 @@
 (specifications->manifest
  '( ;; basic system utils
    "coreutils"
-   "glibc-locales"
+   "curl"
    "git"
-   "nss-certs"
    "mcron"
+   "nss-certs"
    "openssl"
    "stow"
    "tree"
@@ -29,10 +29,8 @@
    "guile-readline"
 
    ;; go
-   "go"
 
    ;; python
-   "python-next"
    "python-lsp-server"
 
    ;; Emacs
