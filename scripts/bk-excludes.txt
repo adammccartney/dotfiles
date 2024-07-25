@@ -30,3 +30,7 @@ google-chrome
 .m2
 nvm
 go/pkg/
+*.iso
+src/github.com/
+!src/github.com/adammccartney
+
