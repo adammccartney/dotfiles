@@ -1,8 +1,11 @@
 # -*- mode: sh -*-
 
-export LC_ALL=en_GB.UTF-8
-export LANG=en_GB.UTF-8
-export LANGUAGE=en_GB.UTF-8
+export EDITOR=vim
+export VISUAL=vim
+export LANGUAGE="en_IE.UTF-8"
+export LC_ALL="en_IE.UTF-8"
+export LANG="en_IE.UTF-8"
+
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -63,6 +66,16 @@ fi
 # git tools
 [ -f ~/git-completion.bash ] && . ~/git-completion.bash
 
+# TODO: the rhel style of sourcing might be handier here:
+#if [ -d ~/.bashrc.d ]; then
+#    for rc in ~/.bashrc.d/*; do
+#        if [ -f "$rc" ]; then
+#            . "$rc"
+#        fi
+#    done
+#fi
+
+
 if [ -f ~/.bash_prompt ]; then
     . ~/.bash_prompt
     ${PROMPT_COMMAND}
@@ -88,6 +101,11 @@ if [ -n "$GUIX_ENVIRONMENT" ]; then
     fi
 fi
 
+if [ -n "$GUIX_ENVIRONMENT" ]
+then
+    export PS1="\u@\h \w [dev]\$ "
+fi
+
 
 # guix bash completion
 GUIX_BASH_COMPLETION="/var/guix/profiles/per-user/root/current-guix/etc/bash_completion.d/guix"
@@ -103,7 +121,7 @@ guix_activate_root_profiles  # possibly activate anything we have in /opt/guix/e
 
 # This assumes that we've run guix install glibc-locales as root (installing in
 # to the root profile for the daemon)
-GUIX_LOCPATH=/var/guix/profiles/per-user/root/guix-profile/lib/locale/
+GUIX_LOCPATH="$GUIX_PROFILE"/lib/locale
 if [[ -d $GUIX_LOCPATH ]]; then
     export GUIX_LOCPATH
 fi
@@ -160,4 +178,5 @@ export WORKON_HOME="$HOME/.virtualenvs"
 if [ -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
     . $HOME/.local/bin/virtualenvwrapper.sh
 fi
+
 
