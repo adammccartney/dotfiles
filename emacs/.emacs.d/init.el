@@ -439,6 +439,7 @@
   (setq geiser-default-implementation 'guile)
   (setq geiser-active-implementations '(guile))
   (setq geiser-guile-init-file "~/.guile")
+  (setq geiser-repl-history-filename "~/.emacs.d/geiser-history")
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile)))
   (setq geiser-guile-binary (format "%s/bin/guile" (getenv "GUIX_PROFILE"))))
 
