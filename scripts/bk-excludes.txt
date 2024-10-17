@@ -1,4 +1,6 @@
 *.img
+*.qcow2
+*.raw
 .ansible
 BraveSoftware
 *cache*

@@ -77,9 +77,9 @@ def c_rsync_home(src, dest, excludes_path, dry_run=False):
     Fork a subprocess to sync src to dest
     """
     if dry_run:
-        cmd = f"rsync -ravP --dry-run --delete --cvs-exclude --exclude-from={excludes_path} '{src}/' '{dest}'"
+        cmd = f"rsync -avogP --dry-run --delete --cvs-exclude --exclude-from={excludes_path} '{src}/' '{dest}'"
     else:
-        cmd = f"rsync -ravP --delete --cvs-exclude --exclude-from={excludes_path} '{src}/' '{dest}'"
+        cmd = f"rsync -avogP --delete --cvs-exclude --exclude-from={excludes_path} '{src}/' '{dest}'"
     logger.info(f"{c_rsync_home.__name__}: {cmd}")
     try:
         sproc.run(cmd, shell=True)
