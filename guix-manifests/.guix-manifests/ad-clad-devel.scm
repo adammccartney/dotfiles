@@ -2,47 +2,23 @@
 (specifications->manifest
  '( ;; basic system utils
    "coreutils"
-   "curl"
-   "git"
-   "mcron"
-   "nss-certs"
-   "openssl"
+   "glibc-locales"
    "stow"
    "tree"
-   "glibc-locales"
-   "fontconfig"
-
-   ;; passwords
-   "password-store"
 
    ;; cli apps
    "ripgrep"
-   "git"
-   "git-crypt"
    "fzf"
    "tmux"
 
-   ;; graphics
-   "gimp"
+   ;; docker
+   "docker"
+   "docker-compose"
    
    ;; guile scheme
    "guile"
-;;   "guile-next"
-;;   "guile-ares-rs"
-   "guile-chickadee"
    "guile-colorized"
    "guile-readline"
-   "guile-sdl2@0.8.0"
-
-   "nyacc"
-
-   "sdl2"
-   "sdl2-image"
-
-   ;; go
-
-   ;; python
-   "python-lsp-server"
 
    ;; Emacs
    "emacs"
@@ -54,7 +30,6 @@
    "emacs-all-the-icons-dired"
    "emacs-yasnippet"
    "emacs-rg"
-;;   "emacs-arei"
 
    ;; Fonts
    "emacs-ef-themes"
@@ -104,22 +79,11 @@
    "emacs-elfeed"
    
    "libvterm"
-   ;;"automake"
-   ;;"autoconf"
-   ;;"libtool"
-   ;;"gettext"
+   "libtool"
 
    ;; vim + plugins
    "vim-full"
    "vim-guix-vim"
    "vim-fugitive"
    "vim-nerdtree"
-   "vim-slime"
-
-   ;; mail
-   "mu"
-   "isync"
-   "imapfilter"
-   "mutt"
-   "neomutt"))
-
+   "vim-slime"))
