@@ -4,3 +4,5 @@
 	signingkey = 174C3ECBC22F87A8207AC9FE31DF3F14F2A9C47F
 [init]
 	defaultBranch = main
+[url "ssh://git@gitlab.tuwien.ac.at:822"]
+    insteadOf = https://gitlab.tuwien.ac.at
