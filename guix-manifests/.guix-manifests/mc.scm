@@ -99,6 +99,7 @@
    "emacs-guix"
    "emacs-yaml-mode"
    "emacs-pyvenv"
+   "emacs-terraform-mode"
 
    "emacs-ement"
    "emacs-elfeed"

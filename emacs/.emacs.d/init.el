@@ -31,8 +31,8 @@
 (add-to-list 'load-path '"~/dotfiles/emacs/.emacs.d/lisp")
 ;; Make sure to load packages that were installed by guix
 (add-to-list 'load-path (format "%s/share/emacs/site-lisp" (getenv "GUIX_PROFILE")))
-                                        ;(use-package guix-emacs)
-                                        ;(guix-emacs-autoload-packages)
+(use-package guix-emacs)
+(guix-emacs-autoload-packages)
 
 ;;--------------------------------------------------------------------------
 ;; Some global settings
@@ -361,12 +361,19 @@
   (when-let ((root (locate-dominating-file dir "go.mod")))
     (cons 'go-module root)))
 
+(defun project-find-python-module (dir)
+  (when-let ((root (locate-dominating-file dir "pyproject.toml")))
+    (cons 'python-module root)))
+
+;; TODO adapt this to also recognize python pyproject.toml files
 (cl-defmethod project-root ((project (head go-module)))
   (cdr project))
 
 (use-package project
   :init
   (add-hook 'project-find-functions #'project-find-go-module))
+;; TODO debug this
+;;  (add-hook 'project-find-functions #'project-find-python-module))
 
 (use-package yasnippet
   :hook (prog-mode . yas-minor-mode)
@@ -383,6 +390,7 @@
         (css "https://github.com/tree-sitter/tree-sitter-css")
         (elisp "https://github.com/Wilfred/tree-sitter-elisp")
         (go "https://github.com/tree-sitter/tree-sitter-go")
+        (hcl "https://github.com/tree-sitter-grammars/tree-sitter-hcl")
         (html "https://github.com/tree-sitter/tree-sitter-html")
         (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
         (json "https://github.com/tree-sitter/tree-sitter-json")
@@ -438,7 +446,7 @@
   :config
   (setq geiser-default-implementation 'guile)
   (setq geiser-active-implementations '(guile))
-  (setq geiser-guile-init-file "~/.guile")
+;;  (setq geiser-guile-init-file "~/.geiser-guile")
   (setq geiser-repl-history-filename "~/.emacs.d/geiser-history")
   (setq geiser-implementations-alist '(((regexp "\\.scm$") guile)))
   (setq geiser-guile-binary (format "%s/bin/guile" (getenv "GUIX_PROFILE"))))
@@ -545,6 +553,10 @@
 
 (use-package pg)
 
+(use-package hcl-mode)
+
+(use-package terraform-mode
+  :custom (terraform-indent-level 4))
 
 ;;----------------------------------------------------------------------
 ;; shells

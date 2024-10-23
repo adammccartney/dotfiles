@@ -1,7 +1,6 @@
 ;;(org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 
-
 (defun my/org-roam-node-list ()
   "Return all nodes stored in the database as a list of `org-roam-node's."
   (let ((rows (org-roam-db-query
@@ -110,6 +109,7 @@
   (interactive)
   (setq org-agenda-files (my/org-roam-list-notes-by-tag "Project")))
 
+
 (use-package org-roam
   :init 
   (setq org-roam-v2-ack t)
@@ -157,6 +157,8 @@
   :config
   (org-roam-db-autosync-mode)
   (my/org-roam-refresh-agenda-list))
+
+(require 'org-roam-export)
 
 (use-package org-roam-ui
   :after org-roam
