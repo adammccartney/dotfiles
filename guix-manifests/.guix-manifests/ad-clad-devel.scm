@@ -21,7 +21,7 @@
    "guile-readline"
 
    ;; Emacs
-   "emacs"
+   "emacs-no-x"
    "emacs-use-package"
    "emacs-no-littering"
    "emacs-geiser"
