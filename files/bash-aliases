@@ -23,3 +23,7 @@ alias eld_stop="systemctl --user stop emacs"
 alias eld_status="systemctl --user status emacs"
 
 alias eglot_go_workflow="ssl -L 37833:localhost:37833 rocky@workflow-engine-test"
+alias ect="emacsclient -nw"
+alias ctr="tail ~/src/github.com/adammccartney/traininglog/data/training24.md"
+alias gsurr="git submodule update --recursive --remote"
+alias gprs="git pull --recurse-submodules"

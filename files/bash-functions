@@ -16,18 +16,25 @@ function ftsearch () {
     vim $(rg "$TERM" "$TARGET" | fzf | cut -d ":" -f 1)
 }
 
-function gitssh-work () {
-    export GIT_SSH_COMMAND="ssh -i ~/.ssh/tuw_id_ed25519"
+function _update_gitconfig () {
+    # Params: SSH_KEY_PUB, EMAIL
+    local SSH_KEY_PUB
+    local EMAIL
+    SSH_KEY_PUB=$1
+    SSH_EMAIL=$2
+    export GIT_SSH_COMMAND="ssh -i ${SSH_KEY_PUB}"
     git config --global user.name "Adam McCartney"
-    git config --global user.email "adam.mccartney@tuwien.ac.at"
-    git config --global user.signingkey 174C3ECBC22F87A8207AC9FE31DF3F14F2A9C47F
+    git config --global user.email "${SSH_EMAIL}"
+    git config --global gpg.format ssh
+    git config --global user.signingkey ${SSH_KEY_PUB}
+}
+
+function gitssh-work () {
+    _update_gitconfig "$HOME/.ssh/id_ed25519_mc.it.tuwien.ac.at.pub" "adam.mccartney@tuwien.ac.at"
 }
 
 function gitssh-default () {
-    export GIT_SSH_COMMAND="ssh -i ~/.ssh/id_ed25519"
-    git config --global user.name "Adam McCartney"
-    git config --global user.email "adam@mur.at"
-    git config --global user.signingkey C5BF27EE0290CDE5BC8A8801A5FCE0B0A42EFDA8
+    _update_gitconfig "$HOME/.ssh/id_ed25519_malloy.admccartney.mur.at.pub" "adam@mur.at"
 }
 
 function json_to_env ()
@@ -577,6 +584,7 @@ tu_gitlab_clone() {
     shift
     local dest=${gitlab_root}/${repo}
     mkdir -pv $dest
+    # note this relies on ssh config
     git clone "gitlab.tu:$repo" "$dest"
 }
 
