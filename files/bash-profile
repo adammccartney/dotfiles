@@ -15,3 +15,37 @@ fi
 # Source the profile associated with _this_ hostname
 # guix_source_host_profile
 
+# Anything that modifies the environment by exporting variables gets exported
+# here (and not in bashrc) this is to avoid unexpected clobbering by guix shell
+export LC_ALL=en_GB.UTF-8
+export LANG=en_GB.UTF-8
+export LANGUAGE=en_GB.UTF-8
+
+
+export GOPATH="$HOME/go"
+# Go Setup (temporary?)
+if ! [[ $PATH =~ "$GOPATH/bin" ]]; then
+    export PATH="$PATH:$GOPATH/bin"
+fi
+
+if ! [[ $PATH =~ ~/.cargo/bin ]]; then
+    export PATH=$PATH:~/.cargo/bin
+fi
+
+
+export WORKON_HOME="$HOME/.virtualenvs"
+
+
+# This assumes that we've run guix install glibc-locales as root (installing in
+# to the root profile for the daemon)
+GUIX_LOCPATH=/var/guix/profiles/per-user/root/guix-profile/lib/locale/
+if [[ -d $GUIX_LOCPATH ]]; then
+    export GUIX_LOCPATH
+fi
+
+# check whether we're setup to use nss-certs via guix, possibly set required variables
+if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then
+    [ -v $SSL_CERT_DIR ] && export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
+    [ -v $SSL_CERT_FILE ] && export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
+    [ -v $GIT_SSL_CAINFO ] && export GIT_SSL_CAINFO="$SSL_CERT_FILE"
+fi
