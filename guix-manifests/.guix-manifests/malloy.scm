@@ -5,8 +5,7 @@
    "glibc-locales"
    "curl"
    "git"
-   "nss-certs"
-   "mcron"
+   "git-crypt"
    "openssl"
    "stow"
    "tree"
@@ -28,6 +27,7 @@
    "guile"
    "guile-colorized"
    "guile-readline"
+   "nyacc"
 
    ;; go
    "go"

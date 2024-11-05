@@ -68,7 +68,6 @@ fi
 #    done
 #fi
 
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -87,6 +86,11 @@ if [ -n "$GUIX_ENVIRONMENT" ]; then
     if [[ $PS1 =~ (.*)"\\$" ]]; then
         PS1="${BASH_REMATCH[1]} [env]\\\$ "
     fi
+    if [ -z "${GUILE_EXTENSIONS_PATH-}" ]; then
+        export GUILE_EXTENSIONS_PATH="$GUIX_ENVIRONMENT/lib"
+    else
+        GUILE_EXTENSIONS_PATH="$GUIX_ENVIRONMENT/lib:$GUILE_EXTENSIONS_PATH"
+    fi
 fi
 
 if [ -z "$GUIX_ENVIRONMENT" ]; then
@@ -95,6 +99,7 @@ if [ -z "$GUIX_ENVIRONMENT" ]; then
         set_bash_prompt
     fi
 fi
+
 
 
 # guix bash completion

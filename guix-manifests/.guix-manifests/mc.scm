@@ -4,8 +4,6 @@
    "coreutils"
    "curl"
    "git"
-   "mcron"
-   "nss-certs"
    "openssl"
    "stow"
    "tree"
