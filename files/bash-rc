@@ -149,3 +149,10 @@ if [ -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
 fi
 
 
+export WORKON_HOME="$HOME/.virtualenvs"
+
+HOST_PROFILE="$HOME/.guix-manifests/$(hostname)/$(hostname)"
+
+if [ -d "$HOST_PROFILE/lib/locale" ]; then
+    export GUIX_LOCPATH="$HOST_PROFILE/lib/locale"
+fi

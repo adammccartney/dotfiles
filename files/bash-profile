@@ -17,9 +17,9 @@ fi
 
 # Anything that modifies the environment by exporting variables gets exported
 # here (and not in bashrc) this is to avoid unexpected clobbering by guix shell
-export LC_ALL=en_GB.UTF-8
-export LANG=en_GB.UTF-8
-export LANGUAGE=en_GB.UTF-8
+#export LC_ALL=en_GB.UTF-8
+#export LANG=en_GB.UTF-8
+#export LANGUAGE=en_GB.UTF-8
 
 
 export GOPATH="$HOME/go"
@@ -32,10 +32,6 @@ if ! [[ $PATH =~ ~/.cargo/bin ]]; then
     export PATH=$PATH:~/.cargo/bin
 fi
 
-
-export WORKON_HOME="$HOME/.virtualenvs"
-
-export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
 
 
 # check whether we're setup to use nss-certs via guix, possibly set required variables
