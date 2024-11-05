@@ -35,13 +35,8 @@ fi
 
 export WORKON_HOME="$HOME/.virtualenvs"
 
+export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
 
-# This assumes that we've run guix install glibc-locales as root (installing in
-# to the root profile for the daemon)
-GUIX_LOCPATH=/var/guix/profiles/per-user/root/guix-profile/lib/locale/
-if [[ -d $GUIX_LOCPATH ]]; then
-    export GUIX_LOCPATH
-fi
 
 # check whether we're setup to use nss-certs via guix, possibly set required variables
 if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then

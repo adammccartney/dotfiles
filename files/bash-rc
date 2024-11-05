@@ -69,11 +69,6 @@ fi
 #fi
 
 
-if [ -f ~/.bash_prompt ]; then
-    . ~/.bash_prompt
-    ${PROMPT_COMMAND}
-fi
-
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
@@ -94,9 +89,10 @@ if [ -n "$GUIX_ENVIRONMENT" ]; then
     fi
 fi
 
-if [ -n "$GUIX_ENVIRONMENT" ]
-then
-    export PS1="\u@\h \w [dev]\$ "
+if [ -z "$GUIX_ENVIRONMENT" ]; then
+    if [ -f ~/.bash_prompt ]; then
+        . ~/.bash_prompt
+    fi
 fi
 
 

@@ -69,4 +69,5 @@ function set_bash_prompt () {
 
 }
 
-export PROMPT_COMMAND=set_bash_prompt
+set_bash_prompt
+#export PROMPT_COMMAND=set_bash_prompt
