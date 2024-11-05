@@ -92,6 +92,7 @@ fi
 if [ -z "$GUIX_ENVIRONMENT" ]; then
     if [ -f ~/.bash_prompt ]; then
         . ~/.bash_prompt
+        set_bash_prompt
     fi
 fi
 
