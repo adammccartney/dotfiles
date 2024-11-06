@@ -19,9 +19,9 @@ function set_git_branch () {
     # Note that for new repo without commit, git rev-parse --abbrev-ref HEAD
     # will error out.
     if git rev-parse --abbrev-ref HEAD > /dev/null 2>&1; then
-        BRANCH=$(git rev-parse --abbrev-ref HEAD)
+        BRANCH="($(git rev-parse --abbrev-ref HEAD))"
     else
-        BRANCH="bare repo!"
+        BRANCH="(bare repo!)"
     fi
 }
 
@@ -35,29 +35,37 @@ function set_virtual_env () {
 
 function set_bash_prompt () {
 
-    if is_git_repository; then
-        if [ -f ~/git-prompt.sh ]; then
-            . ~/git-prompt.sh
-            export GIT_PS1_SHOWDIRTYSTATE=1
-            BRANCH=$(__git_ps1 " (%s)")
-        else
-            set_git_branch
-        fi
-    else
-        BRANCH=''
-    fi
-
-    set_virtual_env
-
     PS1=""
+    # Python virtual environment
+    set_virtual_env
     PS1+="${PYTHON_VIRTUAL_ENV}"
     # set up user and host
     PS1+="${BLUE}\u@\h${BLUE} "
+
+    ## Set git prompt
+    if is_git_repository; then
+        set_git_branch
+        # set up git branch
+        PS1+="${GREEN}${BRANCH}${NO_COLOR} "
+    fi
     # set up working directory
-    PS1+="${YELLOW}\w${NO_COLOR} "
-    # set up git branch
-    PS1+="${GREEN}${BRANCH}${NO_COLOR}\n"
+    PS1+="${YELLOW}\w${NO_COLOR} \n"
+
     # set up prompt character
     PS1+="${WHITE}>${WHITE} "
 
+    ### Guix
+    # Automatically added by the Guix install script.
+    if [ -n "$GUIX_ENVIRONMENT" ]; then
+        PS1="\u@\h \w [env]\$ \n"
+        PS1+="> "
+        export PS1
+        if [ -z "${GUILE_EXTENSIONS_PATH-}" ]; then
+            export GUILE_EXTENSIONS_PATH="$GUIX_ENVIRONMENT/lib"
+        else
+            GUILE_EXTENSIONS_PATH="$GUIX_ENVIRONMENT/lib:$GUILE_EXTENSIONS_PATH"
+        fi
+    fi
 }
+
+export PROMPT_COMMAND=set_bash_prompt
