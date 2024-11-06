@@ -4,7 +4,7 @@ Host imap.mur.at
 User adam 
 AuthMechs LOGIN
 PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/.password-store/Email/mur.gpg"
-SSLType IMAPS
+TLSType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 IMAPStore murat-remote
@@ -82,8 +82,9 @@ Host mail.intern.tuwien.ac.at
 User amccartn@intern
 AuthMechs LOGIN
 PassCmd "gpg -q --for-your-eyes-only --no-tty -d ~/.password-store/Email/tuw.gpg"
-SSLType IMAPS
+TLSType IMAPS
 CertificateFile /etc/ssl/certs/ca-certificates.crt
+PipelineDepth 1
 
 IMAPStore tuw-remote
 Account tuw
@@ -101,6 +102,7 @@ Create Slave
 Sync All
 Expunge Both
 SyncState *
+MaxMessages 0
 
 #Channel tuw-calendar
 #Master :tuw-remote:

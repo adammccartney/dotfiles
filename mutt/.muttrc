@@ -50,3 +50,6 @@ color search black white
 
 # Threads
 #set use_threads=yes sort=date sort_aux=date
+
+# Automatically open html mails in lynx
+auto_view text/html
