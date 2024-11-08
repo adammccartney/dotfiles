@@ -32,11 +32,13 @@ if ! [[ $PATH =~ ~/.cargo/bin ]]; then
     export PATH=$PATH:~/.cargo/bin
 fi
 
-
-
 # check whether we're setup to use nss-certs via guix, possibly set required variables
 if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then
     [ -v $SSL_CERT_DIR ] && export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
     [ -v $SSL_CERT_FILE ] && export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
     [ -v $GIT_SSL_CAINFO ] && export GIT_SSL_CAINFO="$SSL_CERT_FILE"
+fi
+
+if [ -f "$HOME/infrastructure/k8s/clusters/vsc/dev/config" ]; then
+    export KUBECONFIG_VSC="$HOME/infrastructure/k8s/clusters/vsc/dev/config"
 fi

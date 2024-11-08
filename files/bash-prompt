@@ -15,14 +15,24 @@ function is_git_repository() {
   git branch > /dev/null 2>&1
 }
 
-function set_git_branch () {
+function __ad_git_ps1 () {
+
+    # set_git_branch
     # Note that for new repo without commit, git rev-parse --abbrev-ref HEAD
     # will error out.
     if git rev-parse --abbrev-ref HEAD > /dev/null 2>&1; then
-        BRANCH="($(git rev-parse --abbrev-ref HEAD))"
+        BRANCH="$(git rev-parse --abbrev-ref HEAD)"
     else
-        BRANCH="(bare repo!)"
+        BRANCH="bare repo!"
     fi
+
+    # set_git_tree_state 
+    git diff --no-ext-diff --quiet || w="*"
+    git diff --no-ext-diff --cached --quiet || i="+"
+
+    local f="$w$i"
+    gitstring=$(printf -- "($BRANCH${f:+$f})")
+    PS1+="${GREEN}${gitstring}${NO_COLOR} "
 }
 
 function set_virtual_env () {
@@ -44,9 +54,7 @@ function set_bash_prompt () {
 
     ## Set git prompt
     if is_git_repository; then
-        set_git_branch
-        # set up git branch
-        PS1+="${GREEN}${BRANCH}${NO_COLOR} "
+        __ad_git_ps1
     fi
     # set up working directory
     PS1+="${YELLOW}\w${NO_COLOR} \n"
