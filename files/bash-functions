@@ -548,15 +548,23 @@ function guix_activate_profile() {
     # Set it if it exists
     local GUIX_HOST_PROFILE="$HOME/.guix-extra-profiles/$(hostname)/$(hostname)"
     local GUIX_HOME_PROFILE="$HOME/.guix-home/profile"
-    if [ -d "$GUIX_HOST_PROFILE" ]; then
-        export GUIX_PROFILE="$GUIX_HOST_PROFILE"
+
+    # Predicate for determining if we use guix home
+    local GUIX_HOME_RC=$(guix home describe 2&>1 /dev/null; echo $?)
+
+    if [ "$GUIX_HOME_RC" -eq "0" ]; then
+        # rc of zero means we are using guix home
+        export GUIX_PROFILE="$GUIX_HOME_PROFILE"
         # Guard against duplicate path entries
-        if ! [[ $PATH =~ "$GUIX_HOST_PROFILE/bin" ]]; then
+        if ! [[ $PATH =~ "$GUIX_HOME_PROFILE/bin" ]]; then
             . "$GUIX_PROFILE/etc/profile"
         fi
-    elif [ -d "$GUIX_HOME_PROFILE" ]; then
-        export GUIX_PROFILE="$GUIX_HOME_PROFILE"
-        if ! [[ $PATH =~ "$GUIX_HOME_PROFILE/bin" ]]; then
+    fi
+
+    if [ ! "$GUIX_HOME_RC" -eq "0" ]; then
+        # non-zero rc means we are not using guix home
+        export GUIX_PROFILE="$GUIX_HOST_PROFILE"
+        if ! [[ $PATH =~ "$GUIX_HOST_PROFILE/bin" ]]; then
             . "$GUIX_PROFILE/etc/profile"
         fi
     fi
