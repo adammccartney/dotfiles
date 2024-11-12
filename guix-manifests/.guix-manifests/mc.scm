@@ -68,6 +68,7 @@
 ;;   "emacs-org-roam-ui"
 ;;   "emacs-ob-typescript"
    "emacs-ob-go"
+   "emacs-org-roam-ui"
    
    ;; Completions
    "emacs-vertico"
