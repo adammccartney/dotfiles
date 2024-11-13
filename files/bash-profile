@@ -21,6 +21,7 @@ fi
 #export LANG=en_GB.UTF-8
 #export LANGUAGE=en_GB.UTF-8
 
+export EDITOR=vi
 
 export GOPATH="$HOME/go"
 # Go Setup (temporary?)
@@ -37,7 +38,13 @@ if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then
     [ -v $SSL_CERT_DIR ] && export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
     [ -v $SSL_CERT_FILE ] && export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
     [ -v $GIT_SSL_CAINFO ] && export GIT_SSL_CAINFO="$SSL_CERT_FILE"
-fi
+else
+    # use the system's ssl stuff
+    [ -v $SSL_CERT_DIR ] && export SSL_CERT_DIR="/etc/ssl/certs"
+    [ -v $SSL_CERT_FILE ] && export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
+    [ -v $GIT_SSL_CAINFO ] && export GIT_SSL_CAINFO="$SSL_CERT_FILE"
+
+fi 
 
 if [ -f "$HOME/infrastructure/k8s/clusters/vsc/dev/config" ]; then
     export KUBECONFIG_VSC="$HOME/infrastructure/k8s/clusters/vsc/dev/config"

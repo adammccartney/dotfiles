@@ -613,3 +613,9 @@ mount_gpfs () {
 search_osnotes () {
     rg "$@" ~/Notes/org-roam/*openstack*
 }
+
+argocd_port_forward () {
+    # presumes $KUBECONFIG is in env
+    # sets up port forwarding for the argocd instance on that cluster
+    kubectl port-forward svc/argocd-server -n argocd 8080:443
+}
