@@ -544,29 +544,33 @@ function guix_source_all_profiles() {
 
 
 function guix_activate_profile() {
-    # Check for a "host" profile
-    # Set it if it exists
-    local GUIX_HOST_PROFILE="$HOME/.guix-extra-profiles/$(hostname)/$(hostname)"
-    local GUIX_HOME_PROFILE="$HOME/.guix-home/profile"
+
+    # Main location of the profile we are using
+    local GUIX_HOST_PROFILE
 
     # Predicate for determining if we use guix home
-    local GUIX_HOME_RC=$(guix home describe 2&>1 /dev/null; echo $?)
+    local GUIX_HOME_RC=$(guix home describe > /dev/null 2>&1 ; echo $?)
 
-    if [ "$GUIX_HOME_RC" -eq "0" ]; then
-        # rc of zero means we are using guix home
-        export GUIX_PROFILE="$GUIX_HOME_PROFILE"
-        # Guard against duplicate path entries
-        if ! [[ $PATH =~ "$GUIX_HOME_PROFILE/bin" ]]; then
-            . "$GUIX_PROFILE/etc/profile"
-        fi
+    if [ "1" -eq "$GUIX_HOME_RC" ]; then
+        # no guix home
+        GUIX_HOST_PROFILE="$HOME/.guix-extra-profiles/$(hostname)/$(hostname)"
+        echo in case 1: $GUIX_HOST_PROFILE
     fi
 
-    if [ ! "$GUIX_HOME_RC" -eq "0" ]; then
-        # non-zero rc means we are not using guix home
-        export GUIX_PROFILE="$GUIX_HOST_PROFILE"
-        if ! [[ $PATH =~ "$GUIX_HOST_PROFILE/bin" ]]; then
-            . "$GUIX_PROFILE/etc/profile"
-        fi
+    if [ "0" -eq "$GUIX_HOME_RC" ]; then
+        # guix home
+        GUIX_HOST_PROFILE="$HOME/.guix-home/profile"
+        echo in case 2: $GUIX_HOST_PROFILE
+    fi
+
+    if [ -z $GUIX_HOST_PROFILE ]; then
+        echo "WARN -- no guix profile set!"
+    fi
+
+    unset GUIX_LOCPATH
+    export GUIX_LOCPATH="$GUIX_HOST_PROFILE/lib/locale"
+    if ! [[ $PATH =~ "$GUIX_HOST_PROFILE/bin" ]]; then
+        . $GUIX_HOST_PROFILE/etc/profile
     fi
 }
 

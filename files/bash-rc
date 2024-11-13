@@ -94,7 +94,7 @@ fi
 #if [ -z ${GUIX_PROFILE} ]; then # none active
 guix_activate_profile  # try to activate host profile
 
-guix_activate_root_profiles  # possibly activate anything we have in /opt/guix/extra-profiles
+#guix_activate_root_profiles  # possibly activate anything we have in /opt/guix/extra-profiles
 
 # use emacs keybindings
 set -o emacs
@@ -131,9 +131,3 @@ if [ -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
 fi
 
 export WORKON_HOME="$HOME/.virtualenvs"
-
-HOST_PROFILE="$HOME/.guix-manifests/$(hostname)/$(hostname)"
-
-if [ -d "$HOST_PROFILE/lib/locale" ]; then
-    export GUIX_LOCPATH="$HOST_PROFILE/lib/locale"
-fi
