@@ -545,6 +545,8 @@ function guix_source_all_profiles() {
 
 function guix_activate_profile() {
 
+    unset GUIX_PROFILE
+    unset GUIX_LOCPATH
     # Main location of the profile we are using
     local GUIX_HOST_PROFILE
 
@@ -567,10 +569,10 @@ function guix_activate_profile() {
         echo "WARN -- no guix profile set!"
     fi
 
-    unset GUIX_LOCPATH
-    export GUIX_LOCPATH="$GUIX_HOST_PROFILE/lib/locale"
-    if ! [[ $PATH =~ "$GUIX_HOST_PROFILE/bin" ]]; then
-        . $GUIX_HOST_PROFILE/etc/profile
+    export GUIX_PROFILE="$GUIX_HOST_PROFILE"
+    export GUIX_LOCPATH="$GUIX_PROFILE/lib/locale"
+    if ! [[ $PATH =~ "$GUIX_PROFILE/bin" ]]; then
+        . $GUIX_PROFILE/etc/profile
     fi
 }
 
