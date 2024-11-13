@@ -556,13 +556,13 @@ function guix_activate_profile() {
     if [ "1" -eq "$GUIX_HOME_RC" ]; then
         # no guix home
         GUIX_HOST_PROFILE="$HOME/.guix-extra-profiles/$(hostname)/$(hostname)"
-        echo in case 1: $GUIX_HOST_PROFILE
+        #echo in case 1: $GUIX_HOST_PROFILE
     fi
 
     if [ "0" -eq "$GUIX_HOME_RC" ]; then
         # guix home
         GUIX_HOST_PROFILE="$HOME/.guix-home/profile"
-        echo in case 2: $GUIX_HOST_PROFILE
+        #echo in case 2: $GUIX_HOST_PROFILE
     fi
 
     if [ -z $GUIX_HOST_PROFILE ]; then

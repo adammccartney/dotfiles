@@ -35,15 +35,14 @@ fi
 
 # check whether we're setup to use nss-certs via guix, possibly set required variables
 if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then
-    [ -v $SSL_CERT_DIR ] && export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
-    [ -v $SSL_CERT_FILE ] && export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
-    [ -v $GIT_SSL_CAINFO ] && export GIT_SSL_CAINFO="$SSL_CERT_FILE"
+    export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
+    export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
+    export GIT_SSL_CAINFO="$SSL_CERT_FILE"
 else
     # use the system's ssl stuff
-    [ -v $SSL_CERT_DIR ] && export SSL_CERT_DIR="/etc/ssl/certs"
-    [ -v $SSL_CERT_FILE ] && export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
-    [ -v $GIT_SSL_CAINFO ] && export GIT_SSL_CAINFO="$SSL_CERT_FILE"
-
+    export SSL_CERT_DIR="/etc/ssl/certs"
+    export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
+    export GIT_SSL_CAINFO="$SSL_CERT_FILE"
 fi 
 
 if [ -f "$HOME/infrastructure/k8s/clusters/vsc/dev/config" ]; then
