@@ -17,7 +17,7 @@ fi
 
 # backup
 # link new
-for cfg in aliases functions profile prompt; do
+for cfg in aliases functions profile prompt fzf-keybindings git-completion; do
     ln -sbv "$FILES_PATH"/bash-${cfg} "$HOME/.bash_${cfg}"
 done
 ln -sbv "$FILES_PATH"/bash-rc "$HOME/.bashrc"

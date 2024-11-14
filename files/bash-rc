@@ -54,20 +54,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-# git tools
-[ -f ~/git-completion.bash ] && . ~/git-completion.bash
-
-# TODO: the rhel style of sourcing might be handier here:
-#if [ -d ~/.bashrc.d ]; then
-#    for rc in ~/.bashrc.d/*; do
-#        if [ -f "$rc" ]; then
-#            . "$rc"
-#        fi
-#    done
-#fi
-
 if [ -f ~/.bash_prompt ]; then
    . ~/.bash_prompt
 fi
@@ -82,6 +68,14 @@ fi
 
 if [ -f ~/.bash_env ] ; then
     . ~/.bash_env
+fi
+
+if [ -f ~/.bash_fzf_keybindings ]; then
+    . ~/.bash_fzf_keybindings
+fi
+
+if [ -f ~/.bash_git_completions ]; then
+    . ~/.bash_git_completions
 fi
 
 # guix bash completion
@@ -117,10 +111,6 @@ if [[ "$FZF" =~ "guix" ]]; then
     fi
 fi
 
-FZF_KEYBINDINGS_PATH="$HOME/.fzf.keybindings.bash"
-if [ -f ${FZF_KEYBINDINGS_PATH} ]; then
-    . ${FZF_KEYBINDINGS_PATH}
-fi
 
 if [[ -f "~/vsc-repos.txt" ]]; then
     complete -W"`<~/vsc-repos.txt`" tu_gitlab_clone

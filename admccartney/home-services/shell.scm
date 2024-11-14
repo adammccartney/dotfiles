@@ -1,4 +1,3 @@
-
 ;; -*- mode: scheme; -*-
 ;; shell.scm - defines a shell service
 (define-module (admccartney home-services shell)
@@ -38,12 +37,13 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                ("SSL_CERT_DIR" . "/etc/ssl/certs")  ;; This are configured for foreign distro usage
                ("SSL_CERT_FILE" . "/etc/ssl/certs/ca-certificates.crt")
                ("GIT_SSL_CAINFO" . "$SSL_CERT_FILE")
-               ("TRAIN" . "$HOME/Code/trainlog/docs/training24.md")
+               ("TRAIN" . "$HOME/src/github.com/adammccartney/trainlog/docs/training24.md")
                ("MAILDIR" . "$HOME/.mail")))
             
             (bashrc
              `(,(local-file "../../files/bash-prompt")
-               ;;,(local-file "../../files/bash-profile")
+               ,(local-file "../../files/bash-fzf-keybindings")
+               ,(local-file "../../files/bash-git-completion")
                ,(local-file "../../files/bash-functions")
                ,(local-file "../../files/bash-rc"))))))
 

@@ -17,6 +17,9 @@ function is_git_repository() {
 
 function __ad_git_ps1 () {
 
+    local w=""
+    local i=""
+    
     # set_git_branch
     # Note that for new repo without commit, git rev-parse --abbrev-ref HEAD
     # will error out.
