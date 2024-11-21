@@ -99,6 +99,7 @@
    "emacs-yaml-mode"
    "emacs-pyvenv"
    "emacs-terraform-mode"
+   "emacs-flycheck"
 
    "emacs-ement"
    "emacs-elfeed"

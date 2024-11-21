@@ -42,7 +42,7 @@
 (setq native-comp-async-report-warnings-errors nil)
 
 ;; Movement, add new lines to end of file
-(setq next-line-add-newlines t)
+
 ;; Copy to system clipboard
 (setq x-select-enable-clipboard t)
 
@@ -121,7 +121,6 @@
 (require 'adlisp)
 (require 'ad-virtualenvwrapper)
 (require 'ad-display)
-(require 'ad-mail)
 (require 'ad-org)
 (require 'ad-pg)
 (require 'ad-sqlite)
@@ -382,6 +381,11 @@
   :config
   (yas-reload-all))
 
+;;--------------------------
+;; Linting an syntax stuff
+;;--------------------------
+
+(use-package flycheck)
 
 ;; Tree-sitter 
 (setq treesit-language-source-alist
