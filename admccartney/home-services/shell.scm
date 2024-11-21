@@ -46,4 +46,3 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                ,(local-file "../../files/bash-git-completion")
                ,(local-file "../../files/bash-functions")
                ,(local-file "../../files/bash-rc"))))))
-

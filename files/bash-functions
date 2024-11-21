@@ -13,28 +13,28 @@ function ftsearch () {
     # full text search, searches target for a term
     local TERM="$1"
     local TARGET="$2"
-    vim $(rg "$TERM" "$TARGET" | fzf | cut -d ":" -f 1)
+    vim $(rg -A 5 "$TERM" "$TARGET" | fzf | cut -d ":" -f 1)
 }
 
 function _update_gitconfig () {
     # Params: SSH_KEY_PUB, EMAIL
-    local SSH_KEY_PUB
+    local SSH_KEY
     local EMAIL
-    SSH_KEY_PUB=$1
+    SSH_KEY=$1
     SSH_EMAIL=$2
-    export GIT_SSH_COMMAND="ssh -i ${SSH_KEY_PUB}"
+    export GIT_SSH_COMMAND="ssh -i ${SSH_KEY}"
     git config --global user.name "Adam McCartney"
     git config --global user.email "${SSH_EMAIL}"
     git config --global gpg.format ssh
-    git config --global user.signingkey ${SSH_KEY_PUB}
+    git config --global user.signingkey ${SSH_KEY}
 }
 
 function gitssh-work () {
-    _update_gitconfig "$HOME/.ssh/id_ed25519_mc.it.tuwien.ac.at.pub" "adam.mccartney@tuwien.ac.at"
+    _update_gitconfig "$HOME/.ssh/id_ed25519_mc.it.tuwien.ac.at" "adam.mccartney@tuwien.ac.at"
 }
 
 function gitssh-default () {
-    _update_gitconfig "$HOME/.ssh/id_ed25519_malloy.admccartney.mur.at.pub" "adam@mur.at"
+    _update_gitconfig "$HOME/.ssh/id_ed25519_malloy.admccartney.mur.at" "adam@mur.at"
 }
 
 function json_to_env ()
