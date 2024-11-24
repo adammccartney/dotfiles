@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# acd: fuzzy find a file in a directory tree
+#      change to the parent directory where the file is and start a new shell
+#      return to the location where we started on exit
+
+
+FZF=$(which fzf)
+if [ "0" != $? ]; then
+    echo "ERR -- fzf not found"
+    exit 1
+fi
+
+_parse_search_term () {
+    local term=$1
+    local result
+
+    if [[ "vsc" =~ "$term" ]]; then
+        result="$HOME/src/gitlab.tuwien.ac.at/vsc"
+    else
+        result="$term"
+    fi
+    echo $result
+}
+
+_search_at_path () {
+    local search_path="$1"
+    FILE_PATH=$(cd $search_path && fzf)
+    echo $FILE_PATH
+}
+
+_get_project_root () {
+    local file="$1"
+    local project_root
+    project_root=$(dirname $file)
+    if [ -d $project_root ]; then
+        echo $project_root
+    else
+        # dunno, just return home for the time being
+        echo $HOME
+    fi
+}
+
+SEARCH_PREFIX=$(_parse_search_term "$1")
+REL_FILE_PATH=$(_search_at_path ${SEARCH_PREFIX})
+ABS_FILE_PATH=$(printf "%s/%s" ${SEARCH_PREFIX} ${REL_FILE_PATH})
+#echo project file: $ABS_FILE_PATH
+PROJECT_ROOT=$(_get_project_root $ABS_FILE_PATH)
+#echo project root: $PROJECT_ROOT
+(cd ${PROJECT_ROOT} && bash)

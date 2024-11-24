@@ -1,0 +1,15 @@
+#!/bin/sh
+
+function search_notes () {
+    local TERM="$1"
+    local TARGET="$HOME/Notes/org-roam"
+    RG=$(which rg 2> /dev/null)
+    if [ 0 == $? ];
+    then
+        ${RG} -A 5 ${TERM} ${TARGET}
+    else
+        echo "ERR -- problem finding rg"
+    fi
+}
+
+search_notes "$@"
