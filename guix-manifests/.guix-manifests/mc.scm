@@ -10,6 +10,9 @@
    "glibc-locales"
    "fontconfig"
 
+   ;; tty
+   "foot"
+
    ;; passwords
    "password-store"
 
@@ -38,6 +41,7 @@
    "sdl2-image"
 
    ;; go
+   "go@1.23.0"
 
    ;; python
    "python-lsp-server"
