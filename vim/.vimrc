@@ -239,7 +239,9 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['nerdtree'] = ''
 
 " FZF default command
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -l -g ""'
-set list listchars=tab:▸\ ,trail:·,extends:»,precedes:«,nbsp:!
+
+" non-breaing space is farsi n
+set list listchars=tab:▸\ ,trail:·,extends:»,precedes:«,nbsp:ن
 
 " Insert footers for mail
 nnoremap ,jmail :-1read $HOME/.vim/snippets/mails/jaas.mail.template<CR>2j
