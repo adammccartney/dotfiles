@@ -129,8 +129,10 @@
   (append
    (list (service home-dotfiles-service-type
                   (home-dotfiles-configuration
-                   (directories (list "../../git"
+                   (directories (list "../../home-bin"
+                                      "../../git"
                                       "../../emacs"
+                                      "../../systemd"
                                       "../../sway"
                                       "../../vim"
                                       "../../tmux"
