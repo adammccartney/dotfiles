@@ -27,6 +27,9 @@
    "glibc-locales"
    "fontconfig"
 
+   ;; wayland extras
+   "fuzzel"
+
    ;; passwords
    "password-store"
 
@@ -52,6 +55,7 @@
 
    ;; go
    "go@1.23.0"
+   "xurls"
 
    ;; Emacs
    "emacs"

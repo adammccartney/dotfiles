@@ -27,6 +27,9 @@
    "stow"
    "tree"
 
+   ;; wayland extras
+   "fuzzel"
+
    ;; passwords
    "password-store"
 
@@ -51,7 +54,8 @@
    "nyacc"
 
    ;; go
-   "go"
+   "go@1.23.0"
+   "xurls"
 
    ;; Emacs
    "emacs"
