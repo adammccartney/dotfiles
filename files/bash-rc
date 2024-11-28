@@ -1,6 +1,27 @@
 # -*- mode: sh -*-
 
-[ -z "$TMUX" ] && export TERM=screen-256color
+#[ -z "$TMUX" ] && export TERM=screen-256color
+
+export EDITOR=vi
+
+if [ -d "$HOME/bin" ] ; then
+    PATH="$PATH:$HOME/bin"
+fi
+
+
+export GOPATH="$HOME/go"
+# Go Setup (temporary?)
+if ! [[ $PATH =~ "$GOPATH/bin" ]]; then
+    export PATH="$PATH:$GOPATH/bin"
+fi
+
+if ! [[ $PATH =~ ~/.cargo/bin ]]; then
+    export PATH=$PATH:~/.cargo/bin
+fi
+
+if [ -f "$HOME/infrastructure/k8s/clusters/vsc/dev/config" ]; then
+    export KUBECONFIG_VSC="$HOME/infrastructure/k8s/clusters/vsc/dev/config"
+fi
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -101,6 +122,13 @@ else
     export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
     export GIT_SSL_CAINFO="$SSL_CERT_FILE"
 fi 
+
+# FIXME: this is a workaround for the fact that
+# ~/.guix-home/setup-environment clobbers the $XCURSOR_PATH
+# we're clobbering it here again ... two wrongs make a right I guess
+# variable set by /etc/zzz-guix.sh
+export XCURSOR_PATH="$GUIX_PROFILE/share/icons:/usr/löocal/share/icons:/usr/share/icons"
+
 
 #guix_activate_root_profiles  # possibly activate anything we have in /opt/guix/extra-profiles
 
