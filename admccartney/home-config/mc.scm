@@ -5,9 +5,11 @@
   #:use-module (gnu home)
   #:use-module (gnu home services)
   #:use-module (gnu home services dotfiles)
+  #:use-module (gnu home services guix)
   #:use-module (gnu packages)
   #:use-module (gnu packages package-management)
   #:use-module (gnu services)
+  #:use-module (guix channels)
   #:use-module (guix gexp)
   #:use-module (srfi srfi-1)
   #:use-module (admccartney home-services shell))
@@ -19,13 +21,16 @@
 (home-environment
  (packages (specifications->packages (list 
    "coreutils"
-   "glibc-locales"
    "curl"
    "openssl"
    "stow"
    "tree"
    "glibc-locales"
    "fontconfig"
+
+   ;; desktop
+   "adwaita-icon-theme"
+   "bibata-cursor-theme"
 
    ;; wayland extras
    "fuzzel"
@@ -54,11 +59,11 @@
    "nyacc"
 
    ;; go
-   "go@1.23.0"
+   "go@1.23"
    "xurls"
 
    ;; Emacs
-   "emacs"
+   "emacs-no-x-toolkit"
    "emacs-use-package"
    "emacs-geiser"
    "emacs-geiser-guile"
@@ -79,10 +84,8 @@
    ;; Org mode
    "emacs-org"
    "emacs-org-roam"
-;;   "emacs-org-roam-ui"
 ;;   "emacs-ob-typescript"
    "emacs-ob-go"
-   "emacs-org-roam-ui"
    
    ;; Completions
    "emacs-vertico"
@@ -150,5 +153,23 @@
                   ;;-> $XDG_CONFIG_DIR/foot/foot.init
                   `(("foot/foot.ini" ,(local-file "../../config/.config/foot/foot.ini"))))
 
+         ;; Add additional channels, for work we need HPC, having nonguix is also handy
+         (simple-service 'additional-packages-service
+                         home-channels-service-type
+                         (list
+                          (channel
+                           (name 'guix-hpc)
+                           (url "https://gitlab.inria.fr/guix-hpc/guix-hpc.git")
+                           (branch "master"))
+                           (channel
+                            (name 'nonguix)
+                            (url "https://gitlab.com/nonguix/nonguix")
+                            ;; Enable signature verification:
+                            (introduction
+                             (make-channel-introduction
+                              "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
+                              (openpgp-fingerprint
+                               "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))))
+                           
          ;; Shell service
          `(,@ad/shell-service)))))
