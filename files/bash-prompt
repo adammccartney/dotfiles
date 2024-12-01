@@ -75,8 +75,7 @@ function set_bash_prompt () {
     ### Guix
     # Automatically added by the Guix install script.
     if [ -n "$GUIX_ENVIRONMENT" ]; then
-        PS1="\u@\h \w [env]\$ \n"
-        PS1+="> "
+        PS1="\u@\h \W [env]\$ "
         export PS1
         if [ -z "${GUILE_EXTENSIONS_PATH-}" ]; then
             export GUILE_EXTENSIONS_PATH="$GUIX_ENVIRONMENT/lib"

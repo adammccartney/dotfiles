@@ -34,7 +34,6 @@
    ;; Org mode
    emacs-org
    emacs-org-roam
-;;   emacs-org-roam-ui
 ;;   emacs-ob-typescript
    emacs-ob-go
    

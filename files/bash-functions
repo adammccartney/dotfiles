@@ -9,6 +9,18 @@ function swap_ctrl_caps () {
       fi
     }
 
+
+function ff () {
+    # recursive grep for a term, fuzzy find the file where it occurs, open in
+    # vim
+    search_term="$1"
+    if [ -z $search_term ]; then
+        echo "ERR -- expected search term as arg 1"
+        return 1
+    fi
+    vim $(rg -l "$search_term" | fzf --preview 'cat {}')
+}
+
 function ftsearch () {
     # full text search, searches target for a term
     local TERM="$1"

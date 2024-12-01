@@ -1,0 +1,14 @@
+#!/bin/sh
+
+python3  <(cat <<EOF
+
+import random
+
+sel = random.randint(1,12)
+
+print(f"chpt {sel}")
+if sel == 12:
+    ex = random.randint(0,3)
+    print(f"ex: {ex}")
+EOF
+)

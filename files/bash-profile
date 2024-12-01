@@ -1,9 +1,5 @@
 # -*- mode: sh -*-
 
-if [ -d "$HOME/bin" ] ; then
-    PATH="$PATH:$HOME/bin"
-fi
-
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$PATH:$HOME/.local/bin"
 fi
@@ -20,19 +16,3 @@ fi
 #export LC_ALL=en_GB.UTF-8
 #export LANG=en_GB.UTF-8
 #export LANGUAGE=en_GB.UTF-8
-
-export EDITOR=vi
-
-export GOPATH="$HOME/go"
-# Go Setup (temporary?)
-if ! [[ $PATH =~ "$GOPATH/bin" ]]; then
-    export PATH="$PATH:$GOPATH/bin"
-fi
-
-if ! [[ $PATH =~ ~/.cargo/bin ]]; then
-    export PATH=$PATH:~/.cargo/bin
-fi
-
-if [ -f "$HOME/infrastructure/k8s/clusters/vsc/dev/config" ]; then
-    export KUBECONFIG_VSC="$HOME/infrastructure/k8s/clusters/vsc/dev/config"
-fi
