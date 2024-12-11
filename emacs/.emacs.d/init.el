@@ -143,7 +143,9 @@
 
 (use-package fontaine)
 
-(use-package tmr)
+(use-package tmr
+  :config
+  (setq tmr-sound-file "~/Music/ad/3bells.wav"))
 
 
 (use-package all-the-icons
