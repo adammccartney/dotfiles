@@ -637,3 +637,13 @@ argocd_port_forward () {
     # sets up port forwarding for the argocd instance on that cluster
     kubectl port-forward svc/argocd-server -n argocd 8080:443
 }
+
+atb () {
+    # at bell: play bell sound at TIME minutes
+    time=$1
+    if [ -z ${time} ]; then
+        echo "please provide time!"
+        return 1
+    fi
+    at now + ${time} minutes -f ~/bin/3bells
+}
