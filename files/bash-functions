@@ -9,16 +9,43 @@ function swap_ctrl_caps () {
       fi
     }
 
-
-function ff () {
-    # recursive grep for a term, fuzzy find the file where it occurs, open in
-    # vim
+function far () {
+    # find adam's regexes
+    # search and preview pipeline
+    # requires rg and vim
+    # creates a temprorary file to store results in an "error-file" that then
+    # gets read by vim. Leave cleanup to the os.
     search_term="$1"
-    if [ -z $search_term ]; then
+    dest="$2"
+    if [ -z ${search_term} ]; then
         echo "ERR -- expected search term as arg 1"
         return 1
     fi
-    vim $(rg -l "$search_term" | fzf --preview 'cat {}')
+    if [ -z ${dest} ]; then  # assume we want to search pwd
+        dest=$PWD
+    fi
+    error_file=$(mktemp)
+    rg --vimgrep ${search_term} ${dest} > ${error_file}
+    vim -q ${error_file}
+}
+
+function ff () {
+    # recursive grep for a SEARCH_TERM at DESTintation
+    # fuzzy find the file where it occurs,
+    # open in vim
+    search_term="$1"
+    dest="$2"
+    if [ -z ${search_term} ]; then
+        echo "ERR -- expected search term as arg 1"
+        return 1
+    fi
+    if [ -z ${dest} ]; then  # assume we want to search pwd
+        dest=$PWD
+    fi
+    if [ -z ${EDITOR} ]; then
+        EDITOR=vim
+    fi
+    ${EDITOR} $(rg -l ${search_term} ${dest} | fzf --preview 'cat {}')
 }
 
 function ftsearch () {
