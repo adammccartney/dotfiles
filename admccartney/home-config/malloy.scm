@@ -54,7 +54,7 @@
    "nyacc"
 
    ;; go
-   "go@1.23.0"
+   "go@1.23"
    "xurls"
 
    ;; Emacs
@@ -144,7 +144,7 @@
                                       "../../readline"
                                       "../../mutt"))))
 
-         ;; Shell service
+          ;; Shell service
          `(,@ad/shell-service)))))
 
 
