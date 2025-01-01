@@ -1,3 +1,24 @@
 [submodule "vim-lilypond"]
 	path = vim-lilypond
 	url = https://github.com/sersorrel/vim-lilypond
+[submodule "nvim-lspconfig"]
+	path = nvim/.config/nvim/pack/plugged/opt/nvim-lspconfig
+	url = git@github.com:neovim/nvim-lspconfig.git
+[submodule "nvim-treesitter"]
+	path = nvim/.config/nvim/pack/plugged/opt/nvim-treesitter
+	url = git@github.com:nvim-treesitter/nvim-treesitter.git
+[submodule "nvim-cmp"]
+	path = nvim/.config/nvim/pack/plugged/opt/nvim-cmp
+	url = git@github.com:hrsh7th/nvim-cmp.git
+[submodule "cmp-nvim-lsp"]
+	path = nvim/.config/nvim/pack/plugged/opt/cmp-nvim-lsp
+	url = git@github.com:hrsh7th/cmp-nvim-lsp.git
+[submodule "cmp-nvim-lua"]
+	path = nvim/.config/nvim/pack/plugged/opt/cmp-nvim-lua
+	url = git@github.com:hrsh7th/cmp-nvim-lua.git
+[submodule "nightfox"]
+	path = nvim/.config/nvim/pack/plugged/opt/nightfox
+	url = git@github.com:EdenEast/nightfox.nvim.git
+[submodule "fzf-lua"]
+	path = nvim/.config/nvim/pack/plugged/opt/fzf-lua
+	url = git@github.com:ibhagwan/fzf-lua.git
