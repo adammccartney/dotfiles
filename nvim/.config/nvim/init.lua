@@ -22,6 +22,24 @@ vim.opt.completeopt = vim.opt.completeopt + 'noselect' -- don't automatically se
 vim.opt.directory = config .. '/nvim/swap//' -- keep swap files out of the way
 vim.opt.directory = vim.opt.directory + '.' -- fallback
 
+-- plugins
+if vim.o.loadplugins then
+    vim.cmd('packadd! nvim-lspconfig')
+    vim.cmd('packadd! nvim-treesitter')
+    vim.cmd('packadd! nvim-cmp')
+    vim.cmd('packadd! cmp-nvim-lsp')
+    vim.cmd('packadd! cmp-nvim-lua')
+    vim.cmd('packadd! nightfox')
+    vim.cmd('packadd! fzf-lua')
+    --vim.cmd('packadd! conjure')
+    --vim.cmd('packadd! go.nvim')
+    --vim.cmd('packadd! guihua.lua')
+    --vim.cmd('packadd! fzf-lu')
+    ---- optional for icon support
+    --vim.cmd('packadd! nvim-web-devicons')
+end
+
+
 -- go setup
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*.go",
@@ -32,7 +50,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 --enable plugin
-require('go').setup()
+--require('go').setup()
 
 
 --Test function for testing plugins

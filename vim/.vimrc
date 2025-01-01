@@ -108,36 +108,7 @@ syntax on
 " Packages
 "========================================================
 
-
-" Use vimplug to manage plugins
-
-call plug#begin('~/.vim/plugged')
-if has("nvim")
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    Plug 'nvim-treesitter/playground'
-    Plug 'nvim-lua/popup.nvim'
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'hrsh7th/cmp-nvim-lsp'
-    Plug 'hrsh7th/cmp-nvim-lua'
-    Plug 'hrsh7th/cmp-buffer'
-    Plug 'hrsh7th/cmp-path'
-    Plug 'hrsh7th/cmp-cmdline'
-    Plug 'hrsh7th/nvim-cmp'
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'mfussenegger/nvim-lint'
-    Plug 'EdenEast/nightfox.nvim'
-    Plug 'Olical/conjure'
-    Plug 'ray-x/go.nvim'
-    Plug 'ray-x/guihua.lua', { 'do': 'cd lua/fzy && make'}
-    Plug 'ibhagwan/fzf-lua', {'branch': 'main'}
-    " optional for icon support
-    Plug 'nvim-tree/nvim-web-devicons'
-
-    " unmanaged
-    Plug '~/Code/plugins/nvim-rinse'
-endif
-
-call plug#end()
+" only use packages if running nvim, see init.lua
 
 " =============================================================================
 " special config for any vim plugins that got installed
