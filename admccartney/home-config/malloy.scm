@@ -21,8 +21,6 @@
    "coreutils"
    "glibc-locales"
    "curl"
-   "git"
-   "git-crypt"
    "openssl"
    "stow"
    "tree"
@@ -42,8 +40,6 @@
    
    ;; cli apps
    "ripgrep"
-   "git"
-   "git-crypt"
    "fzf"
    "tmux"
    
@@ -115,10 +111,6 @@
 
    ;; vim + plugins
    "vim-full"
-   "vim-guix-vim"
-   "vim-fugitive"
-   "vim-nerdtree"
-   "vim-slime"
 
    ;; mail
    "mu"

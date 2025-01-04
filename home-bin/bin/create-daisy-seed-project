@@ -1,0 +1,44 @@
+#!/bin/sh
+
+set -xe
+
+_usage () {
+    printf "%s <PROJECT_NAME>\n" "$0"
+}
+
+
+# pre init
+TARGET_DIR=$HOME/src/codeberg.org/admccartney
+PROJECT_NAME="$1"
+if [ -z $PROJECT_NAME ]; then
+    printf "ERR -- please provide a name for the project\n"
+    _usage
+fi
+PROJECT_DIR=${TARGET_DIR}/${PROJECT_NAME}
+
+function init(){
+    mkdir -pv ${PROJECT_DIR}; cd ${PROJECT_DIR} &&
+		git init && \
+		download_and_add_libs
+}
+
+function download_and_add_libs(){
+	git submodule add https://github.com/electro-smith/DaisySP
+	git submodule add https://github.com/electro-smith/libDaisy
+
+	cd "DaisySP"
+    git submodule update --init --recursive
+	echo "building DaisySP . . ."
+    make clean ; make | grep "warning:r\|error" ;
+	echo "done."
+
+	cd ../libDaisy
+    git submodule update --init --recursive
+	echo "building libDaisy . . ."
+	make clean ; make | grep "warning:r\|error" ;
+	echo "done."
+}
+
+# main
+init
+
