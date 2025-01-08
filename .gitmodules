@@ -22,3 +22,6 @@
 [submodule "fzf-lua"]
 	path = nvim/.config/nvim/pack/plugged/opt/fzf-lua
 	url = git@github.com:ibhagwan/fzf-lua.git
+[submodule "vim-slime"]
+	path = nvim/.config/nvim/pack/plugged/opt/vim-slime
+	url = git@github.com:jpalardy/vim-slime.git

@@ -9,6 +9,13 @@ let &packpath = &runtimepath
 source ~/.vimrc
 ]])
 
+
+if vim.loader then
+    vim.loader.enable()
+end
+
+require('adam')
+
 -- General options
 local home = vim.env.HOME
 local config = home .. '/.config/nvim'
@@ -31,6 +38,7 @@ if vim.o.loadplugins then
     vim.cmd('packadd! cmp-nvim-lua')
     vim.cmd('packadd! nightfox')
     vim.cmd('packadd! fzf-lua')
+    vim.cmd('packadd! vim-slime')
     --vim.cmd('packadd! conjure')
     --vim.cmd('packadd! go.nvim')
     --vim.cmd('packadd! guihua.lua')
