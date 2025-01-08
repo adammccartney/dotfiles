@@ -146,8 +146,8 @@ end
 
 " Python
 " ======
-let g:python_host_prog = '/usr/bin/python'
-let g:python3_host_prog = '/usr/bin/python3'
+let g:python_host_prog = '~/.virtualenvs/pynvim/bin/python'
+let g:python3_host_prog = '~/.virtualenvs/pynvim/bin/python3'
 
 autocmd FileType python compiler flake8
 

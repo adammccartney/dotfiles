@@ -674,3 +674,8 @@ atb () {
     fi
     at now + ${time} minutes -f ~/bin/3bells
 }
+
+rfc_sync () {
+    rsync -avz --delete ftp.rfc-editor.org::rfcs-text-only "$HOME/Documents/rfc/archive/"
+}
+
