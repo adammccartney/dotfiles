@@ -4,6 +4,8 @@ local cmp = require'cmp'
 -- thanks to wincent https://github.com/wincent/wincent/blob/main/aspects/nvim/files/.config/nvim/after/plugin/nvim-cmp.lua
 local rhs = adam.vim.rhs
 
+-- TODO: add luasnip and import it here, uncomment lines below that reference it
+
 -- Returns the current column number.
 local column = function()
   local _line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -134,6 +136,36 @@ local select_prev_item = function(fallback)
     end
 end
 
+-- Until https://github.com/hrsh7th/nvim-cmp/issues/1716
+-- (cmp.ConfirmBehavior.MatchSuffix) gets implemented, use this local wrapper
+-- to choose between `cmp.ConfirmBehavior.Insert` and
+-- `cmp.ConfirmBehavior.Replace`:
+local confirm = function(entry)
+  local behavior = cmp.ConfirmBehavior.Replace
+  if entry then
+    local completion_item = entry.completion_item
+    local newText = ''
+    if completion_item.textEdit then
+      newText = completion_item.textEdit.newText
+    elseif type(completion_item.insertText) == 'string' and completion_item.insertText ~= '' then
+      newText = completion_item.insertText
+    else
+      newText = completion_item.word or completion_item.label or ''
+    end
+
+    -- How many characters will be different after the cursor position if we
+    -- replace?
+    local diff_after = math.max(0, entry.replace_range['end'].character + 1) - entry.context.cursor.col
+
+    -- Does the text that will be replaced after the cursor match the suffix
+    -- of the `newText` to be inserted? If not, we should `Insert` instead.
+    if entry.context.cursor_after_line:sub(1, diff_after) ~= newText:sub(-diff_after) then
+      behavior = cmp.ConfirmBehavior.Insert
+    end
+  end
+  cmp.confirm({ select = true, behavior = behavior })
+end
+
 cmp.setup({
 
   mapping = cmp.mapping.preset.insert({
@@ -145,9 +177,38 @@ cmp.setup({
     ['<C-k>'] = cmp.mapping(select_prev_item),
     ['<Up>'] = cmp.mapping(select_prev_item),
     ['<C-y>'] = cmp.mapping(cmp.get_selected_entry),
-    ['<S-Tab>'] = cmp.select_prev_item(),
-    ['<Tab>'] = cmp.complete(),
-  }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.select_prev_item()
+        --elseif has_luasnip and luasnip.in_snippet() and luasnip.jumpable(-1) then
+        --  luasnip.jump(-1)
+        elseif in_leading_indent() then
+          smart_bs(true) -- true means to dedent
+        elseif in_whitespace() then
+          smart_bs()
+        else
+          fallback()
+        end
+      end, { 'i', 's' }),
+
+    ['<Tab>'] = cmp.mapping(function(_fallback)
+        if cmp.visible() then
+          -- If there is only one completion candidate, use it.
+          local entries = cmp.get_entries()
+          if #entries == 1 then
+            confirm(entries[1])
+          else
+            cmp.select_next_item()
+          end
+        --elseif has_luasnip and luasnip.expand_or_locally_jumpable() then
+        --  luasnip.expand_or_jump()
+        elseif in_whitespace() then
+          smart_tab()
+        else
+          cmp.complete()
+        end
+      end, { 'i', 's' }),
+    }),
 
   snippet = {
     -- REQUIRED - you must specify a snippet engine
@@ -157,6 +218,10 @@ cmp.setup({
       -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
       -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
     end,
+  },
+
+  completion = {
+      completeopt = 'menu,menuone,noinsert',
   },
 
   sources = cmp.config.sources({
@@ -190,34 +255,6 @@ cmp.setup({
         winhighlight = 'CursorLine:Visual,Search:None',
     }),
   },
-
-})
-
--- Set configuration for specific filetype.
-cmp.setup.filetype('gitcommit', {
-  sources = cmp.config.sources({
-    { name = 'git' }, -- You can specify the `git` source if [you were installed it](https://github.com/petertriho/cmp-git).
-  }, {
-    { name = 'buffer' },
-  })
-})
-
--- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline({ '/', '?' }, {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
-})
-
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    { name = 'cmdline' }
-  })
 })
 
 -- Set up lspconfig.
