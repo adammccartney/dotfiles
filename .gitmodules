@@ -25,3 +25,9 @@
 [submodule "vim-slime"]
 	path = nvim/.config/nvim/pack/plugged/opt/vim-slime
 	url = git@github.com:jpalardy/vim-slime.git
+[submodule "LuaSnip"]
+	path = nvim/.config/nvim/pack/plugged/opt/LuaSnip
+	url = git@github.com:L3MON4D3/LuaSnip.git
+[submodule "cmp_luasnip"]
+	path = nvim/.config/nvim/pack/plugged/opt/cmp_luasnip
+	url = git@github.com:saadparwaiz1/cmp_luasnip.git

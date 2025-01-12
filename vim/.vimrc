@@ -24,7 +24,7 @@ map <LocalLeader>p :tabp<cr>
 
 
 " Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
+"xmap ga <Plug>(EasyAlign)
 
 " vim-slime
 let g:slime_target = "tmux"
@@ -86,12 +86,6 @@ set expandtab
 set nobackup
 set nowritebackup
 set noswapfile
-
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
 
 "=======================================================
 "Syntax formatting

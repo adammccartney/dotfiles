@@ -31,11 +31,13 @@ vim.opt.directory = vim.opt.directory + '.' -- fallback
 
 -- plugins
 if vim.o.loadplugins then
+    vim.cmd('packadd! LuaSnip')
     vim.cmd('packadd! nvim-lspconfig')
     vim.cmd('packadd! nvim-treesitter')
     vim.cmd('packadd! nvim-cmp')
     vim.cmd('packadd! cmp-nvim-lsp')
     vim.cmd('packadd! cmp-nvim-lua')
+    vim.cmd('packadd! cmp_luasnip')
     vim.cmd('packadd! nightfox')
     vim.cmd('packadd! fzf-lua')
     vim.cmd('packadd! vim-slime')
@@ -86,3 +88,21 @@ P = function(...)
     print(unpack(args))
     return ...
 end
+
+
+-- luasnip config
+local has_luasnip, luasnip = pcall(require, "luasnip")
+
+if has_luasnip then
+  luasnip.config.set_config {
+      -- remember to keep around last snippet
+      history = true,
+
+      -- dynamic snippets that update as you type
+      -- default is InsertLeave
+      updateevents = 'TextChanged,TextChangedI',
+  }
+  --vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/after/plugin/luasnip.lua<CR>")
+end
+
+
