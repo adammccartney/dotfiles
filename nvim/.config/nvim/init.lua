@@ -16,6 +16,7 @@ end
 
 require('adam')
 
+
 -- General options
 local home = vim.env.HOME
 local config = home .. '/.config/nvim'
@@ -28,6 +29,11 @@ vim.opt.completeopt = vim.opt.completeopt + 'menuone' -- show menu even if there
 vim.opt.completeopt = vim.opt.completeopt + 'noselect' -- don't automatically select canditate (for nvim-cmp)
 vim.opt.directory = config .. '/nvim/swap//' -- keep swap files out of the way
 vim.opt.directory = vim.opt.directory + '.' -- fallback
+
+-------------------------------------------
+-- Globals --------------------------------
+-------------------------------------------
+vim.g.CommandTPreferredImplementation = 'lua'
 
 -- plugins
 if vim.o.loadplugins then
@@ -44,9 +50,9 @@ if vim.o.loadplugins then
     --vim.cmd('packadd! conjure')
     --vim.cmd('packadd! go.nvim')
     --vim.cmd('packadd! guihua.lua')
-    --vim.cmd('packadd! fzf-lu')
     ---- optional for icon support
     --vim.cmd('packadd! nvim-web-devicons')
+    vim.cmd('packadd! command-t')
 end
 
 
@@ -70,7 +76,7 @@ vim.api.nvim_create_user_command("Test", function()
 end, {})
 
 
--- terraform setup 
+-- terraform setup
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = {"*.tf", "*tfvars"},
   callback = function()
@@ -104,5 +110,6 @@ if has_luasnip then
   }
   --vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/after/plugin/luasnip.lua<CR>")
 end
+
 
 

@@ -31,3 +31,6 @@
 [submodule "cmp_luasnip"]
 	path = nvim/.config/nvim/pack/plugged/opt/cmp_luasnip
 	url = git@github.com:saadparwaiz1/cmp_luasnip.git
+[submodule "command-t"]
+	path = nvim/.config/nvim/pack/plugged/opt/command-t
+	url = git@github.com:wincent/command-t.git
