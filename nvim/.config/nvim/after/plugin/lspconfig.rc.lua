@@ -101,4 +101,15 @@ if has_lspconfig then
     --- python
     --------------------
     lspconfig.pyright.setup{}
+
+    --------------------
+    --- terraform
+    --------------------
+    lspconfig.terraformls.setup{}
+    lspconfig.tflint.setup{}
+
+    ---------------------------
+    --- ansible-language-server
+    ---------------------------
+    lspconfig.ansiblels.setup{}
 end

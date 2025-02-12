@@ -57,16 +57,7 @@ end
 
 
 -- go setup
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = "*.go",
-    callback = function()
-      require("go.format").goimport()
-    end,
-    group = format_sync_grp,
-})
-
 --enable plugin
---require('go').setup()
 
 
 --Test function for testing plugins
