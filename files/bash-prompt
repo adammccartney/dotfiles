@@ -54,7 +54,14 @@ function set_virtual_env () {
 }
 
 function set_bash_prompt () {
+    local eessi_block=""
 
+    # Strictly match {EESSI YYYY.MM} or similar variants
+    if [[ $PS1 =~ (\{EESSI[[:space:]]+[0-9]{4}\.[0-9]{2}\}) ]]; then
+        eessi_block="${BASH_REMATCH[1]}"
+    fi
+
+    # clear the prompt
     PS1=""
     # Python virtual environment
     set_virtual_env
@@ -83,6 +90,10 @@ function set_bash_prompt () {
             GUILE_EXTENSIONS_PATH="$GUIX_ENVIRONMENT/lib:$GUILE_EXTENSIONS_PATH"
         fi
     fi
+
+
+    ## reattach the EESSI block if it was found
+    [[ -n $eessi_block ]] && PS1="$eessi_block $PS1"
 
 }
 

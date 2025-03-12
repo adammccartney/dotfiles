@@ -27,20 +27,20 @@ cleanup() {
 
 declare -A configs
 
-configs["git"]="$HOME"
-configs["emacs"]="$HOME"
-configs["gpg"]="$HOME"
+#configs["git"]="$HOME"
+#configs["emacs"]="$HOME"
+#configs["gpg"]="$HOME"
 configs["guile"]="$HOME"
-configs["guix"]="$HOME"
-configs["guix-manifests"]="$HOME"
-configs["mail"]="$HOME"
-configs["mutt"]="$HOME"
+#configs["guix"]="$HOME"
+#configs["guix-manifests"]="$HOME"
+#configs["mail"]="$HOME"
+#configs["mutt"]="$HOME"
 configs["nettools"]="$HOME"
 configs["nvim"]="$HOME"
 configs["vim"]="$HOME"
 configs["readline"]="$HOME"
-configs["systemd"]="$HOME"
-configs["scripts"]="$HOME/bin"
+#configs["systemd"]="$HOME"
+configs["home-bin"]="$HOME/bin"
 configs["tmux"]="$HOME"
 
 

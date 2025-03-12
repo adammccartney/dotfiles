@@ -4,7 +4,7 @@
 STOW_DIR="$HOME/dotfiles"
 
 # Load module
-source "${STOW_DIR}/bin/common"
+source "${STOW_DIR}/mk-scripts/common"
 
 mystow "stow"
 
