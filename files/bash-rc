@@ -116,16 +116,11 @@ fi
 guix_activate_profile  # try to activate host profile
 
 # check whether we're setup to use nss-certs via guix, possibly set required variables
-if [ -d "$GUIX_PROFILE/etc/ssl/certs" ]; then
+if [ -z ${GUIX_PROFILE+x} ] && [ -d "${GUIX_PROFILE}/etc/ssl/certs" ]; then
     export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
     export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
     export GIT_SSL_CAINFO="$SSL_CERT_FILE"
-else
-    # use the system's ssl stuff
-    export SSL_CERT_DIR="/etc/ssl/certs"
-    export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
-    export GIT_SSL_CAINFO="$SSL_CERT_FILE"
-fi 
+fi
 
 # FIXME: this is a workaround for the fact that
 # ~/.guix-home/setup-environment clobbers the $XCURSOR_PATH

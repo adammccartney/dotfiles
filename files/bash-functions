@@ -604,9 +604,9 @@ function guix_activate_profile() {
         #echo in case 2: $GUIX_HOST_PROFILE
     fi
 
-    if [ -z $GUIX_HOST_PROFILE ]; then
-        echo "WARN -- no guix profile set!"
-    fi
+    #if [ -z $GUIX_HOST_PROFILE ]; then
+    #    echo "WARN -- no guix profile set!"
+    #fi
 
     export GUIX_PROFILE="$GUIX_HOST_PROFILE"
     export GUIX_LOCPATH="$GUIX_PROFILE/lib/locale"
