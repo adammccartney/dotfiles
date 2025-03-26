@@ -34,7 +34,6 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 autocmd! bufwritepost .vimrc source %
 
 " Better copy & paste
-set pastetoggle=<F2>
 set clipboard=unnamed
 
 " Mouse and backspace
