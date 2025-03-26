@@ -47,7 +47,7 @@ if vim.o.loadplugins then
     vim.cmd('packadd! nightfox')
     vim.cmd('packadd! fzf-lua')
     vim.cmd('packadd! vim-slime')
-    --vim.cmd('packadd! conjure')
+    vim.cmd('packadd! conjure')
     --vim.cmd('packadd! go.nvim')
     --vim.cmd('packadd! guihua.lua')
     ---- optional for icon support
