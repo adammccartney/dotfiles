@@ -120,7 +120,7 @@ if has('gui_running')
 elseif has('win32')
     colorscheme slate
 elseif has('nvim')
-    colorscheme desert
+    colorscheme default
 else
     colorscheme desert
 end
