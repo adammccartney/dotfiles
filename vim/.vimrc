@@ -212,3 +212,6 @@ nnoremap ,jmail :-1read $HOME/.vim/snippets/mails/jaas.mail.template<CR>2j
 " Insert a k8s deployment yaml
 nnoremap ,akd :-1read $HOME/.vim/snippets/k8s/deployment.yaml<CR>
 nnoremap ,akpv :-1read $HOME/.vim/snippets/k8s/pv.yaml<CR>
+" Python snippers
+nnoremap ,aplg :-1read $HOME/.vim/snippets/py/logger.py<CR>
+nnoremap ,apb :-1read $HOME/.vim/snippets/py/breakpoint.py<CR>1j
