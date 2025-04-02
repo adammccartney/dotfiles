@@ -1,3 +1,6 @@
+# This is set to avoid slow startup times on machines with custom dns setup
+set hostname="$HOSTNAME"
+
 # Folder hooks
 folder-hook 'account.murat' 'source ~/.mutt/account.murat'
 folder-hook 'account.tuw.ac.at' 'source ~/.mutt/account.tuw.ac.at'
