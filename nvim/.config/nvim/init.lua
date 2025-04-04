@@ -108,7 +108,6 @@ vim.lsp.enable({
 
 
 vim.diagnostic.config({
-    virtual_lines = true,
     --virtual_text = { current_line = true },
     float = { border = _border },
 })
@@ -121,7 +120,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client:supports_method('textDocument/completion') then
       vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-      vim.o.winborder = _border
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = _border })
+      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = _border })
     end
   end,
 })
