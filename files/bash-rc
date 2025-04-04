@@ -34,10 +34,20 @@ HISTCONTROL=ignoredups
 # append to the history file, don't overwrite it
 shopt -s histappend
 
+
+# XDG dirs don't get set on headless systems, we rely on them below
+if [[ -z ${XDG_CACHE_HOME} ]]; then
+    export XDG_CACHE_HOME=${HOME}/.cache
+fi
+
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=100000
 HISTFILESIZE="$HISTSIZE"
 HISTFILE="$XDG_CACHE_HOME/.bash_history"
+
+if [[ ! -f ${HISTFILE} ]]; then
+    touch ${HISTFILE}
+fi
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
