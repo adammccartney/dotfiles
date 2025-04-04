@@ -37,17 +37,16 @@ vim.g.CommandTPreferredImplementation = 'lua'
 
 -- plugins
 if vim.o.loadplugins then
-    vim.cmd('packadd! LuaSnip')
-    vim.cmd('packadd! nvim-treesitter')
-    vim.cmd('packadd! nightfox')
-    vim.cmd('packadd! fzf-lua')
-    vim.cmd('packadd! vim-slime')
-    --vim.cmd('packadd! conjure')
-    --vim.cmd('packadd! go.nvim')
-    --vim.cmd('packadd! guihua.lua')
+    adam.plugin.load('LuaSnip')
+    adam.plugin.load('nvim-treesitter')
+    adam.plugin.load('nightfox')
+    adam.plugin.load('fzf-lua')
+    adam.plugin.load('vim-slime')
+    --adam.plugin.load('go.nvim')
+    --adam.plugin.load('guihua.lua')
     ---- optional for icon support
-    --vim.cmd('packadd! nvim-web-devicons')
-    vim.cmd('packadd! command-t')
+    --adam.plugin.load('nvim-web-devicons')
+    adam.plugin.load('command-t')
 end
 
 
