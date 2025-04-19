@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# oxherd: run a search over the document directories specified in search.py
+
+search.py "${*:-}" | 
+    fzf --ansi \
+      --preview 'less {}' \
+      --preview-window 'left,60%,border-right,+{2}+3/3,~3' \
+      --bind 'enter:become(vim {1} +{2})'
