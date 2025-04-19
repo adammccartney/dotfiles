@@ -109,7 +109,7 @@ function orgtomd () {
     fi
     input=$1
     output=$2
-    pandoc -w markdown -o $output -f org $input
+    pandoc --from=org --to=commonmark -o $output $input
 }
 
 # Functions
