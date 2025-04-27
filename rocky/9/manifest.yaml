@@ -1,0 +1,9 @@
+packages:
+  - git
+  - tmux
+  - bind-utils
+  - stow
+  - go
+
+groups:
+  - "Development Tools"

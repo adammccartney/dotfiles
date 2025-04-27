@@ -29,24 +29,29 @@ vim.opt.completeopt = vim.opt.completeopt + 'menuone' -- show menu even if there
 vim.opt.completeopt = vim.opt.completeopt + 'noselect' -- don't automatically select canditate (for nvim-cmp)
 vim.opt.directory = config .. '/nvim/swap//' -- keep swap files out of the way
 vim.opt.directory = vim.opt.directory + '.' -- fallback
+vim.opt.foldlevelstart = 99  -- default unfolded
+vim.opt.foldmethod = 'expr'
 
 -------------------------------------------
 -- Globals --------------------------------
 -------------------------------------------
 vim.g.CommandTPreferredImplementation = 'lua'
 
+
+vim.cmd('set runtimepath+=~/src/github.com/adammccartney/oxherd')
 -- plugins
 if vim.o.loadplugins then
+    adam.plugin.load('command-t')
+    adam.plugin.load('fzf-lua')
     adam.plugin.load('LuaSnip')
     adam.plugin.load('nvim-treesitter')
     adam.plugin.load('nightfox')
-    adam.plugin.load('fzf-lua')
+    adam.plugin.load('oxherd')
     adam.plugin.load('vim-slime')
     --adam.plugin.load('go.nvim')
     --adam.plugin.load('guihua.lua')
     ---- optional for icon support
     --adam.plugin.load('nvim-web-devicons')
-    adam.plugin.load('command-t')
 end
 
 
@@ -104,12 +109,16 @@ vim.lsp.enable({
     "tflint",
 })
 
-
+-----------------------------
+--- Diagnostics -------------
+-----------------------------
 
 vim.diagnostic.config({
     --virtual_text = { current_line = true },
     float = { border = _border },
 })
+
+vim.keymap.set('n', ',gK', vim.diagnostic.open_float)
 
 -----------------------------
 --- Autocompletion ----------
