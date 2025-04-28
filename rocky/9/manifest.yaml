@@ -4,6 +4,7 @@ packages:
   - bind-utils
   - stow
   - go
+  - cmake
 
 groups:
   - "Development Tools"
