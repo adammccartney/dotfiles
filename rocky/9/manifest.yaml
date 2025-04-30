@@ -5,6 +5,7 @@ packages:
   - stow
   - go
   - cmake
+  - tree
 
 groups:
   - "Development Tools"
