@@ -22,3 +22,6 @@
 [submodule "conjure"]
 	path = nvim/.config/nvim/pack/plugged/opt/conjure
 	url = git@github.com:Olical/conjure.git
+[submodule "nullconfig"]
+	path = nullconfig
+	url = git@github.com:adammccartney/nullconfig.git

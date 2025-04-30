@@ -1,0 +1,11 @@
+packages:
+  - git
+  - tmux
+  - bind-utils
+  - stow
+  - go
+  - cmake
+  - tree
+
+groups:
+  - "Development Tools"

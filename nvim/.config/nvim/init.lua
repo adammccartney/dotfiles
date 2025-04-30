@@ -109,12 +109,16 @@ vim.lsp.enable({
     "tflint",
 })
 
-
+-----------------------------
+--- Diagnostics -------------
+-----------------------------
 
 vim.diagnostic.config({
     --virtual_text = { current_line = true },
     float = { border = _border },
 })
+
+vim.keymap.set('n', ',gK', vim.diagnostic.open_float)
 
 -----------------------------
 --- Autocompletion ----------
