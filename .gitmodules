@@ -25,3 +25,6 @@
 [submodule "nullconfig"]
 	path = nullconfig
 	url = git@github.com:adammccartney/nullconfig.git
+[submodule "easy-align"]
+	path = /home/amccartn/dotfiles/nvim/.config/nvim/pack/plugged/opt/vim-easy-align
+	url = git@github.com:junegunn/vim-easy-align.git
