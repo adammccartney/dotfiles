@@ -38,7 +38,7 @@ vim.opt.foldmethod = 'expr'
 vim.g.CommandTPreferredImplementation = 'lua'
 
 
-vim.cmd('set runtimepath+=~/src/github.com/adammccartney/oxherd')
+vim.cmd('set runtimepath+=~/src/github.com/adammccartney/nvim-oxherd')
 -- plugins
 if vim.o.loadplugins then
     adam.plugin.load('command-t')
@@ -46,12 +46,14 @@ if vim.o.loadplugins then
     adam.plugin.load('LuaSnip')
     adam.plugin.load('nvim-treesitter')
     adam.plugin.load('nightfox')
-    adam.plugin.load('oxherd')
+    adam.plugin.load('nvim-oxherd')
     adam.plugin.load('vim-slime')
+    adam.plugin.load('vim-easy-align')
     --adam.plugin.load('go.nvim')
     --adam.plugin.load('guihua.lua')
     ---- optional for icon support
     --adam.plugin.load('nvim-web-devicons')
+    --adam.plugin.load('render-markdown')
 end
 
 
