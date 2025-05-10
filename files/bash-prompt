@@ -5,6 +5,7 @@ BLUE="\[\e[38;5;39m\]"
 YELLOW="\[\e[38;5;226m\]"
 GREEN="\[\e[38;5;77m\]"
 WHITE="\[\e[38;5;255m\]"
+BLACK="\[\e[38;5;0m\]"
 
 #PS1="\[\033[s\033[0;0H\033[0;49m\033[K\033[1;33m\t\033[u\]<\u@\h \W>\$"
 #export PS1='<\u@\h \W>$(__git_ps1 " (%s)")\$'
@@ -42,14 +43,14 @@ function __ad_git_ps1 () {
 
     local f="$w$i"
     gitstring=$(printf -- "($BRANCH${f:+$f})")
-    PS1+="${GREEN}${gitstring}${NO_COLOR} "
+    PS1+="${BLACK}${gitstring}${NO_COLOR} "
 }
 
 function set_virtual_env () {
     if test -z ${VIRTUAL_ENV}; then
         PYTHON_VIRTUAL_ENV=""
     else
-        PYTHON_VIRTUAL_ENV="${WHITE}[`basename \"$VIRTUAL_ENV\"`]${NO_COLOR} "
+        PYTHON_VIRTUAL_ENV="${BLACK}[`basename \"$VIRTUAL_ENV\"`]${NO_COLOR} "
     fi
 }
 
@@ -67,17 +68,17 @@ function set_bash_prompt () {
     set_virtual_env
     PS1+="${PYTHON_VIRTUAL_ENV}"
     # set up user and host
-    PS1+="${BLUE}\u@\h${BLUE} "
+    PS1+="${BLACK}\u@\h${BLACK} "
 
     ## Set git prompt
     if is_git_repository; then
         __ad_git_ps1
     fi
     # set up working directory
-    PS1+="${YELLOW}\w${NO_COLOR} \n"
+    PS1+="${BLACK}\w${NO_COLOR} \n"
 
     # set up prompt character
-    PS1+="${WHITE}>${WHITE} "
+    PS1+="${BLACK}>${BLACK} "
 
     ### Guix
     # Automatically added by the Guix install script.
