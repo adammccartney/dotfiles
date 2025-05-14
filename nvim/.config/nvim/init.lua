@@ -47,6 +47,7 @@ if vim.o.loadplugins then
     adam.plugin.load('nvim-treesitter')
     adam.plugin.load('nightfox')
     adam.plugin.load('nvim-oxherd')
+    adam.plugin.load('vim-markdown')
     adam.plugin.load('vim-slime')
     adam.plugin.load('vim-easy-align')
     --adam.plugin.load('go.nvim')
