@@ -28,3 +28,6 @@
 [submodule "easy-align"]
 	path = /home/amccartn/dotfiles/nvim/.config/nvim/pack/plugged/opt/vim-easy-align
 	url = git@github.com:junegunn/vim-easy-align.git
+[submodule "vim-markdown"]
+	path = /home/amccartn/dotfiles/nvim/.config/nvim/pack/plugged/opt/vim-markdown
+	url = git@github.com:tpope/vim-markdown.git
