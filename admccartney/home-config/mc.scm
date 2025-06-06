@@ -177,6 +177,4 @@
                            (channel
                             (name 'bin-guix)
                             (url "https://github.com/ieugen/bin-guix")
-                            (branch "main"))))                           
-         ;; Shell service
-         `(,@ad/shell-service)))))
+                            (branch "main"))))))))
