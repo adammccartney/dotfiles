@@ -116,6 +116,8 @@
    "emacs-vterm"
    "emacs-guix"
    "emacs-yaml-mode"
+   "emacs-hcl-mode"
+   "emacs-terraform-mode"
 
    "emacs-ement"
    "emacs-elfeed"
@@ -144,7 +146,7 @@
                                       "../../emacs"
                                       "../../systemd"
                                       "../../sway"
-                                      "../../vim"
+                                      ;;"../../vim"
                                       "../../nvim"
                                       "../../tmux"
                                       "../../mail"
