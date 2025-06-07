@@ -116,6 +116,8 @@
    "emacs-vterm"
    "emacs-guix"
    "emacs-yaml-mode"
+   "emacs-hcl-mode"
+   "emacs-terraform-mode"
 
    "emacs-ement"
    "emacs-elfeed"
@@ -144,8 +146,6 @@
                                       "../../emacs"
                                       "../../systemd"
                                       "../../sway"
-                                      "../../vim"
-                                      "../../nvim"
                                       "../../tmux"
                                       "../../mail"
                                       "../../guile"
@@ -177,6 +177,4 @@
                            (channel
                             (name 'bin-guix)
                             (url "https://github.com/ieugen/bin-guix")
-                            (branch "main"))))                           
-         ;; Shell service
-         `(,@ad/shell-service)))))
+                            (branch "main"))))))))

@@ -638,7 +638,7 @@ tu_gitlab_clone() {
     local dest=${gitlab_root}/${repo}
     mkdir -pv $dest
     # note this relies on ssh config
-    git clone "gitlab.tu:$repo" "$dest"
+    git clone "git@gitlab.tuwien.ac.at:$repo" "$dest"
 }
 
 ansible_ping_host () {
@@ -679,3 +679,41 @@ rfc_sync () {
     rsync -avz --delete ftp.rfc-editor.org::rfcs-text-only "$HOME/Documents/rfc/archive/"
 }
 
+
+fderr () {
+    error_log_str="$1"
+    paste <(python -m fderr -e ${error_log_str}) | bash
+}
+
+pyclear () {
+    # will clear all pycache related objects in current dir
+    # https://stackoverflow.com/questions/28991015/python3-project-remove-pycache-folders-and-pyc-files
+    find . |grep -E "(/__pycache__$|\.pyc$|\.pyo$)" | xargs rm -rf
+}
+
+mk_dns_update () {
+    # update the ip used to manage dns for the minikube cluster
+    # assumes that _one_ minikube cluster is running
+    # requires sudo
+    # modifies /etc/systemd/resolved.conf.d/01-minikube-x-test.conf
+    if [ "$#" -ne 1 ]; then
+        echo "expected cluster name as arg1, run 'minikube profile list' to see available"
+        return 1
+    fi
+    cluster_name=$1
+    mk_conf="/etc/systemd/resolved.conf.d/01-minikube-x-test.conf"
+    if [ ! -f ${mk_conf} ]; then
+        echo "did not find mk config file ${mk_conf}"
+        return 1
+    fi
+    mk_cluster_ip=$(MINIKUBE_HOME=$HOME/.minikube minikube -p ${cluster_name} ip)
+    sudo sed -E -i "s/(DNS=)(([[:digit:]]{1,}\.?){4})/\1${mk_cluster_ip}/" ${mk_conf}
+}
+
+timesheet () {
+    tsheet=${HOME}/Documents/tuwien/timesheets/2025/ad_timesheet_2025.xlsx
+
+    if [ -f ${tsheet} ]; then
+        xdg-open ${tsheet}
+    fi
+}

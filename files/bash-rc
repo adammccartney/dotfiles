@@ -1,6 +1,8 @@
 # -*- mode: sh -*-
 
-#[ -z "$TMUX" ] && export TERM=screen-256color
+[ -z "$TMUX" ] && export TERM=xterm-256color
+
+export LC_ALL=C.UTF-8
 
 export EDITOR=vi
 
@@ -188,3 +190,14 @@ if [ -d $HOME/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi/ ]; then
     export PATH="$PATH:$HOME/arm-gnu-toolchain-14.2.rel1-x86_64-arm-none-eabi/bin"
 fi
 
+if [ -d $HOME/oxherding ]; then
+    export PYTHONPATH=:/home/amccartn/oxherding
+fi
+
+##############
+# OXHERD setup
+##############
+
+if [ -d "$HOME/Notes/markdown" ]; then
+    export OXHERD_NOTES_DIR="$HOME/Notes/markdown"
+fi
