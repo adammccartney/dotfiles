@@ -26,11 +26,6 @@
    "stow"
    "tree"
    "glibc-locales"
-   "fontconfig"
-
-   ;; desktop
-   "adwaita-icon-theme"
-   "bibata-cursor-theme"
 
    ;; wayland extras
    "fuzzel"
@@ -47,7 +42,7 @@
    ;; tty
    "foot"
    "zstd"
-   
+ 
    ;; cli apps
    "ripgrep"
    "git"
@@ -122,21 +117,13 @@
    "emacs-ement"
    "emacs-elfeed"
 
-   ;; vim + plugins
-   "vim-full"
-   "vim-guix-vim"
-   "vim-fugitive"
-   "vim-nerdtree"
-   "vim-slime"
-
    ;; mail
    "mu"
    "isync"
    "imapfilter"
    "mutt"
-   "neomutt"
-                                           )))
- 
+   "neomutt")))
+
  (services
   (append
    (list (service home-dotfiles-service-type
