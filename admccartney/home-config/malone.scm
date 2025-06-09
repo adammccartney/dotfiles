@@ -26,35 +26,8 @@
                                            ;; desktop
                                            "sway"
 
-                                           ;; Compatibility for older Xorg applications
-                                           "xorg-server-xwayland"
-
-                                           ;; Flatpak and XDG utilities
-                                           "flatpak"
-                                           "xdg-desktop-portal"
-                                           "xdg-desktop-portal-gtk"
-                                           "xdg-desktop-portal-wlr"
-                                           "xdg-utils" ;; For xdg-open, etc
-                                           "xdg-dbus-proxy"
-                                           "shared-mime-info"
-
-                                           ;; Appearance
-                                           "gnome-themes-extra"
-                                           "adwaita-icon-theme"
-
-                                           ;; Fonts
-                                           "font-iosevka"
-                                           "font-liberation"
-
                                            ;; Browsers
-                                           "vimb"
-
-                                           ;; Authentication
                                            "password-store"
-
-                                           ;; PDF reader
-                                           "zathura"
-                                           "zathura-pdf-mupdf"
 
                                            ;; General utilities
                                            "curl"
@@ -86,13 +59,6 @@
                                            "fzf"
                                            "tmux"
 
-                                           ;; vim
-                                           "vim"
-                                           "vim-guix-vim"
-                                           "vim-fugitive"
-                                           "vim-nerdtree"
-                                           "vim-slime"
-                                           
                                            ;; mail
                                            "mu"
                                            "tmux"
