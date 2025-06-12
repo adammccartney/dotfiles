@@ -15,6 +15,8 @@ if [ -d "$HOME/.local/bin" ] ; then
 fi
 
 
+#systemwide gopath
+export PATH=$PATH:/usr/local/go/bin
 export GOPATH="$HOME/go"
 # Go Setup (temporary?)
 if ! [[ $PATH =~ "$GOPATH/bin" ]]; then
