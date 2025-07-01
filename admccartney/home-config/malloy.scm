@@ -25,18 +25,11 @@
    "stow"
    "tree"
 
-   ;; wayland extras
-   "fuzzel"
-
    ;; passwords
    "password-store"
 
    ;; build tools
    "cmake"
-
-   ;; tty
-   "foot"
-   "zstd"
    
    ;; cli apps
    "ripgrep"
@@ -48,10 +41,6 @@
    "guile-colorized"
    "guile-readline"
    "nyacc"
-
-   ;; go
-   "go@1.23"
-   "xurls"
 
    ;; Emacs
    "emacs"
@@ -108,16 +97,12 @@
    "emacs-ement"
    "emacs-elfeed"
 
-   ;; vim + plugins
-   "vim-full"
-
    ;; mail
    "mu"
    "isync"
    "imapfilter"
    "mutt"
-   "neomutt"
-                                           )))
+   "neomutt")))
  
  (services
   (append
@@ -128,15 +113,10 @@
                                       "../../emacs"
                                       "../../systemd"
                                       "../../sway"
-                                      "../../vim"
-                                      "../../nvim"
                                       "../../tmux"
                                       "../../mail"
                                       "../../guile"
                                       "../../readline"
-                                      "../../mutt"))))
-
-          ;; Shell service
-         `(,@ad/shell-service)))))
+                                      "../../mutt"))))))))
 
 

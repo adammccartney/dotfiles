@@ -26,11 +26,6 @@
    "stow"
    "tree"
    "glibc-locales"
-   "fontconfig"
-
-   ;; desktop
-   "adwaita-icon-theme"
-   "bibata-cursor-theme"
 
    ;; wayland extras
    "fuzzel"
@@ -47,7 +42,7 @@
    ;; tty
    "foot"
    "zstd"
-   
+ 
    ;; cli apps
    "ripgrep"
    "git"
@@ -116,25 +111,19 @@
    "emacs-vterm"
    "emacs-guix"
    "emacs-yaml-mode"
+   "emacs-hcl-mode"
+   "emacs-terraform-mode"
 
    "emacs-ement"
    "emacs-elfeed"
-
-   ;; vim + plugins
-   "vim-full"
-   "vim-guix-vim"
-   "vim-fugitive"
-   "vim-nerdtree"
-   "vim-slime"
 
    ;; mail
    "mu"
    "isync"
    "imapfilter"
    "mutt"
-   "neomutt"
-                                           )))
- 
+   "neomutt")))
+
  (services
   (append
    (list (service home-dotfiles-service-type
@@ -144,8 +133,6 @@
                                       "../../emacs"
                                       "../../systemd"
                                       "../../sway"
-                                      "../../vim"
-                                      "../../nvim"
                                       "../../tmux"
                                       "../../mail"
                                       "../../guile"
@@ -177,6 +164,4 @@
                            (channel
                             (name 'bin-guix)
                             (url "https://github.com/ieugen/bin-guix")
-                            (branch "main"))))                           
-         ;; Shell service
-         `(,@ad/shell-service)))))
+                            (branch "main"))))))))

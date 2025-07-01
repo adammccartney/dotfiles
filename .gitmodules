@@ -31,3 +31,6 @@
 [submodule "vim-markdown"]
 	path = /home/amccartn/dotfiles/nvim/.config/nvim/pack/plugged/opt/vim-markdown
 	url = git@github.com:tpope/vim-markdown.git
+[submodule "nvim-oxherd"]
+	path = nvim/.config/nvim/pack/plugged/opt/nvim-oxherd
+	url = git@github.com:adammccartney/nvim-oxherd.git

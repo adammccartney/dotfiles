@@ -27,7 +27,8 @@ export HISTFILE=$XDG_CACHE_HOME/.bash_history")))
                        ("mk" . "minikube kubectl --")
                        ("bup" . "bkhome-wrapper.sh")
                        ("wgu" . "sudo wg-quick up wg0")
-                       ("wgd" . "sudo wg-quick down wg0")))
+                       ("wgd" . "sudo wg-quick down wg0")
+                       ("nlua" . "$HOME/.local/src/neovim/.deps/usr/bin/luajit")))
             
             (environment-variables
              '(("TERMINFO" . "/usr/share/terminfo")

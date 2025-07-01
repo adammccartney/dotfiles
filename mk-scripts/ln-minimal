@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# TODO: make this do stuff
+ln -sbv $HOME/dotfiles/vim/.vimrc $HOME/.vimrc
+ln -sbv $HOME/dotfiles/vim/.vim $HOME/.vim
+ln -sbv $HOME/dotfiles/nvim/.config/nvim $HOME/.config/nvim
