@@ -1,14 +1,14 @@
 # -*- mode: sh -*-
 if tput colors &>/dev/null && [ "$(tput colors)" -ge 8 ]; then
-    FG_MAIN="$(tput setaf 7)"
-    FG_SECONDARY="$(tput setaf 2)"
-    FG_ALERT="$(tput setaf 3)"
+    FG_MAIN="\[$(tput setaf 7)\]"
+    FG_SECONDARY="\[$(tput setaf 2)\]"
+    FG_ALERT="\[$(tput setaf 3)\]"
 else
     FG_MAIN=""
     FG_SECONDARY=""
     FG_ALERT=""
 fi
-NO_COLOR="$(tput sgr0)"
+NO_COLOR="\[$(tput sgr0)\]"
 
 #PS1="\[\033[s\033[0;0H\033[0;49m\033[K\033[1;33m\t\033[u\]<\u@\h \W>\$"
 #export PS1='<\u@\h \W>$(__git_ps1 " (%s)")\$'
@@ -81,12 +81,12 @@ function set_bash_prompt () {
     PS1+="${FG_MAIN}\w${NO_COLOR} \n"
 
     # set up prompt character
-    PS1+="${FG_MAIN}>${FG_MAIN} "
+    PS1+="${FG_MAIN}>${FG_MAIN} "
 
     ### Guix
     # Automatically added by the Guix install script.
     if [ -n "$GUIX_ENVIRONMENT" ]; then
-        PS1="\u@\h \W [env]\$ "
+        PS1="\u@\h \W [env]\$ "
         export PS1
         if [ -z "${GUILE_EXTENSIONS_PATH-}" ]; then
             export GUILE_EXTENSIONS_PATH="$GUIX_ENVIRONMENT/lib"
