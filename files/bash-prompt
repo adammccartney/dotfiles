@@ -78,10 +78,10 @@ function set_bash_prompt () {
         __ad_git_ps1
     fi
     # set up working directory
-    PS1+="\[$FG_MAIN\]\w\[$NO_COLOR\] \n"
+    PS1+="${FG_MAIN}\w${NO_COLOR}\n"
 
     # set up prompt character
-    PS1+="\[$FG_MAIN\]>\[$FG_MAIN\] "
+    PS1+="> "
 
     ### Guix
     # Automatically added by the Guix install script.
@@ -102,5 +102,5 @@ function set_bash_prompt () {
 }
 
 PROMPT_COMMAND=set_bash_prompt
-PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }prompt_marker
+PROMPT_COMMAND=${PROMPT_COMMAND:+$PROMPT_COMMAND; }
 export PROMPT_COMMAND
