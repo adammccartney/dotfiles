@@ -1,14 +1,5 @@
 -- init.lua
 -- entrypoint for nvim configuration
-vim.cmd([[
-set runtimepath^=~/.vim
-set runtimepath+=~/.vim/after
-" add custom plugin folder
-set runtimepath+=~/Code/plugins
-let &packpath = &runtimepath
-source ~/.vimrc
-]])
-
 
 if vim.loader then
     vim.loader.enable()
@@ -16,10 +7,8 @@ end
 
 require('adam')
 
-
 -- General options
-local home = vim.env.HOME
-local config = home .. '/.config/nvim'
+local config = vim.fn.stdpath("config")
 
 vim.opt.backup = false -- no backups before writing
 vim.opt.backupcopy = 'yes' -- overwrite files instead of renaming + rewriting
@@ -36,6 +25,7 @@ vim.opt.foldmethod = 'expr'
 -- Globals --------------------------------
 -------------------------------------------
 vim.g.CommandTPreferredImplementation = 'lua'
+vim.g.clipboard = 'osc52'
 
 
 vim.cmd('set runtimepath+=~/src/github.com/adammccartney/nvim-oxherd')
