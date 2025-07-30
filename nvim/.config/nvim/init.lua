@@ -9,15 +9,16 @@ require('adam')
 
 -- General options
 local config = vim.fn.stdpath("config")
+local state = vim.fn.stdpath("state")
 
 vim.opt.backup = false -- no backups before writing
 vim.opt.backupcopy = 'yes' -- overwrite files instead of renaming + rewriting
-vim.opt.backupdir = config .. '/backup//' -- keep backups from creating a tangle for git
+vim.opt.backupdir = { state .. '/backup//' } -- keep backups from creating a tangle for git
 vim.opt.completeopt = 'menu' -- show completion menu (for nvim-cmp)
 vim.opt.completeopt = vim.opt.completeopt + 'menuone' -- show menu even if there is only one candidate (for nvim-cmp)
 vim.opt.completeopt = vim.opt.completeopt + 'noselect' -- don't automatically select canditate (for nvim-cmp)
-vim.opt.directory = config .. '/nvim/swap//' -- keep swap files out of the way
-vim.opt.directory = vim.opt.directory + '.' -- fallback
+vim.opt.directory = { state .. '/nvim/swap//', '.' } -- keep swap files out of the way, fallback to cwd on failure
+
 vim.opt.foldlevelstart = 99  -- default unfolded
 vim.opt.foldmethod = 'expr'
 
