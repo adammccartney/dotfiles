@@ -17,7 +17,7 @@ vim.opt.backupdir = { xdg_state_dir .. '/backup//' } -- keep backups from creati
 vim.opt.completeopt = 'menu' -- show completion menu (for nvim-cmp)
 vim.opt.completeopt = vim.opt.completeopt + 'menuone' -- show menu even if there is only one candidate (for nvim-cmp)
 vim.opt.completeopt = vim.opt.completeopt + 'noselect' -- don't automatically select canditate (for nvim-cmp)
-vim.opt.directory = { xdg_state_dir .. '/nvim/swap//', '.' } -- keep swap files out of the way, fallback to cwd on failure
+vim.opt.directory = { xdg_state_dir .. '/swap//', '.' } -- keep swap files out of the way, fallback to cwd on failure
 
 vim.opt.foldlevelstart = 99  -- default unfolded
 vim.opt.foldmethod = 'expr'
