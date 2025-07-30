@@ -8,6 +8,20 @@ end
 require('adam')
 
 -- General options
+
+vim.o.number = true
+vim.o.ignorecase = true
+vim.o.magic = true
+
+vim.opt.tw = 80
+
+-- tabs
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.shiftround = true
+vim.opt.expandtab = true
+
 local config = vim.fn.stdpath("config")
 local xdg_state_dir = vim.fn.stdpath("state")
 
@@ -21,6 +35,9 @@ vim.opt.directory = { xdg_state_dir .. '/swap//', '.' } -- keep swap files out o
 
 vim.opt.foldlevelstart = 99  -- default unfolded
 vim.opt.foldmethod = 'expr'
+
+vim.opt.list = true
+vim.opt.listchars = { tab = '▸~' , trail = '·' , extends = '»' , precedes = '«' , nbsp = '␣' }
 
 -------------------------------------------
 -- Globals --------------------------------
