@@ -26,6 +26,8 @@ vim.opt.foldmethod = 'expr'
 -------------------------------------------
 vim.g.CommandTPreferredImplementation = 'lua'
 vim.g.clipboard = 'osc52'
+vim.g.mapleader = '<Space>'
+vim.g.maplocalleader = ','
 
 
 vim.cmd('set runtimepath+=~/src/github.com/adammccartney/nvim-oxherd')
