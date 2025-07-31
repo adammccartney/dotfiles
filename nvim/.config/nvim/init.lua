@@ -8,18 +8,36 @@ end
 require('adam')
 
 -- General options
+
+vim.o.number = true
+vim.o.ignorecase = true
+vim.o.magic = true
+
+vim.opt.tw = 80
+
+-- tabs
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.shiftround = true
+vim.opt.expandtab = true
+
 local config = vim.fn.stdpath("config")
+local xdg_state_dir = vim.fn.stdpath("state")
 
 vim.opt.backup = false -- no backups before writing
 vim.opt.backupcopy = 'yes' -- overwrite files instead of renaming + rewriting
-vim.opt.backupdir = config .. '/backup//' -- keep backups from creating a tangle for git
+vim.opt.backupdir = { xdg_state_dir .. '/backup//' } -- keep backups from creating a tangle for git
 vim.opt.completeopt = 'menu' -- show completion menu (for nvim-cmp)
 vim.opt.completeopt = vim.opt.completeopt + 'menuone' -- show menu even if there is only one candidate (for nvim-cmp)
 vim.opt.completeopt = vim.opt.completeopt + 'noselect' -- don't automatically select canditate (for nvim-cmp)
-vim.opt.directory = config .. '/nvim/swap//' -- keep swap files out of the way
-vim.opt.directory = vim.opt.directory + '.' -- fallback
+vim.opt.directory = { xdg_state_dir .. '/swap//', '.' } -- keep swap files out of the way, fallback to cwd on failure
+
 vim.opt.foldlevelstart = 99  -- default unfolded
 vim.opt.foldmethod = 'expr'
+
+vim.opt.list = true
+vim.opt.listchars = { tab = '▸~' , trail = '·' , extends = '»' , precedes = '«' , nbsp = '␣' }
 
 -------------------------------------------
 -- Globals --------------------------------
