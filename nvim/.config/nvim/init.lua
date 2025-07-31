@@ -44,7 +44,7 @@ vim.opt.listchars = { tab = '▸~' , trail = '·' , extends = '»' , precedes = 
 -------------------------------------------
 vim.g.CommandTPreferredImplementation = 'lua'
 vim.g.clipboard = 'osc52'
-vim.g.mapleader = '<Space>'
+vim.g.mapleader = ' '
 vim.g.maplocalleader = ','
 
 
@@ -131,7 +131,6 @@ vim.diagnostic.config({
     float = { border = _border },
 })
 
-vim.keymap.set('n', ',gK', vim.diagnostic.open_float)
 
 -----------------------------
 --- Autocompletion ----------
@@ -175,4 +174,4 @@ end
 --end
 
 
-
+require('adam.keymaps').setup()
