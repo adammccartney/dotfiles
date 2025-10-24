@@ -6,6 +6,8 @@ packages:
   - go
   - cmake
   - tree
+  - apptainer
+  - ripgrep
 
 groups:
   - "Development Tools"
