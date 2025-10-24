@@ -1,0 +1,31 @@
+[branch]
+    sort = -committerdate
+[commit]
+    verbose = true
+[column]
+    ui = auto
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+[fetch]
+    prune = true
+    pruneTags = true
+    all = true
+[gpg]
+	format = ssh
+[init]
+    defaultBranch = main
+[push]
+    default = simple
+    autoSetupRemote = true
+    followTags = true
+[tag]
+    sort = version:refname
+[url "git@gitlab.tuwien.ac.at:"]
+    insteadOf = https://gitlab.tuwien.ac.at/
+[user]
+	name = Adam McCartney
+	email = adam.mccartney@tuwien.ac.at
+	signingkey = /home/amccartn/.ssh/id_ed25519_mc.it.tuwien.ac.at
