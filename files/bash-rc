@@ -18,8 +18,17 @@ if [ -d "$HOME/.local/bin" ] ; then
 fi
 
 
-#systemwide gopath
-export PATH=$PATH:/usr/local/go/bin
+# go setup
+if [ -d /usr/local/go ]; then  # use the system go
+    export GOROOT=/usr/local/go
+    export PATH=$PATH:/usr/local/go/bin
+else
+    if [ -d "$HOME/.local/go" ]; then # use locally installed version
+        export PATH="$PATH:$HOME/.local/go/bin"
+        export GOROOT=$HOME/.local/go
+    fi
+fi
+
 export GOPATH="$HOME/go"
 # Go Setup (temporary?)
 if ! [[ $PATH =~ "$GOPATH/bin" ]]; then
