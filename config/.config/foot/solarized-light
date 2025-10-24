@@ -1,25 +1,8 @@
 # -*- conf -*-
-[environment]
-
-[main]
-login-shell=no
-term=foot
-font=Fantasque Sans Mono:fontfeatures=ss01
-font=Courier New:pixelsize=18
-
-
-[key-bindings]
-# handle urls
-pipe-visible=[sh -c "xurls | uniq | tac | xargs -r firefox"] Control+Print
-
-# Note, we're inlining this here until we figure a better way to load the file
-# BUG: if we use $GUIX_PROFILE/share/foot/theme/nord we get
-# error: foot: /home/amccartn/.config/foot/foot.ini:10: [main].include: $guix_profile/share/foot/themes/nord: not an absolute path
-
 # Solarized light
 
 [colors]
-cursor=                  fdf6e3
+cursor=                  fdf6e3 586e75
 background=              fdf6e3
 foreground=              657b83
 regular0=                eee8d5
@@ -38,5 +21,3 @@ bright4=                 657b83
 bright5=                 6c71c4
 bright6=                 586e75
 bright7=                 002b36
-
-
