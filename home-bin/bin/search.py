@@ -27,10 +27,7 @@ def search(term):
             args.append("-e")
             args.append(word)
         args.append("--")
-        if d.name == "Notes":
-            args.append("*.org")
-        if d.name == "cheatsheets":
-            args.append("*.md")
+        args.append("*.md")
         os.chdir(d)
         proc = sp.run([cmd, *args], stdout=sp.PIPE, stderr=sp.PIPE, text=True)
         _res = proc.stdout.split("\0")

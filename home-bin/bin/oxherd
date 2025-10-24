@@ -6,4 +6,4 @@ search.py "${*:-}" |
     fzf --ansi \
       --preview 'less {}' \
       --preview-window 'left,60%,border-right,+{2}+3/3,~3' \
-      --bind 'enter:become(vim {1} +{2})'
+      --bind 'enter:become(nvim {1} +{2})'
