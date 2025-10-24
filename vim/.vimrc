@@ -33,9 +33,6 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 " Atuomatic reloading of .vimrc
 autocmd! bufwritepost .vimrc source %
 
-" Better copy & paste
-set clipboard=unnamed
-
 " Mouse and backspace
 set mouse=a " on Debian press ALT and click
 set bs=2    " make backspace behave like normal againf
@@ -215,3 +212,4 @@ nnoremap ,akpv :-1read $HOME/.vim/snippets/k8s/pv.yaml<CR>
 " Python snippers
 nnoremap ,aplg :-1read $HOME/.vim/snippets/py/logger.py<CR>
 nnoremap ,apb :-1read $HOME/.vim/snippets/py/breakpoint.py<CR>1j
+nnoremap ,apag :-1read $HOME/.vim/snippets/py/argparse.py<CR>1j
