@@ -1,0 +1,3 @@
+git-repos:
+  - src: "https://github.com/neovim/neovim"
+  - dest: "$HOME/.local/src/neovim"
