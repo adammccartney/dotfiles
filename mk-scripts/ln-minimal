@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# TODO: make this do stuff
-ln -sbv $HOME/dotfiles/vim/.vimrc $HOME/.vimrc
-ln -sbv $HOME/dotfiles/vim/.vim $HOME/.vim
-ln -sbv $HOME/dotfiles/nvim/.config/nvim $HOME/.config/nvim
+
+DOTFILES_DIR=${1:-$HOME/dotfiles}
+## TODO: make this do stuff
+ln -sbv "$DOTFILES_DIR"/vim/.vimrc $HOME/.vimrc
+ln -sbv "$DOTFILES_DIR"/vim/.vim $HOME/.vim
+ln -sbv "$DOTFILES_DIR"/nvim/.config/nvim $HOME/.config/nvim
+ln -sbv "$DOTFILES_DIR"/home-bin/bin $HOME/bin
