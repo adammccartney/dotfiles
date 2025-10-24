@@ -30,7 +30,7 @@
 
 (add-to-list 'load-path '"~/dotfiles/emacs/.emacs.d/lisp")
 ;; Make sure to load packages that were installed by guix
-(add-to-list 'load-path (format "%s/share/emacs/site-lisp" (getenv "GUIX_PROFILE")))
+(add-to-list 'load-path (format "%s/.guix-home/profile/share/emacs/site-lisp" (getenv "HOME")))
 (use-package guix-emacs)
 (guix-emacs-autoload-packages)
 
@@ -329,6 +329,7 @@
          (python-mode . eglot-ensure)
          (rust-mode . eglot-ensure)
          (lua-mode . eglot-ensure)
+         (terraform-mode . eglot-ensure)
          (go-mode . eglot-ensure)
          (go-mode . eglot-format-buffer-before-save))
          ;; hook to organize imports automatically
