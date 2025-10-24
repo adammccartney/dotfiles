@@ -174,4 +174,20 @@ end
 --end
 
 
-require('adam.keymaps').setup()
+local has_adam_keymaps, adam_keymaps = pcall(require, 'adam.keymaps')
+if has_adam_keymaps then
+    adam_keymaps.setup()
+end
+
+local has_oxherd, oxherd = pcall(require, 'oxherd')
+if has_oxherd then
+    oxherd.setup({
+        directories = {
+            ["~/Notes/markdown"] = {
+                base = "./",
+            },
+         },
+         auto_cd = true,
+         selector_selection_highlight = "PmenuSel",
+    })
+end

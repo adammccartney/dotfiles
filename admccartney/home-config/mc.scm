@@ -36,9 +36,6 @@
    ;; passwords
    "password-store"
 
-   ;; build tools
-   "cmake"
-
    ;; tty
    "foot"
    "zstd"
@@ -57,7 +54,6 @@
    "nyacc"
 
    ;; go
-   "go@1.23"
    "xurls"
 
    ;; Emacs
@@ -128,8 +124,7 @@
   (append
    (list (service home-dotfiles-service-type
                   (home-dotfiles-configuration
-                   (directories (list "../../home-bin"
-                                      "../../git"
+                   (directories (list "../../git"
                                       "../../emacs"
                                       "../../systemd"
                                       "../../sway"

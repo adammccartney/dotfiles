@@ -206,3 +206,22 @@ fi
 if [ -d "$HOME/Notes/markdown" ]; then
     export OXHERD_NOTES_DIR="$HOME/Notes/markdown"
 fi
+
+############
+# certs
+# ##########
+export SSL_CERT_DIR=/etc/ssl/certs/
+
+
+###########
+# zig
+###########
+ZIG_BUILD="$HOME/src/github.com/ziglang/zig/build/stage3" 
+if [ -d "${ZIG_BUILD}" ]; then
+    export ZIG_BUILD
+    export PATH="$PATH:$ZIG_BUILD/bin"
+fi
+
+# mise setup
+
+. "$HOME/.local/share/../bin/env"

@@ -4,7 +4,7 @@ Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs
 
 [Service]
 Type=forking
-ExecStart=%h/.guix-home/profile/bin/emacs --daemon
+ExecStart=%h/.guix-home/profile/bin/emacs --fg-daemon
 ExecStop=%h/.guix-home/profile/bin/emacs --eval '(kill emacs)'
 Environment=SSH_AUTH_SOCK=%t/keyring/ssh
 Restart=on-failure
