@@ -1,13 +1,17 @@
 #!/bin/bash
 
-VERSION=1.24.4
+VERSION=${GO_VERSION:-1.24.4}
 OS=linux
 ARCH=amd64
 
-GO_PKG_PREFIX=$HOME/.local/pkg
+PREFIX="${PREFIX:-/usr/local}"
+EXIST_INSTALL="${PREFIX}/go"
 
-curl -L -f -o "$GO_PKG_PREFIX"/go"$VERSION"."$OS"-"$ARCH".tar.gz https://go.dev/dl/go1.24.4.linux-amd64.tar.gz
+GO_PKG_PREFIX=$HOME/.local/pkg
+GO_TAR=go"${VERSION}"."${OS}"-"${ARCH}".tar.gz
+
+curl -L -f -o "$GO_PKG_PREFIX"/"${GO_TAR}" https://go.dev/dl/"${GO_TAR}"
 pushd "$GO_PKG_PREFIX"
-sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.24.4.linux-amd64.tar.gz
+sudo rm -rf "${EXIST_INSTALL}" && sudo tar -C "${PREFIX}" -xzf "${GO_TAR}"
 popd
 
