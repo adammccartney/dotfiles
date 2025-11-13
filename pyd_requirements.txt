@@ -1,0 +1,4 @@
+pyright
+ty
+ruff
+pynvim

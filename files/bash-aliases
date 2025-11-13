@@ -29,6 +29,7 @@ alias gsurr="git submodule update --recursive --remote"
 alias gprs="git pull --recurse-submodules"
 #alias vim="nvim"
 alias nlua=$HOME/.local/src/neovim/.deps/usr/bin/luajit
+alias pnv="source ~/.virtualenvs/pyd/bin/activate"
 
 # git aliases
 alias gls='git diff-tree --no-commit-id --name-only $(git rev-parse HEAD) -r'

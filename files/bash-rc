@@ -231,6 +231,11 @@ if [ -d "${ZIG_BUILD}" ]; then
     export PATH="$PATH:$ZIG_BUILD/bin"
 fi
 
+
+export MANWIDTH=80
+
+# nvim setup
+mkdir -p $HOME/.local/state/nvim/{backup,state}
 if [ -f "$HOME/.ssh/id_ed25519_ad_mu_git" ]; then
     export GIT_SSH_COMMAND='ssh -i ${HOME}/.ssh/id_ed25519_ad_mu_git'
 fi

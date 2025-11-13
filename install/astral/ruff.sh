@@ -23,20 +23,30 @@ has_local 2>/dev/null || alias local=typeset
 set -u
 
 APP_NAME="ruff"
-APP_VERSION="0.12.8"
+APP_VERSION="0.14.2"
 # Look for GitHub Enterprise-style base URL first
 if [ -n "${RUFF_INSTALLER_GHE_BASE_URL:-}" ]; then
     INSTALLER_BASE_URL="$RUFF_INSTALLER_GHE_BASE_URL"
 else
     INSTALLER_BASE_URL="${RUFF_INSTALLER_GITHUB_BASE_URL:-https://github.com}"
 fi
-if [ -n "${INSTALLER_DOWNLOAD_URL:-}" ]; then
+if [ -n "${RUFF_DOWNLOAD_URL:-}" ]; then
+    ARTIFACT_DOWNLOAD_URL="$RUFF_DOWNLOAD_URL"
+elif [ -n "${INSTALLER_DOWNLOAD_URL:-}" ]; then
     ARTIFACT_DOWNLOAD_URL="$INSTALLER_DOWNLOAD_URL"
 else
-    ARTIFACT_DOWNLOAD_URL="${INSTALLER_BASE_URL}/astral-sh/ruff/releases/download/0.12.8"
+    ARTIFACT_DOWNLOAD_URL="${INSTALLER_BASE_URL}/astral-sh/ruff/releases/download/0.14.2"
 fi
-PRINT_VERBOSE=${INSTALLER_PRINT_VERBOSE:-0}
-PRINT_QUIET=${INSTALLER_PRINT_QUIET:-0}
+if [ -n "${RUFF_PRINT_VERBOSE:-}" ]; then
+    PRINT_VERBOSE="$RUFF_PRINT_VERBOSE"
+else
+    PRINT_VERBOSE=${INSTALLER_PRINT_VERBOSE:-0}
+fi
+if [ -n "${RUFF_PRINT_QUIET:-}" ]; then
+    PRINT_QUIET="$RUFF_PRINT_QUIET"
+else
+    PRINT_QUIET=${INSTALLER_PRINT_QUIET:-0}
+fi
 if [ -n "${RUFF_NO_MODIFY_PATH:-}" ]; then
     NO_MODIFY_PATH="$RUFF_NO_MODIFY_PATH"
 else
@@ -55,19 +65,45 @@ fi
 AUTH_TOKEN="${RUFF_GITHUB_TOKEN:-}"
 
 read -r RECEIPT <<EORECEIPT
-{"binaries":["CARGO_DIST_BINS"],"binary_aliases":{},"cdylibs":["CARGO_DIST_DYLIBS"],"cstaticlibs":["CARGO_DIST_STATICLIBS"],"install_layout":"unspecified","install_prefix":"AXO_INSTALL_PREFIX","modify_path":true,"provider":{"source":"cargo-dist","version":"0.28.5-prerelease.1"},"source":{"app_name":"ruff","name":"ruff","owner":"astral-sh","release_type":"github"},"version":"0.12.8"}
+{"binaries":["CARGO_DIST_BINS"],"binary_aliases":{},"cdylibs":["CARGO_DIST_DYLIBS"],"cstaticlibs":["CARGO_DIST_STATICLIBS"],"install_layout":"unspecified","install_prefix":"AXO_INSTALL_PREFIX","modify_path":true,"provider":{"source":"cargo-dist","version":"0.30.0"},"source":{"app_name":"ruff","name":"ruff","owner":"astral-sh","release_type":"github"},"version":"0.14.2"}
 EORECEIPT
-RECEIPT_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/ruff"
+
+# Some Linux distributions don't set HOME
+# https://github.com/astral-sh/uv/issues/6965#issuecomment-2915796022
+get_home() {
+    if [ -n "${HOME:-}" ]; then
+        echo "$HOME"
+    elif [ -n "${USER:-}" ]; then
+        getent passwd "$USER" | cut -d: -f6
+    else
+        getent passwd "$(id -un)" | cut -d: -f6
+    fi
+}
+# The HOME reference to show in user output. If `$HOME` isn't set, we show the absolute path instead.
+get_home_expression() {
+    if [ -n "${HOME:-}" ]; then
+        # shellcheck disable=SC2016
+        echo '$HOME'
+    elif [ -n "${USER:-}" ]; then
+        getent passwd "$USER" | cut -d: -f6
+    else
+        getent passwd "$(id -un)" | cut -d: -f6
+    fi
+}
+INFERRED_HOME=$(get_home)
+# shellcheck disable=SC2034
+INFERRED_HOME_EXPRESSION=$(get_home_expression)
+RECEIPT_HOME="${XDG_CONFIG_HOME:-$INFERRED_HOME/.config}/ruff"
 
 usage() {
     # print help (this cat/EOF stuff is a "heredoc" string)
     cat <<EOF
 ruff-installer.sh
 
-The installer for ruff 0.12.8
+The installer for ruff 0.14.2
 
 This script detects what platform you're on and fetches an appropriate archive from
-https://github.com/astral-sh/ruff/releases/download/0.12.8
+https://github.com/astral-sh/ruff/releases/download/0.14.2
 then unpacks the binaries and installs them to the first of the following locations
 
     \$XDG_BIN_HOME
@@ -312,6 +348,18 @@ download_binary_and_run_installer() {
             _updater_name=""
             _updater_bin=""
             ;;
+        "ruff-riscv64gc-unknown-linux-gnu.tar.gz")
+            _arch="riscv64gc-unknown-linux-gnu"
+            _zip_ext=".tar.gz"
+            _bins="ruff"
+            _bins_js_array='"ruff"'
+            _libs=""
+            _libs_js_array=""
+            _staticlibs=""
+            _staticlibs_js_array=""
+            _updater_name=""
+            _updater_bin=""
+            ;;
         "ruff-s390x-unknown-linux-gnu.tar.gz")
             _arch="s390x-unknown-linux-gnu"
             _zip_ext=".tar.gz"
@@ -533,6 +581,9 @@ json_binary_aliases() {
     "powerpc64le-unknown-linux-gnu")
         echo '{}'
         ;;
+    "riscv64gc-unknown-linux-gnu")
+        echo '{}'
+        ;;
     "s390x-unknown-linux-gnu")
         echo '{}'
         ;;
@@ -681,6 +732,13 @@ aliases_for_binary() {
             ;;
         esac
         ;;
+    "riscv64gc-unknown-linux-gnu")
+        case "$_bin" in
+        *)
+            echo ""
+            ;;
+        esac
+        ;;
     "s390x-unknown-linux-gnu")
         case "$_bin" in
         *)
@@ -774,7 +832,7 @@ select_archive_for_arch() {
             ;;
         "aarch64-unknown-linux-gnu")
             _archive="ruff-aarch64-unknown-linux-gnu.tar.gz"
-            if ! check_glibc "2" "35"; then
+            if ! check_glibc "2" "31"; then
                 _archive=""
             fi
             if [ -n "$_archive" ]; then
@@ -824,7 +882,7 @@ select_archive_for_arch() {
             ;;
         "armv7-unknown-linux-gnueabihf")
             _archive="ruff-armv7-unknown-linux-gnueabihf.tar.gz"
-            if ! check_glibc "2" "35"; then
+            if ! check_glibc "2" "31"; then
                 _archive=""
             fi
             if [ -n "$_archive" ]; then
@@ -867,7 +925,7 @@ select_archive_for_arch() {
             ;;
         "i686-unknown-linux-gnu")
             _archive="ruff-i686-unknown-linux-gnu.tar.gz"
-            if ! check_glibc "2" "35"; then
+            if ! check_glibc "2" "31"; then
                 _archive=""
             fi
             if [ -n "$_archive" ]; then
@@ -896,7 +954,7 @@ select_archive_for_arch() {
             ;;
         "powerpc64-unknown-linux-gnu")
             _archive="ruff-powerpc64-unknown-linux-gnu.tar.gz"
-            if ! check_glibc "2" "35"; then
+            if ! check_glibc "2" "31"; then
                 _archive=""
             fi
             if [ -n "$_archive" ]; then
@@ -906,7 +964,17 @@ select_archive_for_arch() {
             ;;
         "powerpc64le-unknown-linux-gnu")
             _archive="ruff-powerpc64le-unknown-linux-gnu.tar.gz"
-            if ! check_glibc "2" "35"; then
+            if ! check_glibc "2" "31"; then
+                _archive=""
+            fi
+            if [ -n "$_archive" ]; then
+                echo "$_archive"
+                return 0
+            fi
+            ;;
+        "riscv64gc-unknown-linux-gnu")
+            _archive="ruff-riscv64gc-unknown-linux-gnu.tar.gz"
+            if ! check_glibc "2" "31"; then
                 _archive=""
             fi
             if [ -n "$_archive" ]; then
@@ -916,7 +984,7 @@ select_archive_for_arch() {
             ;;
         "s390x-unknown-linux-gnu")
             _archive="ruff-s390x-unknown-linux-gnu.tar.gz"
-            if ! check_glibc "2" "35"; then
+            if ! check_glibc "2" "31"; then
                 _archive=""
             fi
             if [ -n "$_archive" ]; then
@@ -952,7 +1020,7 @@ select_archive_for_arch() {
             ;;
         "x86_64-unknown-linux-gnu")
             _archive="ruff-x86_64-unknown-linux-gnu.tar.gz"
-            if ! check_glibc "2" "35"; then
+            if ! check_glibc "2" "31"; then
                 _archive=""
             fi
             if [ -n "$_archive" ]; then
@@ -1038,7 +1106,7 @@ install() {
     # * Create a shell script at $HOME/.cargo/env that:
     #   * Checks if $HOME/.cargo/bin/ is on PATH
     #   * and if not prepends it to PATH
-    # * Edits $HOME/.profile to run $HOME/.cargo/env (if the line doesn't exist)
+    # * Edits $INFERRED_HOME/.profile to run $HOME/.cargo/env (if the line doesn't exist)
     #
     # To do this we need these 4 values:
 
@@ -1083,7 +1151,7 @@ install() {
         if [ "$_install_layout" = "flat" ]; then
             # If the install directory is targeting the Cargo home directory, then
             # we assume this application was previously installed that layout
-            if [ "$_force_install_dir" = "${CARGO_HOME:-${HOME:-}/.cargo}" ]; then
+            if [ "$_force_install_dir" = "${CARGO_HOME:-${INFERRED_HOME:-}/.cargo}" ]; then
                 _install_layout="cargo-home"
             fi
         fi
@@ -1149,13 +1217,13 @@ install() {
     if [ -z "${_install_dir:-}" ]; then
         _install_layout="flat"
         # Install to $HOME/.local/bin
-        if [ -n "${HOME:-}" ]; then
-            _install_dir="$HOME/.local/bin"
-            _lib_install_dir="$HOME/.local/bin"
+        if [ -n "${INFERRED_HOME:-}" ]; then
+            _install_dir="$INFERRED_HOME/.local/bin"
+            _lib_install_dir="$INFERRED_HOME/.local/bin"
             _receipt_install_dir="$_install_dir"
-            _env_script_path="$HOME/.local/bin/env"
-            _install_dir_expr='$HOME/.local/bin'
-            _env_script_path_expr='$HOME/.local/bin/env'
+            _env_script_path="$INFERRED_HOME/.local/bin/env"
+            _install_dir_expr="$INFERRED_HOME_EXPRESSION/.local/bin"
+            _env_script_path_expr="$INFERRED_HOME_EXPRESSION/.local/bin/env"
         fi
     fi
 
@@ -1232,7 +1300,7 @@ install() {
         add_install_dir_to_path "$_install_dir_expr" "$_env_script_path" "$_env_script_path_expr" ".zshrc .zshenv" "sh"
         exit3=$?
         # This path may not exist by default
-        ensure mkdir -p "$HOME/.config/fish/conf.d"
+        ensure mkdir -p "$INFERRED_HOME/.config/fish/conf.d"
         exit4=$?
         add_install_dir_to_path "$_install_dir_expr" "$_fish_env_script_path" "$_fish_env_script_path_expr" ".config/fish/conf.d/$APP_NAME.env.fish" "fish"
         exit5=$?
@@ -1278,11 +1346,11 @@ print_home_for_script() {
             if [ -n "${ZDOTDIR:-}" ]; then
                 _home="$ZDOTDIR"
             else
-                _home="$HOME"
+                _home="$INFERRED_HOME"
             fi
             ;;
         *)
-            _home="$HOME"
+            _home="$INFERRED_HOME"
             ;;
     esac
 
@@ -1319,7 +1387,7 @@ add_install_dir_to_path() {
     local _rcfiles="$4"
     local _shell="$5"
 
-    if [ -n "${HOME:-}" ]; then
+    if [ -n "${INFERRED_HOME:-}" ]; then
         local _target
         local _home
 
@@ -1411,7 +1479,7 @@ shotgun_install_dir_to_path() {
     local _rcfiles="$4"
     local _shell="$5"
 
-    if [ -n "${HOME:-}" ]; then
+    if [ -n "${INFERRED_HOME:-}" ]; then
         local _found=false
         local _home
 
@@ -1887,10 +1955,30 @@ ignore() {
 # This wraps curl or wget. Try curl first, if not installed,
 # use wget instead.
 downloader() {
-    if check_cmd curl
+    # Check if we have a broken snap curl
+    # https://github.com/boukendesho/curl-snap/issues/1
+    _snap_curl=0
+    if command -v curl > /dev/null 2>&1; then
+      _curl_path=$(command -v curl)
+      if echo "$_curl_path" | grep "/snap/" > /dev/null 2>&1; then
+        _snap_curl=1
+      fi
+    fi
+
+    # Check if we have a working (non-snap) curl
+    if check_cmd curl && [ "$_snap_curl" = "0" ]
     then _dld=curl
+    # Try wget for both no curl and the broken snap curl
     elif check_cmd wget
     then _dld=wget
+    # If we can't fall back from broken snap curl to wget, report the broken snap curl
+    elif [ "$_snap_curl" = "1" ]
+    then
+      say "curl installed with snap cannot be used to install $APP_NAME"
+      say "due to missing permissions. Please uninstall it and"
+      say "reinstall curl with a different package manager (e.g., apt)."
+      say "See https://github.com/boukendesho/curl-snap/issues/1"
+      exit 1
     else _dld='curl or wget' # to be used in error message of need_cmd
     fi
 
