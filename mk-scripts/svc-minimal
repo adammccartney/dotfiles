@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Mail services
+
+DOT_SYSTEMD_USER="$HOME/dotfiles/systemd/.config/systemd/user"
+HOME_SYSTEMD_USER="$HOME/.config/systemd/user"
+
+mkdir -p "$HOME_SYSTEMD_USER"
+
+for svc in mbsync muindex;
+do
+    for t in service timer;
+    do
+        f="$svc.$t"
+        ln -svb "$DOT_SYSTEMD_USER"/"$f" "$HOME_SYSTEMD_USER"/"$f"
+    done
+done
+
