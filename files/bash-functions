@@ -717,3 +717,32 @@ timesheet () {
         xdg-open ${tsheet}
     fi
 }
+
+nvp () {
+    # nvim basic python venv
+    nvim_venv="$HOME/.virtualenvs/pyd"
+    if [ -d ${nvim_venv} ]; then
+        source ${nvim_venv}/bin/activate
+    else
+        echo "WARNING: no venv found at ${nvim_venv}, starting nvim without python goodies."
+    fi
+    nvim "$@"
+}
+
+v() {
+    _editor=vim
+    if command -v nvim &> /dev/null; then
+        _editor=nvim
+    else
+        _editor=vi
+    fi
+    local file line col
+    IFS=: read -r file line col <<< "$1"
+    if [ -n "$col" ]; then
+        ${_editor} "+call cursor($line,$col)" "$file"
+    else
+        ${_editor} "+$line" "$file"
+    fi
+}
+
+
