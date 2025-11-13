@@ -3,7 +3,14 @@
 
 DOTFILES_DIR=${1:-$HOME/dotfiles}
 ## TODO: make this do stuff
-ln -sbv "$DOTFILES_DIR"/vim/.vimrc $HOME/.vimrc
-ln -sbv "$DOTFILES_DIR"/vim/.vim $HOME/.vim
-ln -sbv "$DOTFILES_DIR"/nvim/.config/nvim $HOME/.config/nvim
-ln -sbv "$DOTFILES_DIR"/home-bin/bin $HOME/bin
+ln -sbv "$DOTFILES_DIR"/vim/.vimrc "$HOME"/.vimrc
+ln -sbv "$DOTFILES_DIR"/vim/.vim "$HOME"/.vim
+ln -sbv "$DOTFILES_DIR"/nvim/.config/nvim "$HOME"/.config/nvim
+ln -sbv "$DOTFILES_DIR"/home-bin/bin "$HOME"/bin
+# mail
+ln -sbv "$DOTFILES_DIR"/mail/.imapfilter "$HOME"/.imapfilter
+ln -sbv "$DOTFILES_DIR"/mail/.mbsyncrc "$HOME"/.mbsyncrc
+ln -sbv "$DOTFILES_DIR"/mail/.msmtprc "$HOME"/.msmtprc
+ln -sbv "$DOTFILES_DIR"/mail/.mailcap "$HOME"/.mailcap
+# terminal emulator
+ln -sbv "$DOTFILES_DIR"/ghostty/config "$HOME"/.config/ghostty/config

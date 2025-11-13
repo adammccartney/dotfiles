@@ -1,0 +1,26 @@
+packages:
+  - tree
+  - cmake
+  - @development-tools
+  # zig deps (only needed if building zig from source)
+  - clang-devel
+  - llvm-devel
+  - lld-devel
+  # ghostty deps
+  - gtk4-devel
+  - gtk4-layer-shell-devel
+  - zig
+  - libadwaita-devel
+  - gettext
+  - blueprint-compiler
+  # email
+  - aerc
+  - msmtp
+  - imapfilter
+  - maildir-utils
+  - isync
+  # pass
+  - pass
+  # git stuff
+  - git-crypt
+
