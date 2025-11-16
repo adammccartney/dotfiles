@@ -28,9 +28,6 @@
    ;; passwords
    "password-store"
 
-   ;; build tools
-   "cmake"
-   
    ;; cli apps
    "ripgrep"
    "fzf"
