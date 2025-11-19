@@ -1,4 +1,4 @@
-pyright
+pyright[nodejs]
 ty
 ruff
 pynvim
