@@ -745,7 +745,6 @@ v() {
     fi
 }
 
-
 dirsize_gb () {
     dir="$1"
     echo -n "${dir}: " && \
