@@ -26,6 +26,7 @@ function M.setup()
 
     -- diagnostics
     vim.keymap.set('n', '<localleader>dK', vim.diagnostic.open_float)
+    vim.keymap.set('n', '<localleader>dQ', vim.diagnostic.setqflist)
 end
 
 return M
