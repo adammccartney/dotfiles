@@ -746,3 +746,10 @@ v() {
 }
 
 
+dirsize_gb () {
+    dir="$1"
+    echo -n "${dir}: " && \
+    du -b ${dir} |\
+    awk '{sum+=$1} END {print sum}' |\
+    python -c 'import sys; print(f"{int(sys.stdin.read()) / 1_000_000_000:.2f}Gb")'
+}
