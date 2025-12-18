@@ -120,6 +120,7 @@ vim.lsp.enable({
     "pyright",
     "terraformls",
     "tflint",
+    "ty",
 })
 
 -----------------------------

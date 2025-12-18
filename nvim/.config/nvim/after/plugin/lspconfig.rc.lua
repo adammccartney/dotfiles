@@ -101,7 +101,8 @@ if has_lspconfig then
     --------------------
     --- python
     --------------------
-    lspconfig.pyright.setup{}
+    --lspconfig.pyright.setup{}
+    lspconfig.ty.setup{}
 
     --------------------
     --- terraform
