@@ -13,3 +13,7 @@ emacs/.emacs.d/tree-sitter/
 # vim plugins
 vim/.vim/plugged/*
 systemd/.config/systemd/user/etc/emacs.conf
+
+# don't commit astral install scripts downloaded by bootstrap
+install/astral/*
+!install/astral/bootstrap.sh
