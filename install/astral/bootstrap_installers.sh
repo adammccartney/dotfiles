@@ -8,4 +8,5 @@ curl -LsSf https://astral.sh/uv/install.sh > uv.sh && chmod +x uv.sh
 # ruff
 curl -LsSf https://astral.sh/ruff/install.sh > ruff.sh && chmod +x ruff.sh
 
-
+# ty
+curl -LsSf https://astral.sh/ty/install.sh > ty.sh && chmod +x ty.sh
