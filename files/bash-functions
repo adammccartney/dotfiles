@@ -711,7 +711,7 @@ mk_dns_update () {
 }
 
 timesheet () {
-    tsheet=${HOME}/Documents/tuwien/timesheets/2025/ad_timesheet_2025.xlsx
+    tsheet=${HOME}/Documents/tuwien/timesheets/2026/ad_timesheet_2026.xlsx
 
     if [ -f ${tsheet} ]; then
         xdg-open ${tsheet}
