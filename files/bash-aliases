@@ -4,7 +4,7 @@ alias train="source /home/amccartn/bin/train"
 
 alias slack="slack --enable-features=WebRTCPipewireCapturer"
 
-alias zoom="zoom --enable-features=WebRTCPipewireCapturer"
+#alias zoom="zoom --enable-features=WebRTCPipewireCapturer"
 
 alias ltucfg="source ~/dotfiles/bash/tu.aliases.bash"
 
@@ -29,7 +29,12 @@ alias gsurr="git submodule update --recursive --remote"
 alias gprs="git pull --recurse-submodules"
 #alias vim="nvim"
 alias nlua=$HOME/.local/src/neovim/.deps/usr/bin/luajit
-alias pnv="source ~/.virtualenvs/pyd/bin/activate"
 
 # git aliases
 alias gls='git diff-tree --no-commit-id --name-only $(git rev-parse HEAD) -r'
+
+
+# virtual environments
+alias py-asc='source ~/.virtualenvs/py-asc/bin/activate'
+alias pnv="source ~/.virtualenvs/pyd/bin/activate"
+alias gsurr="git submodule update --recursive --remote"
