@@ -752,3 +752,19 @@ dirsize_gb () {
     awk '{sum+=$1} END {print sum}' |\
     python -c 'import sys; print(f"{int(sys.stdin.read()) / 1_000_000_000:.2f}Gb")'
 }
+
+use_srht_origin () {
+    # This is for setting up a sr.ht repo as the remote origin for a git repo
+    # use if you want to migrate away from github
+    repo=$(basename `git rev-parse --show-toplevel`)
+    git remote get-url origin | grep github
+    if [ "$?" -eq 0 ]; then
+        git remote rename origin mirror
+        git remote add origin git@sr.ht:~admccartney/"$repo"
+        git remote add all git@sr.ht:~admccartney/"$repo"
+        git remote set-url --add all git@github.com:adammccartney/"$repo"
+    else
+        echo "origin is not pointing at github"
+        git remote get-url origin
+    fi
+}
