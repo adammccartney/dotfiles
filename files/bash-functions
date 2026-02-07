@@ -756,8 +756,8 @@ use_srht_origin () {
     git remote get-url origin | grep github
     if [ "$?" -eq 0 ]; then
         git remote rename origin mirror
-        git remote add origin git@sr.ht:~admccartney/"$repo"
-        git remote add all git@sr.ht:~admccartney/"$repo"
+        git remote add origin git@git.sr.ht:~admccartney/"$repo"
+        git remote add all git@git.sr.ht:~admccartney/"$repo"
         git remote set-url --add all git@github.com:adammccartney/"$repo"
     else
         echo "origin is not pointing at github"
