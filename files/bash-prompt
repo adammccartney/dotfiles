@@ -57,6 +57,16 @@ function set_virtual_env () {
     fi
 }
 
+
+function _add_location_and_function () {
+    locfunc="${LOCATION}${FUNCTION_GROUP}"
+    if [ -z "${locfunc}" ]; then
+            return
+    fi
+
+    PS1+="($MAGENTA${LOCATION}/${FUNCTION_GROUP}$RESET)"
+}
+
 function set_bash_prompt () {
     local eessi_block=""
 
@@ -67,6 +77,10 @@ function set_bash_prompt () {
 
     # clear the prompt
     PS1=""
+
+    # add optional location from LOCATION / FUNCTION_GROUP env vars
+    _add_location_and_function
+
     # Python virtual environment
     set_virtual_env
     PS1+="${PYTHON_VIRTUAL_ENV}"
