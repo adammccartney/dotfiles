@@ -10,6 +10,8 @@ EXIST_INSTALL="${PREFIX}/go"
 GO_PKG_PREFIX=$HOME/.local/pkg
 GO_TAR=go"${VERSION}"."${OS}"-"${ARCH}".tar.gz
 
+mkdir -p "${GO_PKG_PREFIX}"
+
 curl -L -f -o "$GO_PKG_PREFIX"/"${GO_TAR}" https://go.dev/dl/"${GO_TAR}"
 pushd "$GO_PKG_PREFIX"
 sudo rm -rf "${EXIST_INSTALL}" && sudo tar -C "${PREFIX}" -xzf "${GO_TAR}"
