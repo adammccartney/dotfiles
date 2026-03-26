@@ -16,7 +16,7 @@ alias mk="minikube kubectl --"
 alias bup="bkhome-wrapper.sh"
 alias wgu="sudo wg-quick up wg0"
 alias wgd="sudo wg-quick down wg0"
-alias tuvpn='sudo openconnect --user amccartn@tuwien.ac.at vpn.tuwien.ac.at'
+alias tuvpn='gtk-launch com.cisco.secureclient.gui'
 
 alias eld_start="systemctl --user start emacs"
 alias eld_stop="systemctl --user stop emacs"
