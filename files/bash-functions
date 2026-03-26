@@ -764,3 +764,9 @@ use_srht_origin () {
         git remote get-url origin
     fi
 }
+
+ls_most_recent () {
+    parent="$1"
+    child1=$(ls -t "$parent" | head -1)
+    echo "$parent/$child1"
+}
