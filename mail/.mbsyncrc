@@ -63,7 +63,7 @@ SyncState *
 Channel murat-archive
 Far :murat-remote:
 Near :murat-local:
-Patterns "Archive" "Archives"
+Patterns "Archive"
 Create Near
 Sync All
 Expunge Both

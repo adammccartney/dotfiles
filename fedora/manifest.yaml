@@ -19,8 +19,15 @@ packages:
   - imapfilter
   - maildir-utils
   - isync
-  # pass
   - pass
   # git stuff
   - git-crypt
+  # virtualisation
+  - qemu
+  - qemu-kvm
+  - libvirt
+  - virt-install
+  - genisoimage
+  - cloudutils
+  - libguestfs
 

@@ -3,11 +3,6 @@
 # Instead of linking bash config files with stow,
 # we're going to append to the files that we need.
 
-# If we're using guix home, the content of the files can be inserted inline the
-# config.scm. If we are not using guix home, we need to do this manually.
-# This script handles the "manual" setup
-
-
 DOTFILES_ROOT=$(pwd)
 FILES_PATH="$DOTFILES_ROOT/files"
 if ! [[ -d "$FILES_PATH" ]]; then

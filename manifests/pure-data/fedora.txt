@@ -1,0 +1,6 @@
+jack-audio-connection-kit-devel
+alsa-lib-devel
+tcl
+tcl-devel
+
+fftw-devel
