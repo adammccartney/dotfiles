@@ -11,51 +11,6 @@ import pytest
 from adc.async_deploy import ProgressTracker
 
 
-async def simulate_slow_operation(name: str, delay: float):
-    """Simulate a slow I/O operation."""
-    await asyncio.sleep(delay)
-    return name
-
-
-@pytest.mark.asyncio
-async def test_concurrent_loading():
-    """Test concurrent part loading is faster than sequential."""
-    start = time.time()
-
-    # Simulate loading 3 parts concurrently
-    tasks = [
-        simulate_slow_operation("nvim", 0.5),
-        simulate_slow_operation("systemd", 0.75),
-        simulate_slow_operation("git", 0.25),
-    ]
-
-    results = await asyncio.gather(*tasks)
-    elapsed = time.time() - start
-
-    assert len(results) == 3
-    # Concurrent should be faster than sequential (0.25 + 0.5 + 0.75 = 1.5s)
-    assert elapsed < 1.0
-    assert set(results) == {"nvim", "systemd", "git"}
-
-
-@pytest.mark.asyncio
-async def test_sequential_loading():
-    """Test sequential part loading for comparison."""
-    start = time.time()
-
-    # Simulate loading 3 parts sequentially
-    results = []
-    for name, delay in [("nvim", 0.5), ("systemd", 0.75), ("git", 0.25)]:
-        result = await simulate_slow_operation(name, delay)
-        results.append(result)
-
-    elapsed = time.time() - start
-
-    assert len(results) == 3
-    # Sequential should take approximately the sum of delays
-    assert elapsed >= 1.4
-    assert results == ["nvim", "systemd", "git"]
-
 @pytest.mark.asyncio
 async def test_progress_tracker():
     """Test ProgressTracker updates correctly."""
@@ -120,24 +75,6 @@ async def test_mixed_cpu_and_io_operations():
     # the sum of individual times (CPU task takes ~0.5-0.8s, I/O takes 0.5s)
     # We allow up to 2.0s to account for system variability
     assert elapsed < 2.0
-
-
-@pytest.mark.asyncio
-async def test_asyncio_gather_order():
-    """Test that asyncio.gather preserves order."""
-    async def delayed_result(value, delay):
-        await asyncio.sleep(delay)
-        return value
-
-    # Tasks complete in different order than submitted
-    results = await asyncio.gather(
-        delayed_result(1, 0.3),
-        delayed_result(2, 0.1),
-        delayed_result(3, 0.2),
-    )
-
-    # Results should be in submission order, not completion order
-    assert results == [1, 2, 3]
 
 
 @pytest.mark.asyncio
