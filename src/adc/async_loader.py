@@ -1,6 +1,7 @@
 """Async part loader for ADC.
 
 Uses coroutines for concurrent part discovery, validation, and deployment.
+Works with the primitives-based part model.
 """
 
 import asyncio
@@ -9,17 +10,17 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .parts import Part
+from .primitives import task_context
 
 
-async def load_part(part_name: str) -> Part:
+async def load_part(part_name: str):
     """Dynamically load a part by name.
 
     Args:
         part_name: Name of the part (e.g., "nvim", "systemd")
 
     Returns:
-        The loaded module with configure(), validate(), get_files() functions
+        The loaded module
     """
     # Run import in executor to avoid blocking
     loop = asyncio.get_event_loop()
@@ -50,7 +51,7 @@ async def load_profile_async(profile_path: str | Path) -> dict[str, Any]:
     return await loop.run_in_executor(None, _load)
 
 
-async def validate_part(part_name: str, part: Part) -> tuple[str, bool]:
+async def validate_part(part_name: str, part) -> tuple[str, bool]:
     """Validate a single part.
 
     Args:
@@ -62,11 +63,17 @@ async def validate_part(part_name: str, part: Part) -> tuple[str, bool]:
     """
     # Run validation in executor to avoid blocking
     loop = asyncio.get_event_loop()
-    is_valid = await loop.run_in_executor(None, part.validate)
+
+    def _validate():
+        if hasattr(part, 'validate'):
+            return part.validate()
+        return True  # No validate function = assume valid
+
+    is_valid = await loop.run_in_executor(None, _validate)
     return (part_name, is_valid)
 
 
-async def validate_all_parts(parts: dict[str, Part]) -> dict[str, bool]:
+async def validate_all_parts(parts: dict) -> dict[str, bool]:
     """Validate all parts concurrently.
 
     Args:
@@ -91,13 +98,13 @@ async def validate_all_parts(parts: dict[str, Part]) -> dict[str, bool]:
 
 async def configure_part(
     part_name: str,
-    part: Part,
+    part,
     profile_data: dict[str, Any],
     dry_run: bool = True
 ) -> tuple[str, bool]:
     """Configure a single part.
 
-    Prefers async configure_async() if available, falls back to sync configure().
+    Calls the part's configure() function with proper context.
 
     Args:
         part_name: Name of the part
@@ -109,20 +116,34 @@ async def configure_part(
         Tuple of (part_name, success)
     """
     try:
+        part_dir = Path(part.__file__).parent
+
         if dry_run:
+            print(f"  [DRY RUN] Would configure {part_name}")
             return (part_name, True)
 
         # Check if part has async configure method
-        if hasattr(part, 'configure_async'):
-            await part.configure_async(profile_data)
+        if hasattr(part, 'configure'):
+            if asyncio.iscoroutinefunction(part.configure):
+                # Async configure
+                await part.configure(profile_data)
+            else:
+                # Sync configure - run in executor
+                loop = asyncio.get_event_loop()
+                await loop.run_in_executor(
+                    None,
+                    lambda: part.configure(profile_data)
+                )
         else:
-            # Fall back to sync method
-            loop = asyncio.get_event_loop()
-            await loop.run_in_executor(None, lambda: part.configure(profile_data))
+            print(f"  ⚠️  Part {part_name} has no configure() function")
+            return (part_name, False)
 
         return (part_name, True)
+
     except Exception as e:
         print(f"  ❌ Error configuring {part_name}: {e}")
+        import traceback
+        traceback.print_exc()
         return (part_name, False)
 
 
@@ -199,23 +220,26 @@ async def apply_profile_async(
             try:
                 part = await load_part(part_name)
 
-                is_valid = await asyncio.get_event_loop().run_in_executor(
-                    None, part.validate
-                )
+                # Validate
+                loop = asyncio.get_event_loop()
+                def _validate():
+                    if hasattr(part, 'validate'):
+                        return part.validate()
+                    return True
+
+                is_valid = await loop.run_in_executor(None, _validate)
 
                 if not is_valid:
                     print(f"  ⚠️  Part {part_name} is not compatible")
                     results[part_name] = False
                     continue
 
+                # Configure
                 if dry_run:
                     print(f"  [DRY RUN] Would configure {part_name}")
                     results[part_name] = True
                 else:
-                    await asyncio.get_event_loop().run_in_executor(
-                        None, lambda: part.configure(profile)
-                    )
-                    print(f"  ✓ Configured {part_name}")
+                    await configure_part(part_name, part, profile, dry_run=False)
                     results[part_name] = True
 
             except Exception as e:
@@ -225,7 +249,7 @@ async def apply_profile_async(
     return results
 
 
-async def _load_part_safe(part_name: str) -> Part:
+async def _load_part_safe(part_name: str):
     """Load a part, raising exception on failure."""
     return await load_part(part_name)
 
@@ -242,3 +266,4 @@ async def list_available_parts_async() -> list[str]:
         ]
 
     return await loop.run_in_executor(None, _scan)
+
