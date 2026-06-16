@@ -117,7 +117,7 @@ vim.lsp.enable({
     "clangd",
     "gopls",
     "lua-language-server",
-    "pyright",
+    --"pyright",
     "terraformls",
     "tflint",
     "ty",
