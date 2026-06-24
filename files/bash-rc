@@ -1,5 +1,17 @@
 # -*- mode: sh -*-
 
+
+# profiling
+# Source - https://stackoverflow.com/a/5015179
+# Posted by Dennis Williamson, modified by community. See post 'Timeline' for change history
+# Retrieved 2026-06-24, License - CC BY-SA 4.0
+
+#PS4='+ $(date "+%s.%N")\011 '
+#exec 3>&2 2>/tmp/bashstart.$$.log
+#set -x
+
+# end profiling
+
 [ -z "$TMUX" ] && export TERM=xterm-256color
 
 export LC_ALL=C.UTF-8
@@ -100,25 +112,6 @@ fi
 #alias la='ls -A'
 #alias l='ls -CF'
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
-fi
-
-if [ -d ~/.bashrc.d ]; then
-    for rc in ~/.bashrc.d/*; do
-        if [ -f "$rc" ]; then
-            . "$rc"
-        fi
-    done
-fi
-
 if [ -f ~/.bash_prompt ]; then
    . ~/.bash_prompt
 fi
@@ -143,63 +136,16 @@ if [ -f ~/.bash_git-completion ]; then
     . ~/.bash_git-completion
 fi
 
-# guix bash completion
-GUIX_BASH_COMPLETION="/var/guix/profiles/per-user/root/current-guix/etc/bash_completion.d/guix"
-if [ -f ${GUIX_BASH_COMPLETION} ]; then
-    . ${GUIX_BASH_COMPLETION}
-fi
-
-# Guix Profile stuff
-#if [ -z ${GUIX_PROFILE} ]; then # none active
-guix_activate_profile  # try to activate host profile
-
-# check whether we're setup to use nss-certs via guix, possibly set required variables
-if [ -z ${GUIX_PROFILE+x} ] && [ -d "${GUIX_PROFILE}/etc/ssl/certs" ]; then
-    export SSL_CERT_DIR="$GUIX_PROFILE/etc/ssl/certs"
-    export SSL_CERT_FILE="$GUIX_PROFILE/etc/ssl/certs/ca-certificates.crt"
-    export GIT_SSL_CAINFO="$SSL_CERT_FILE"
-fi
-
-# FIXME: this is a workaround for the fact that
-# ~/.guix-home/setup-environment clobbers the $XCURSOR_PATH
-# we're clobbering it here again ... two wrongs make a right I guess
-# variable set by /etc/zzz-guix.sh
-export XCURSOR_PATH="$GUIX_PROFILE/share/icons:/usr/löocal/share/icons:/usr/share/icons"
-
-
-#guix_activate_root_profiles  # possibly activate anything we have in /opt/guix/extra-profiles
-
 # use emacs keybindings
 set -o emacs
 
-# swap the control and caps key
-swap_ctrl_caps
 
 # idempotent kubectl setup
-if command kubectl &> /dev/null; then
-    source <(kubectl completion bash)
-    complete -o default -F __start_kubectl k
-fi
+#if command kubectl &> /dev/null; then
+#    source <(kubectl completion bash)
+#    complete -o default -F __start_kubectl k
+#fi
 
-
-FZF="$(which fzf)"
-if [[ "$FZF" =~ "guix" ]]; then
-    FZF_BASH_COMPLETIONS="$(dirname $(dirname $(realpath "$FZF")))/etc/bash_completion.d/fzf"
-    if [ -f "${FZF_BASH_COMPLETIONS}" ]; then
-        . "${FZF_BASH_COMPLETIONS}"
-    fi
-fi
-
-
-if [[ -f "~/vsc-repos.txt" ]]; then
-    complete -W"`<~/vsc-repos.txt`" tu_gitlab_clone
-fi
-
-if [ -f "$HOME/.local/bin/virtualenvwrapper.sh" ]; then
-    . $HOME/.local/bin/virtualenvwrapper.sh
-fi
-
-export WORKON_HOME="$HOME/.virtualenvs"
 
 # plan9 in user space
         
@@ -251,3 +197,15 @@ mkdir -p $HOME/.local/state/nvim/{backup,state}
 if [ -f "$HOME/.ssh/id_ed25519_ad_mu_git" ]; then
     export GIT_SSH_COMMAND='ssh -i ${HOME}/.ssh/id_ed25519_ad_mu_git'
 fi
+
+
+# profiling
+#
+# Source - https://stackoverflow.com/a/5015179
+# Posted by Dennis Williamson, modified by community. See post 'Timeline' for change history
+# Retrieved 2026-06-24, License - CC BY-SA 4.0
+
+#set +x
+#exec 2>&3 3>&-
+
+# end profiling
