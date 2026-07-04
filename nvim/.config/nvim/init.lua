@@ -13,7 +13,7 @@ vim.o.number = true
 vim.o.ignorecase = true
 vim.o.magic = true
 
-vim.opt.tw = 80
+vim.opt.tw = 100
 
 -- tabs
 vim.opt.tabstop = 4
@@ -118,6 +118,7 @@ vim.lsp.enable({
     "gopls",
     "lua-language-server",
     --"pyright",
+    "tofu-ls",
     "terraformls",
     "tflint",
     "ty",
@@ -191,4 +192,10 @@ if has_oxherd then
          auto_cd = true,
          selector_selection_highlight = "PmenuSel",
     })
+end
+
+local has_commandt, commandt = pcall(require, 'wincent.commandt')
+
+if has_commandt then
+    commandt.setup()
 end
