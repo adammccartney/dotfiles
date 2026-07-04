@@ -1,3 +1,11 @@
+local has_ts, ts = pcall(require, 'nvim-treesitter')
+
+if has_ts then
+    ts.setup {
+      install_dir = vim.fn.stdpath('data') .. '/site'
+    }
+end
+
 local has_tsconfigs, tsconfigs = pcall(require, 'nvim-treesitter.configs')
 
 
@@ -49,7 +57,7 @@ if has_tsconfigs then
 
 local has_tsparsers, tsparsers = pcall(require, "nvim-treesitter.parsers")
 
-if has_tsparsers then
-	local parser_config = tsparsers.get_parser_configs()
-	parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx" }
-end
+--if has_tsparsers then
+--	local parser_config = tsparsers.get_parser_configs()
+--	parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx" }
+--end
