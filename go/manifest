@@ -1,3 +1,5 @@
 go install github.com/jesseduffield/lazygit@v0.59.0
 go install github.com/derailed/k9s@v0.32.7
 go install github.com/junegunn/fzf@v0.61.0
+go install github.com/charmbracelet/glow/v2@latest
+go install github.com/opentofu/tofu-ls@v0.4.2
