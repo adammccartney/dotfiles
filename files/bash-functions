@@ -511,13 +511,14 @@ function kcmp () {
 }
 
 function selkc () {
-    # select a kubeconfig file from available options and set the selected
-    # version as the KUBECONFIG environment variable
-    pmsg_create -cm 1 /aq
-    selkc.cli "/aq"
-    KCPATH=$(pmsg_receive /aq | head -1)
-    export KUBECONFIG=${KCPATH}
-    pmsg_unlink /aq
+    local f; local -a configs
+    for f in ~/infrastructure/k8s/clusters/vsc/*/{config,kubeconfig}; do
+      [[ -f $f ]] && configs+=("$f")
+    done
+    [[ "$1" == -a ]] && { export KUBECONFIG=$(printf '%s:' "${configs[@]}"); return; }
+    select f in "${configs[@]}"; do
+      [[ -n $f ]] && { export KUBECONFIG="$f"; break; }
+    done
 }
 
 function k8s_getallimgs () {
@@ -769,4 +770,13 @@ ls_most_recent () {
     parent="$1"
     child1=$(ls -t "$parent" | head -1)
     echo "$parent/$child1"
+}
+
+
+pi_sync () {
+    # sync the pwd to the pi sanbox at the same path
+    dir=${1:-${PWD}}
+    pushd ~/virtualisation/qemu-templates/ ;
+    ./rsync-to-vm.sh ${dir} ${dir} ; 
+    popd
 }
