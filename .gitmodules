@@ -28,6 +28,3 @@
 [submodule "nvim-oxherd"]
 	path = nvim/.config/nvim/pack/plugged/opt/nvim-oxherd
 	url = git@github.com:adammccartney/nvim-oxherd.git
-[submodule "vim-easy-align"]
-	path = /home/ad/dotfiles/nvim/.config/nvim/pack/plugged/opt/vim-easy-align
-	url = git@github.com:junegunn/vim-easy-align.git
