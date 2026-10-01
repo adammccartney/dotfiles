@@ -36,3 +36,4 @@ go/pkg/
 src/github.com/
 !src/github.com/adammccartney
 Videos/films-florian/
+.zoom/

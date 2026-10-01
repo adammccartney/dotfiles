@@ -41,7 +41,7 @@ def getargs():
                         default=f"/run/media/{user}/adb/backup/home/{user}")
     parser.add_argument("--excludes-file", required=True,
                         help="list of patterns to exclude from rsync")
-    parser.add_argument("--check",
+    parser.add_argument("--dry-run",
                         action=argparse.BooleanOptionalAction)
     return parser.parse_args()
 
@@ -96,7 +96,7 @@ def main():
     dest = mkdir_new_home(src, args.new_home)
     assert dest, "Error: dest does not exist!"
     try:
-        if args.check:
+        if args.dry_run:
             c_rsync_home(src, dest, excludes_path, dry_run=True)
         else:
             c_rsync_home(src, dest, excludes_path)
