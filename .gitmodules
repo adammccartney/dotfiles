@@ -4,27 +4,15 @@
 [submodule "nvim-treesitter"]
 	path = nvim/.config/nvim/pack/plugged/opt/nvim-treesitter
 	url = git@github.com:nvim-treesitter/nvim-treesitter.git
-[submodule "nightfox"]
-	path = nvim/.config/nvim/pack/plugged/opt/nightfox
-	url = git@github.com:EdenEast/nightfox.nvim.git
 [submodule "fzf-lua"]
 	path = nvim/.config/nvim/pack/plugged/opt/fzf-lua
 	url = git@github.com:ibhagwan/fzf-lua.git
 [submodule "vim-slime"]
 	path = nvim/.config/nvim/pack/plugged/opt/vim-slime
 	url = git@github.com:jpalardy/vim-slime.git
-[submodule "LuaSnip"]
-	path = nvim/.config/nvim/pack/plugged/opt/LuaSnip
-	url = git@github.com:L3MON4D3/LuaSnip.git
 [submodule "command-t"]
 	path = nvim/.config/nvim/pack/plugged/opt/command-t
 	url = git@github.com:wincent/command-t.git
-[submodule "conjure"]
-	path = nvim/.config/nvim/pack/plugged/opt/conjure
-	url = git@github.com:Olical/conjure.git
-[submodule "vim-markdown"]
-	path = /home/amccartn/dotfiles/nvim/.config/nvim/pack/plugged/opt/vim-markdown
-	url = git@github.com:tpope/vim-markdown.git
 [submodule "nvim-oxherd"]
 	path = nvim/.config/nvim/pack/plugged/opt/nvim-oxherd
 	url = git@github.com:adammccartney/nvim-oxherd.git
