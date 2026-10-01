@@ -1,12 +1,5 @@
----------------
---  Options  --
----------------
-
 options.timeout = 120
 options.subscribe = true
-
-
--- Connect to tuw mail server
 
 function get_pwd()
     local cmd = "gpg -q --for-your-eyes-only --no-tty -d ~/.password-store/Email/tuw.gpg"
@@ -16,19 +9,14 @@ function get_pwd()
     return pwd
 end
 
-pwd = get_pwd()
-
 account1 = IMAP {
     server = 'mail.intern.tuwien.ac.at',
     ssl = 'auto',
     port = 993,
     username = 'amccartn',
-    -- FIXME: figure out why this wont accept a string from the above function
-    password = get_pwd(), 
+    password = get_pwd(),
 }
 
-mailboxes, folders = account1:list_all()
-
-results = account1.INBOX:contain_from('(Cron Daemon)')
-results:move_messages(account1.vsc_admin)
-
+local doomed = account1.vsc_admin:select_all()
+print(#doomed .. " messages in vsc_admin; deleting")
+doomed:delete_messages()

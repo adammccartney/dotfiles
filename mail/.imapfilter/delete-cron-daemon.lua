@@ -1,8 +1,9 @@
+
 ---------------
 --  Options  --
 ---------------
 
-options.timeout = 120
+options.timeout = 600
 options.subscribe = true
 
 
@@ -30,5 +31,6 @@ account1 = IMAP {
 mailboxes, folders = account1:list_all()
 
 results = account1.INBOX:contain_from('(Cron Daemon)')
-results:move_messages(account1.vsc_admin)
+print(#results .. " to delete")
+results:delete_messages()
 
