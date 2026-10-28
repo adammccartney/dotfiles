@@ -521,6 +521,17 @@ function selkc () {
     done
 }
 
+function kubectl_node_report_all() {
+    local f; local cluster_name
+    for f in ~/infrastructure/k8s/clusters/vsc/*/{config,kubeconfig}; do
+        if [[ -f ${f} ]]; then
+            cluster_name=$(basename $(dirname ${f}))
+            kubectl config use-context ${cluster_name}
+            kubectl get nodes -owide
+        fi
+    done
+}
+
 function k8s_getallimgs () {
     # Get all images in a specific namespaces
     ns=$1
@@ -780,3 +791,63 @@ pi_sync () {
     ./rsync-to-vm.sh ${dir} ${dir} ; 
     popd
 }
+
+
+sami_generate_cmds_from_gitlog() {
+    local depth=${1:?usage: sami_generate_cmds_from_gitlog <depth>}
+    local commit_hash subject_raw base f cctag name
+    local arch accel partition
+    local -a files_changed easystacks
+
+    git log -n"${depth}" --pretty=tformat:"%H %s" |
+        while IFS=' ' read -r commit_hash subject_raw; do
+            base=${subject_raw#build }
+            # strip a trailing cc-list token from the subject ("... cc90,cc100" -> per-variant name below)
+            [[ ${base} =~ ^(.*)[[:space:]]cc[0-9]+(,cc[0-9]+)*$ ]] && base=${BASH_REMATCH[1]}
+
+            mapfile -t files_changed < <(git diff-tree --root --name-only --no-commit-id -r "${commit_hash}")
+
+            # buildable units are easystack manifests; anything else is support material
+            easystacks=()
+            for f in ${files_changed[@]+"${files_changed[@]}"}; do
+                [[ ${f} == easystacks/*cc*.yaml || ${f} == easystacks/*cc*.yml ]] && easystacks+=("${f}")
+            done
+
+            if (( ${#easystacks[@]} == 0 )); then
+                printf 'SKIP no-easystack commit %s (%d files)\n' "${commit_hash:0:8}" "${#files_changed[@]}" >&2
+                continue
+            fi
+            if (( ${#files_changed[@]} > ${#easystacks[@]} )); then
+                printf 'INFO %s: %d non-easystack file(s) ignored\n' "${commit_hash:0:8}" "$(( ${#files_changed[@]} - ${#easystacks[@]} ))" >&2
+            fi
+
+            for f in "${easystacks[@]}"; do
+                # cc tag comes from the filename convention: ...-cc90.yaml / ...-cc100.yaml
+                if [[ ! ${f} =~ -cc([0-9]+)\.ya?ml$ ]]; then
+                    printf 'WARN no cc tag in %s, skipped\n' "${f}" >&2
+                    continue
+                fi
+                cctag="cc${BASH_REMATCH[1]}"
+
+                case "${cctag}" in
+                    cc90)  arch=zen4; accel=cc90;  partition=zen4_0768_h100x4 ;;
+                    cc100) arch=zen5; accel=cc100; partition=zen5_2304_b200x8 ;;
+                    *) printf 'WARN no arch mapping for %s (%s), skipped\n' "${cctag}" "${f}" >&2; continue ;;
+                esac
+
+                name="${base} ${cctag}"
+                printf '%s \\ \n' "sami build"
+                printf '    --name="%s" --git-commit=%s --files="%s" \\ \n' \
+                    "${name}" "${commit_hash}" "${f}"
+                printf '    %s \\ \n' "--build-backend slurm --publish"
+                printf '    --arch=%s --accel=%s --partition=%s \n' "${arch}" "${accel}" "${partition}"
+            done
+        done
+}
+
+pi() (
+    for f in ~/.config/aqueduct/.env ~/.config/ascllm/.env; do
+        [ -r "$f" ] && . "$f"
+    done
+    command pi "$@"
+)
