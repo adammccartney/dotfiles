@@ -22,3 +22,6 @@
 [submodule "vim-fugitive"]
 	path = /home/ad/dotfiles/nvim/.config/nvim/pack/plugged/opt/vim-fugitive
 	url = git@github.com:tpope/vim-fugitive.git
+[submodule "shannon"]
+	path = /home/ad/dotfiles/nvim/.config/nvim/pack/plugged/opt/shannon
+	url = git@github.com:wincent/shannon.git

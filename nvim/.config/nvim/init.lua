@@ -58,6 +58,7 @@ if vim.o.loadplugins then
     adam.plugin.load('vim-slime')
     adam.plugin.load('vim-easy-align')
     adam.plugin.load('vim-fugitive')
+    adam.plugin.load('shannon')
     --adam.plugin.load('go.nvim')
     --adam.plugin.load('guihua.lua')
     ---- optional for icon support
@@ -196,4 +197,8 @@ local has_commandt, commandt = pcall(require, 'wincent.commandt')
 
 if has_commandt then
     commandt.setup()
+end
+
+if has_shannon then
+    shannon.setup()
 end
