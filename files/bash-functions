@@ -794,23 +794,23 @@ pi_sync () {
 
 
 sami_generate_cmds_from_gitlog() {
-    local depth=${1:?usage: sami_generate_cmds_from_gitlog <depth>}
-    local commit_hash subject_raw base f cctag name
+    local depth=${1:?usage: sami_generate_cmds_from_gitlog <depth> [untagged-targets]}
+    # space-separated target tags for manifests WITHOUT a -ccN filename tag
+    # (compiler/toolchain manifests are target-agnostic). "none" skips them.
+    local untagged_targets=${2:-"cc90 cc100"}
+    local commit_hash subject_raw f base name target
     local arch accel partition
-    local -a files_changed easystacks
+    local -a files_changed easystacks file_targets targets
+    read -ra targets <<<"${untagged_targets}"
 
     git log -n"${depth}" --pretty=tformat:"%H %s" |
         while IFS=' ' read -r commit_hash subject_raw; do
-            base=${subject_raw#build }
-            # strip a trailing cc-list token from the subject ("... cc90,cc100" -> per-variant name below)
-            [[ ${base} =~ ^(.*)[[:space:]]cc[0-9]+(,cc[0-9]+)*$ ]] && base=${BASH_REMATCH[1]}
-
             mapfile -t files_changed < <(git diff-tree --root --name-only --no-commit-id -r "${commit_hash}")
 
             # buildable units are easystack manifests; anything else is support material
             easystacks=()
             for f in ${files_changed[@]+"${files_changed[@]}"}; do
-                [[ ${f} == easystacks/*cc*.yaml || ${f} == easystacks/*cc*.yml ]] && easystacks+=("${f}")
+                [[ ${f} == easystacks/*.yaml || ${f} == easystacks/*.yml ]] && easystacks+=("${f}")
             done
 
             if (( ${#easystacks[@]} == 0 )); then
@@ -818,29 +818,43 @@ sami_generate_cmds_from_gitlog() {
                 continue
             fi
             if (( ${#files_changed[@]} > ${#easystacks[@]} )); then
-                printf 'INFO %s: %d non-easystack file(s) ignored\n' "${commit_hash:0:8}" "$(( ${#files_changed[@]} - ${#easystacks[@]} ))" >&2
+                printf 'INFO %s: %d non-easystack file(s) ignored\n' "${commit_hash:0:8}" \
+                    "$(( ${#files_changed[@]} - ${#easystacks[@]} ))" >&2
             fi
 
+            printf '# %s %s\n' "${commit_hash:0:8}" "${subject_raw}"
             for f in "${easystacks[@]}"; do
-                # cc tag comes from the filename convention: ...-cc90.yaml / ...-cc100.yaml
-                if [[ ! ${f} =~ -cc([0-9]+)\.ya?ml$ ]]; then
-                    printf 'WARN no cc tag in %s, skipped\n' "${f}" >&2
-                    continue
+                # job name from the manifest: basename minus extension,
+                # minus asc_eb_<ebver> prefix, minus any -ccN suffix
+                base=$(basename "${f}"); base=${base%.yaml}; base=${base%.yml}
+                base=${base#asc_eb_[0-9.]*[_-]}
+                # -ccN tag pins the target — in the filename (...-cc90.yaml)
+                # or in the path (.../accel/nvidia/cc90/...), filename wins;
+                # no tag at all -> expand over untagged-targets
+                if [[ ${f} =~ -cc([0-9]+)\.ya?ml$ ]]; then
+                    file_targets=("cc${BASH_REMATCH[1]}")
+                    base=${base%-cc[0-9]*}
+                elif [[ ${f} =~ /cc([0-9]+)/ ]]; then
+                    file_targets=("cc${BASH_REMATCH[1]}")
+                else
+                    file_targets=("${targets[@]}")
+                    printf 'NOTE %s: no cc tag, expanding to: %s\n' "${f}" "${file_targets[*]}" >&2
+                    printf 'NOTE %s: CUDA-less cones into /accel need --build-env="EESSI_OVERRIDE_STRICT_INSTALLPATH_CHECK=1"\n' \
+                        "${f}" >&2
                 fi
-                cctag="cc${BASH_REMATCH[1]}"
-
-                case "${cctag}" in
-                    cc90)  arch=zen4; accel=cc90;  partition=zen4_0768_h100x4 ;;
-                    cc100) arch=zen5; accel=cc100; partition=zen5_2304_b200x8 ;;
-                    *) printf 'WARN no arch mapping for %s (%s), skipped\n' "${cctag}" "${f}" >&2; continue ;;
-                esac
-
-                name="${base} ${cctag}"
-                printf '%s \\ \n' "sami build"
-                printf '    --name="%s" --git-commit=%s --files="%s" \\ \n' \
-                    "${name}" "${commit_hash}" "${f}"
-                printf '    %s \\ \n' "--build-backend slurm --publish"
-                printf '    --arch=%s --accel=%s --partition=%s \n' "${arch}" "${accel}" "${partition}"
+                for target in "${file_targets[@]}"; do
+                    [[ ${target} == none ]] && continue
+                    case "${target}" in
+                        cc90)  arch=zen4; accel=cc90;  partition=zen4_0768_h100x4 ;;
+                        cc100) arch=zen5; accel=cc100; partition=zen5_2304_b200x8 ;;
+                        *) printf 'WARN no arch mapping for %s (%s), skipped\n' "${target}" "${f}" >&2; continue ;;
+                    esac
+                    name="${base} ${target}"
+                    printf '%s \\\n' "sami build"
+                    printf '    --name="%s" --git-commit=%s --files="%s" \\\n' "${name}" "${commit_hash}" "${f}"
+                    printf '    %s \\\n' "--build-backend slurm --publish"
+                    printf '    --arch=%s --accel=%s --partition=%s\n' "${arch}" "${accel}" "${partition}"
+                done
             done
         done
 }
