@@ -19,7 +19,7 @@ Inbox ~/.mail/murat/Inbox
 Channel murat-inbox
 Far :murat-remote:
 Near :murat-local:
-Patterns "*"
+Patterns "INBOX"
 Create Near
 Sync All
 Expunge Both
@@ -97,7 +97,7 @@ Inbox ~/.mail/tuw/Inbox
 Channel tuw-inbox
 Far :tuw-remote:
 Near :tuw-local:
-Patterns "*"
+Patterns "INBOX"
 Create Near
 Sync All
 Expunge Both
