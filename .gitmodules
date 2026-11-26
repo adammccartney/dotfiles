@@ -25,3 +25,6 @@
 [submodule "shannon"]
 	path = /home/ad/dotfiles/nvim/.config/nvim/pack/plugged/opt/shannon
 	url = git@github.com:wincent/shannon.git
+[submodule "ox"]
+	path = /home/ad/dotfiles/nvim/.config/nvim/pack/plugged/opt/nvim-ox
+	url = git@github.com:adammccartney/nvim-ox.git
