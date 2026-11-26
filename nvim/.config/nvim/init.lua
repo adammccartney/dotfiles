@@ -55,6 +55,7 @@ if vim.o.loadplugins then
     adam.plugin.load('fzf-lua')
     adam.plugin.load('nvim-treesitter')
     adam.plugin.load('nvim-oxherd')
+    adam.plugin.load('nvim-ox')
     adam.plugin.load('vim-slime')
     adam.plugin.load('vim-easy-align')
     adam.plugin.load('vim-fugitive')
